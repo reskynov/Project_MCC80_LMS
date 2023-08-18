@@ -396,3 +396,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+LMS/API/appsettings.json
+LMS/API/appsettings.Development.json
+LMS/API/Migrations/20230818064919_CreateTable.cs
+LMS/API/Migrations/20230818064919_CreateTable.Designer.cs
+LMS/API/Migrations/20230818065425_ChangeTableColumnName.cs
+LMS/API/Migrations/20230818065425_ChangeTableColumnName.Designer.cs
+LMS/API/Migrations/20230818065905_AddDefaultRole.cs
+LMS/API/Migrations/20230818065905_AddDefaultRole.Designer.cs
+LMS/API/Migrations/LmsDbContextModelSnapshot.cs
