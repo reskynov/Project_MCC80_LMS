@@ -10,6 +10,7 @@ namespace API.Utilities.Validations.Users
 
         public UserValidator(IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             RuleFor(u => u.FirstName)
                          .NotEmpty()
                          .MaximumLength(100).WithMessage("First Name more than maximum length");
