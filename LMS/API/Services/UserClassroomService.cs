@@ -8,6 +8,11 @@ namespace API.Services
     {
         private readonly IUserClassroomRepository _userClassroomRepository;
 
+        public UserClassroomService(IUserClassroomRepository userClassroomRepository)
+        {
+            _userClassroomRepository = userClassroomRepository;
+        }
+
         public IEnumerable<UserClassroomDto> GetAll()
         {
             var userClassrooms = _userClassroomRepository.GetAll();

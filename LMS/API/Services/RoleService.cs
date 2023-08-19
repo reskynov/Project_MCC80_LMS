@@ -29,6 +29,18 @@ public class RoleService
         return roleDtos;
     }
 
+    public RoleDto? GetByGuid(Guid guid)
+    {
+        var role = _roleRepository.GetByGuid(guid);
+
+        if (role is null)
+        {
+            return null;
+        }
+
+        return (RoleDto)role;
+    }
+
 
     public RoleDto? Create(NewRoleDto newRoleDto)
     {
