@@ -10,6 +10,7 @@ namespace API.Utilities.Validations.Users
 
         public NewUserValidator(IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             RuleFor(u => u.FirstName)
                           .NotEmpty()
                           .MaximumLength(100).WithMessage("First Name more than maximum length");
@@ -31,7 +32,8 @@ namespace API.Utilities.Validations.Users
             RuleFor(u => u.PhoneNumber)
                 .MaximumLength(20)
                 .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
-                .Must(IsDuplicationValue).WithMessage("Phone number already exist");
+                .Must(IsDuplicationValue).WithMessage("Phone number already exist")
+                .When(u => !string.IsNullOrEmpty(u.PhoneNumber));
         }
 
         private bool IsDuplicationValue(string arg)
