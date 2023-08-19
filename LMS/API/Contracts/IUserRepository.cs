@@ -2,7 +2,8 @@
 
 namespace API.Contracts
 {
-    public interface IUserClassroomRepository : IGeneralRepository<UserClassroom>
+    public interface IUserRepository : IGeneralRepository<User>
     {
+        bool IsNotExist(string value);
     }
 }
