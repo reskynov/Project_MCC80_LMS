@@ -1,6 +1,6 @@
 ﻿namespace API.Utilities.Handlers
 {
-    public class ResponseValidationHandler<TEntity>
+    public class ResponseValidationHandler
     {
         public int Code { get; set; }
         public string Status { get; set; }

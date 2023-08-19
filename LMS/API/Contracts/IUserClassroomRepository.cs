@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IUserRepository : IGeneralRepository<User>
+    public interface IUserClassroomRepository : IGeneralRepository<UserClassroom>
     {
     }
 }

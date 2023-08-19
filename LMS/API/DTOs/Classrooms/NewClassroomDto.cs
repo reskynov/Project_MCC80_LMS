@@ -1,10 +1,10 @@
 ﻿using API.Models;
+using API.Utilities.Handlers;
 
 namespace API.DTOs.Classrooms;
 
 public class NewClassroomDto
 {
-    public string Code { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
 
@@ -13,7 +13,7 @@ public class NewClassroomDto
         return new Classroom
         {
             Guid = new Guid(),
-            Code = newClassroomDto.Code,
+            Code = GenerateHandler.ClassCode(),
             Name = newClassroomDto.Name,
             Description = newClassroomDto.Description,
             CreatedDate = DateTime.Now,
@@ -25,7 +25,6 @@ public class NewClassroomDto
     {
         return new NewClassroomDto
         {
-            Code = classroom.Code,
             Name = classroom.Name,
             Description = classroom.Description
         };
