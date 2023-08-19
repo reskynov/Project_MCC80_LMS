@@ -6,6 +6,8 @@ using System.Net;
 
 namespace API.Controllers
 {
+    [ApiController]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;

@@ -6,6 +6,8 @@ using System.Net;
 
 namespace API.Controllers
 {
+    [ApiController]
+    [Route("api/userclassrooms")]
     public class UserClassroomController : ControllerBase
     {
         private readonly UserClassroomService _userClassroomService;
