@@ -9,5 +9,11 @@ namespace API.Repositories
         public GradeRepository(LmsDbContext context) : base(context)
         {
         }
+
+        public bool IsNotExist(Guid userGuid, Guid taskGuid)
+        {
+            return _context.Set<Grade>()
+                .FirstOrDefault(g => g.UserGuid == userGuid && g.TaskGuid == taskGuid) is null;
+        }
     }
 }
