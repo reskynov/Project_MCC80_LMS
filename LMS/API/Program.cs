@@ -38,6 +38,7 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserClassroomService>();
 
+
 //Register FluentValidation
 builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
