@@ -1,7 +1,10 @@
 ﻿using API.Contracts;
 using API.Data;
+using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
+using API.DTOs.Users;
 using API.Models;
+using API.Utilities.Handlers;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
@@ -20,6 +23,52 @@ namespace API.Services
             _accountRepository = accountRepository;
             _accountRoleRepository = accountRoleRepository;
             _dbContext = bookingDbContext;
+        }
+
+        public RegisterDto? Register(RegisterDto registerDto)
+        {
+            //anticipation If error do rollback
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            try
+            {
+                //Employee Create
+                User employeeToCreate = new NewUserDto
+                {
+                    FirstName = registerDto.FirstName,
+                    LastName = registerDto.LastName,
+                    BirthDate = registerDto.BirthDate,
+                    Gender = registerDto.Gender,
+                    Email = registerDto.Email,
+                    PhoneNumber = registerDto.PhoneNumber
+                };
+
+                //Account Create
+                var accountResult = _accountRepository.Create(new NewAccountDto
+                {
+                    Guid = employeeToCreate.Guid,
+                    IsUsed = true,
+                    ExpiredDate = DateTime.Now.AddMinutes(5),
+                    OTP = 111,
+                    Password = HashingHandler.GenerateHash(registerDto.Password)
+                });
+
+                //AccountRole Create, Otomatis buat menjadi role employee
+                var accountRole = _accountRoleRepository.Create(new NewAccountRoleDto
+                {
+                    AccountGuid = accountResult.Guid,
+                    RoleGuid = registerDto.RoleGuid
+                });
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                return null;
+            }
+
+            return (RegisterDto)registerDto;
         }
 
         public IEnumerable<AccountDto> GetAll()

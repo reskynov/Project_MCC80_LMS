@@ -9,5 +9,11 @@ namespace API.Repositories
         public UserRepository(LmsDbContext context) : base(context)
         {
         }
+
+        //get user by email
+        public User? GetByEmail(string email)
+        {
+            return _context.Set<User>().SingleOrDefault(e => e.Email.Contains(email));
+        }
     }
 }
