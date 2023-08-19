@@ -33,6 +33,12 @@
     <Folder Include="DTOs\UserClassrooms\" />
     <Folder Include="DTOs\Users\" />
     <Folder Include="DTOs\Tasks\" />
+    <Folder Include="Utilities\Validations\Grades\" />
+    <Folder Include="Utilities\Validations\Lessons\" />
+    <Folder Include="Utilities\Validations\UserClassrooms\" />
+    <Folder Include="Utilities\Validations\Users\" />
+    <Folder Include="Utilities\Validations\Tasks\" />
+    <Folder Include="Utilities\Validations\Roles\" />
   </ItemGroup>
 
 </Project>
