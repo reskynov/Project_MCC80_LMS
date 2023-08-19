@@ -2,6 +2,7 @@
 using API.DTOs.Roles;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

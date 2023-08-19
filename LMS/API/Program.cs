@@ -32,6 +32,7 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserClassroomService>();
 
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
