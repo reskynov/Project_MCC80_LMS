@@ -49,13 +49,10 @@ namespace API.Utilities.Validations.Users
             //});
 
             RuleFor(u => u.PhoneNumber)
-            .MaximumLength(20).WithMessage("Phone number must be at most 20 characters long.")
-            .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
-            .Must(IsDuplicationValue).WithMessage("Phone number already exists")
-            .When(u => !string.IsNullOrEmpty(u.PhoneNumber)); // Validasi hanya ketika PhoneNumber tidak null atau string kosong
-
-
-
+                .MaximumLength(20)
+                .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
+                .Must(IsDuplicationValue).WithMessage("Phone number already exist")
+                .When(u => !string.IsNullOrEmpty(u.PhoneNumber));
         }
 
         private bool IsDuplicationValue(string arg)
