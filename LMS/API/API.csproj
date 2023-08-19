@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\AccountRoles\" />
-    <Folder Include="DTOs\Accounts\" />
     <Folder Include="DTOs\Classrooms\" />
     <Folder Include="DTOs\Grades\" />
     <Folder Include="DTOs\Lessons\" />

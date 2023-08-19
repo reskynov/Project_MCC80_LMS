@@ -15,5 +15,13 @@ namespace API.Repositories
         {
             return _context.Set<User>().SingleOrDefault(e => e.Email.Contains(email));
         }
+
+        public bool IsNotExist(string value)
+        {
+            //return true if null
+            return _context.Set<User>()
+                           .SingleOrDefault(e => e.Email.Contains(value)
+                                               || e.PhoneNumber.Contains(value)) is null;
+        }
     }
 }

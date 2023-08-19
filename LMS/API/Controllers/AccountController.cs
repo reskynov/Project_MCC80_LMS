@@ -3,7 +3,9 @@ using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -174,6 +176,44 @@ namespace API.Controllers
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Register Success"
+            });
+        }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public IActionResult Login(LoginDto loginDto)
+        {
+            var result = _accountService.Login(loginDto);
+
+            if (result is "0")
+            {
+                return NotFound(new ResponseHandler<LoginDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Email or Password is incorrect"
+                });
+            }
+
+            if (result is "-2")
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error occurred when registering"
+                });
+            }
+
+            return Ok(new ResponseHandler<TokenDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Login Success",
+                Data = new TokenDto
+                {
+                    Token = result
+                }
             });
         }
     }
