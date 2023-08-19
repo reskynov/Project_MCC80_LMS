@@ -6,6 +6,8 @@ using System.Net;
 
 namespace API.Controllers
 {
+    [ApiController]
+    [Route("api/tasks")]
     public class TaskController : ControllerBase
     {
         private readonly TaskService _taskService;
