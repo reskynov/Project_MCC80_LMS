@@ -14,12 +14,20 @@ namespace API.Services
         private readonly IClassroomRepository _classroomRepository;
         private readonly IUserClassroomRepository _userClassroomRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IAccountRoleRepository _accountRoleRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public ClassroomService(IClassroomRepository classroomRepository, IUserClassroomRepository userClassroomRepository, IUserRepository userRepository)
+        public ClassroomService(IClassroomRepository classroomRepository, 
+            IUserClassroomRepository userClassroomRepository, 
+            IUserRepository userRepository, 
+            IAccountRoleRepository accountRoleRepository,
+            IRoleRepository roleRepository)
         {
             _classroomRepository = classroomRepository;
             _userClassroomRepository = userClassroomRepository;
             _userRepository = userRepository;
+            _accountRoleRepository = accountRoleRepository;
+            _roleRepository = roleRepository;
         }
 
         public IEnumerable<ClassroomPeopleDto> GetClassroomPeoples(Guid guid) 
@@ -27,11 +35,14 @@ namespace API.Services
             var getClassroomPeople = from c in _classroomRepository.GetAll()
                                      join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
                                      join u in _userRepository.GetAll() on uc.UserGuid equals u.Guid
+                                     join ar in _accountRoleRepository.GetAll() on u.Guid equals ar.AccountGuid
+                                     join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
                                      where c.Guid == guid
                                      select new ClassroomPeopleDto
                                      {
                                          Guid = guid,
-                                         FullName = u.FirstName + " " + u.LastName
+                                         FullName = u.FirstName + " " + u.LastName,
+                                         Role = r.Name
                                      };
 
             if (getClassroomPeople is null)
