@@ -174,6 +174,16 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "User has been enrolled to class"
+                });
+            }
+
+            if (result is -2)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
                     Message = "Internal server error"
                 });
             }

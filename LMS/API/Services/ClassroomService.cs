@@ -59,11 +59,17 @@ namespace API.Services
                 UserGuid = enrollClassroomDto.UserGuid
             };
 
+            var valueNotExist =  _userClassroomRepository.IsNotExist(userClassroomToCreate.UserGuid, userClassroomToCreate.ClassroomGuid);
+            if (!valueNotExist)
+            {
+                return -1; //already enrolled
+            }
+
             var enrollResult = _userClassroomRepository.Create(userClassroomToCreate);
 
             if(enrollResult is null)
             {
-                return -1; //error when create
+                return -2; //error when create
             }
 
             return 1;
