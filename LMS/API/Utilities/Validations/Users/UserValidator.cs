@@ -32,7 +32,8 @@ namespace API.Utilities.Validations.Users
             RuleFor(u => u.PhoneNumber)
                 .MaximumLength(20)
                 .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
-                .Must(IsDuplicationValue).WithMessage("Phone number already exist");
+                .Must(IsDuplicationValue).WithMessage("Phone number already exist")
+                .When(u => !string.IsNullOrEmpty(u.PhoneNumber)); ;
         }
 
         private bool IsDuplicationValue(string arg)
