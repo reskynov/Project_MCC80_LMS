@@ -1,4 +1,5 @@
-﻿using API.DTOs.Grades;
+﻿using API.Contracts;
+using API.DTOs.Grades;
 using FluentValidation;
 
 namespace API.Utilities.Validations.Grades;
@@ -15,7 +16,7 @@ public class GradeValidator : AbstractValidator<GradeDto>
 
         RuleFor(g => g.UserGuid)
             .NotEmpty().WithMessage("User guid is required");
-        
+
         RuleFor(g => g.TaskGuid)
             .NotEmpty().WithMessage("Task guid is required");
     }

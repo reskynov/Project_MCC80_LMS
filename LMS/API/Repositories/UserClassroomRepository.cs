@@ -9,5 +9,10 @@ namespace API.Repositories
         public UserClassroomRepository(LmsDbContext context) : base(context)
         {
         }
+
+        public bool IsNotExist(Guid userGuid, Guid classroomGuid)
+        {
+            return _context.Set<UserClassroom>().FirstOrDefault(uc => uc.UserGuid == userGuid && uc.ClassroomGuid == classroomGuid) is null;
+        }
     }
 }

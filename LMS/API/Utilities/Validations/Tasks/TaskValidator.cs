@@ -1,23 +1,21 @@
 ﻿using API.Contracts;
 using API.DTOs.Tasks;
+using API.Repositories;
 using FluentValidation;
 
-namespace API.Utilities.Validations.Tasks
+namespace API.Utilities.Validations.Tasks;
+
+public class TaskValidator : AbstractValidator<TaskDto>
 {
-    public class TaskValidator : AbstractValidator<TaskDto>
+    public TaskValidator()
     {
-        private readonly ITaskRepository _taskRepository;
+        RuleFor(t => t.Attachment)
+            .NotEmpty().WithMessage("Attachment is required");
 
-        public TaskValidator(ITaskRepository taskRepository)
-        {
-            RuleFor(t => t.Attachment)
-                .NotEmpty();
+        RuleFor(t => t.UserGuid)
+            .NotEmpty().WithMessage("User guid is required");
 
-            RuleFor(t => t.UserGuid)
-                .NotEmpty();
-
-            RuleFor(t => t.LessonGuid)
-                .NotEmpty();
-        }
+        RuleFor(t => t.LessonGuid)
+            .NotEmpty().WithMessage("Lesson guid is required");
     }
 }
