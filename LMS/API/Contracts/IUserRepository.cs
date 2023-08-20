@@ -6,5 +6,6 @@ namespace API.Contracts
     {
         User? GetByEmail(string email);
         bool IsNotExist(string value);
+        bool IsDataUnique(string data);
     }
 }
