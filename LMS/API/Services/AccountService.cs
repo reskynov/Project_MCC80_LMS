@@ -80,7 +80,7 @@ namespace API.Services
                 return -4; //Account not Update
             }
 
-            return 3;
+            return 1;
         }
 
         public int ForgotPassword(ForgotPasswordDto forgotPasswordDto)

@@ -1,4 +1,5 @@
-﻿using API.DTOs.Classrooms;
+﻿using API.DTOs.Accounts;
+using API.DTOs.Classrooms;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -149,6 +150,62 @@ namespace API.Controllers
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Success delete data"
+            });
+        }
+
+        [HttpPost("enroll")]
+        public IActionResult EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
+        {
+            var result = _classroomService.EnrollClassroom(enrollClassroomDto);
+
+            if (result is 0)
+            {
+                return NotFound(new ResponseHandler<EnrollClassroomDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
+            }
+
+            if (result is -1)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
+            }
+
+            return Ok(new ResponseHandler<EnrollClassroomDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success enroll to class"
+            });
+        }
+
+        [HttpGet("people")]
+        public IActionResult GetClassroomPeople(Guid guid)
+        {
+            var result = _classroomService.GetClassroomPeoples(guid);
+            if (!result.Any())
+            {
+                return NotFound(new ResponseHandler<ClassroomDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<ClassroomPeopleDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
             });
         }
     }
