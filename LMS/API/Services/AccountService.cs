@@ -15,6 +15,7 @@ namespace API.Services
         private readonly IAccountRepository _accountRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IEmailHandler _emailHandler;
         private readonly ITokenHandler _tokenHandler;
         private readonly LmsDbContext _dbContext;
 
@@ -22,13 +23,106 @@ namespace API.Services
             IAccountRoleRepository accountRoleRepository,
             IUserRepository userRepository,
             ITokenHandler tokenHandler,
+            IEmailHandler emailHandler,
             LmsDbContext bookingDbContext)
         {
             _accountRepository = accountRepository;
             _accountRoleRepository = accountRoleRepository;
             _userRepository = userRepository;
             _tokenHandler = tokenHandler;
+            _emailHandler = emailHandler;
             _dbContext = bookingDbContext;
+        }
+
+        public int ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var getAccount = (from e in _userRepository.GetAll()
+                              join a in _accountRepository.GetAll() on e.Guid equals a.Guid
+                              where e.Email == changePasswordDto.Email
+                              select a).FirstOrDefault();
+
+            if (getAccount is null)
+            {
+                return 0; //account not found
+            }
+
+            var account = new Account
+            {
+                Guid = getAccount.Guid,
+                IsUsed = true,
+                ModifiedDate = DateTime.Now,
+                CreatedDate = getAccount.CreatedDate,
+                OTP = getAccount.OTP,
+                ExpiredDate = getAccount.ExpiredDate,
+                Password = HashingHandler.GenerateHash(changePasswordDto.Password),
+            };
+
+            if (getAccount.OTP != changePasswordDto.OTP)
+            {
+                return -1; //OTP not same
+            }
+
+            if (getAccount.IsUsed == true)
+            {
+                return -2; //OTP already used
+            }
+
+            if (getAccount.ExpiredDate < DateTime.Now)
+            {
+                return -3; // OTP expired
+            }
+
+            _accountRepository.Clear();
+
+            var isUpdated = _accountRepository.Update(account);
+            if (!isUpdated)
+            {
+                return -4; //Account not Update
+            }
+
+            return 1;
+        }
+
+        public int ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            var otp = new Random().Next(111111, 999999);
+            var getAccountDetail = (from e in _userRepository.GetAll()
+                                    join a in _accountRepository.GetAll() on e.Guid equals a.Guid
+                                    where e.Email == forgotPasswordDto.Email
+                                    select a).FirstOrDefault();
+
+            if (getAccountDetail is null)
+            {
+                return 0; // no email found
+            }
+
+            _accountRepository.Clear();
+
+            var isUpdated = _accountRepository.Update(new Account
+            {
+                Guid = getAccountDetail.Guid,
+                Password = getAccountDetail.Password,
+                ExpiredDate = DateTime.Now.AddMinutes(5),
+                OTP = otp,
+                IsUsed = false,
+                CreatedDate = getAccountDetail.CreatedDate,
+                ModifiedDate = getAccountDetail.ModifiedDate
+            });
+
+            if (!isUpdated)
+            {
+                return -1; // error update
+            }
+
+            //sending email to user mail
+            _emailHandler.SendEmail(new EmailMessageDto
+            {
+                ToEmail = forgotPasswordDto.Email,
+                Subject = "Forgot Password",
+                Message = $"Your OTP is {otp}"
+            });
+
+            return 1;
         }
 
         public string Login(LoginDto loginDto)

@@ -1,17 +1,79 @@
 ﻿using API.Contracts;
+using API.DTOs.Accounts;
 using API.DTOs.Classrooms;
+using API.DTOs.UserClassrooms;
+using API.DTOs.Users;
 using API.Models;
 using API.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
 {
     public class ClassroomService
     {
         private readonly IClassroomRepository _classroomRepository;
+        private readonly IUserClassroomRepository _userClassroomRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ClassroomService(IClassroomRepository classroomRepository)
+        public ClassroomService(IClassroomRepository classroomRepository, IUserClassroomRepository userClassroomRepository, IUserRepository userRepository)
         {
             _classroomRepository = classroomRepository;
+            _userClassroomRepository = userClassroomRepository;
+            _userRepository = userRepository;
+        }
+
+        public IEnumerable<ClassroomPeopleDto> GetClassroomPeoples(Guid guid) 
+        {
+            var getClassroomPeople = from c in _classroomRepository.GetAll()
+                                     join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
+                                     join u in _userRepository.GetAll() on uc.UserGuid equals u.Guid
+                                     where c.Guid == guid
+                                     select new ClassroomPeopleDto
+                                     {
+                                         Guid = guid,
+                                         FullName = u.FirstName + " " + u.LastName
+                                     };
+
+            if (getClassroomPeople is null)
+            {
+                return Enumerable.Empty<ClassroomPeopleDto>(); //classroom people not found
+            }
+
+            return getClassroomPeople; // classroom is found;
+
+        }
+
+        public int EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
+        {
+            var getClassroom = (from c in _classroomRepository.GetAll()
+                              where c.Code == enrollClassroomDto.ClasroomCode
+                              select c).SingleOrDefault();
+
+            if (getClassroom is null)
+            {
+                return 0; //classroom not found
+            }
+
+            var userClassroomToCreate = new NewUserClassroomDto {
+                ClassroomGuid = getClassroom.Guid,
+                UserGuid = enrollClassroomDto.UserGuid
+            };
+
+            var valueNotExist =  _userClassroomRepository.IsNotExist(userClassroomToCreate.UserGuid, userClassroomToCreate.ClassroomGuid);
+            if (!valueNotExist)
+            {
+                return -1; //already enrolled
+            }
+
+            var enrollResult = _userClassroomRepository.Create(userClassroomToCreate);
+
+            if(enrollResult is null)
+            {
+                return -2; //error when create
+            }
+
+            return 1;
+
         }
 
         public IEnumerable<ClassroomDto> GetAll()

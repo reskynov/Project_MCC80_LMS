@@ -7,10 +7,12 @@ namespace API.Utilities.Validations.Accounts
     public class RegisterValidator : AbstractValidator<RegisterDto>
     {
         private readonly IUserRepository _userRepository;
-        public RegisterValidator(IUserRepository userRepository)
+        private readonly IRoleRepository _roleRepository;
+        public RegisterValidator(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             //user repository
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
 
             RuleFor(u => u.FirstName)
                           .NotEmpty()
@@ -33,7 +35,8 @@ namespace API.Utilities.Validations.Accounts
             RuleFor(u => u.PhoneNumber)
                 .MaximumLength(20)
                 .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
-                .Must(IsDuplicationValue).WithMessage("Phone number already exist");
+                .Must(IsDuplicationValue).WithMessage("Phone number already exist")
+                .When(u => !string.IsNullOrEmpty(u.PhoneNumber)); 
 
             //Account Data
             RuleFor(pass => pass.Password)
@@ -49,12 +52,18 @@ namespace API.Utilities.Validations.Accounts
                 .WithMessage("Passwords do not match");
 
             RuleFor(r => r.RoleGuid)
-                .NotEmpty();
+                .NotEmpty()
+                .Must(IsExist).WithMessage("Role is not exist");
         }
 
         private bool IsDuplicationValue(string arg)
         {
             return _userRepository.IsNotExist(arg);
+        }
+
+        private bool IsExist(Guid guid)
+        {
+            return _roleRepository.IsExist(guid);
         }
     }
 }
