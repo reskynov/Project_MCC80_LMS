@@ -73,7 +73,7 @@ namespace API.Controllers
                 return StatusCode(500, new ResponseHandler<NewUserDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
-                    Status = HttpStatusCode.OK.ToString(),
+                    Status = HttpStatusCode.InternalServerError.ToString(),
                     Message = "Error retrieve from database"
                 });
             }
@@ -107,7 +107,7 @@ namespace API.Controllers
                 return StatusCode(500, new ResponseHandler<UserDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
-                    Status = HttpStatusCode.OK.ToString(),
+                    Status = HttpStatusCode.InternalServerError.ToString(),
                     Message = "Error retrieve from database"
                 });
             }
@@ -140,7 +140,7 @@ namespace API.Controllers
                 return StatusCode(500, new ResponseHandler<UserDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
-                    Status = HttpStatusCode.OK.ToString(),
+                    Status = HttpStatusCode.InternalServerError.ToString(),
                     Message = "Error retrieve from database"
                 });
             }
