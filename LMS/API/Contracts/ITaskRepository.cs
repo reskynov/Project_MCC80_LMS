@@ -5,5 +5,6 @@ namespace API.Contracts
 {
     public interface ITaskRepository : IGeneralRepository<Task>
     {
+        bool IsNotExist(Guid userGuid, Guid lessonGuid);
     }
 }

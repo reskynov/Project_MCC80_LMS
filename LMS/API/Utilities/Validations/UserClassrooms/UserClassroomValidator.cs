@@ -2,19 +2,20 @@
 using API.DTOs.UserClassrooms;
 using FluentValidation;
 
-namespace API.Utilities.Validations.UserClassrooms
+namespace API.Utilities.Validations.UserClassrooms;
+
+public class UserClassroomValidator : AbstractValidator<UserClassroomDto>
 {
-    public class UserClassroomValidator : AbstractValidator<UserClassroomDto>
+    private readonly IUserClassroomRepository _userClassroomRepository;
+
+    public UserClassroomValidator(IUserClassroomRepository userClassroomRepository)
     {
-        private readonly IUserClassroomRepository _userClassroomRepository;
+        _userClassroomRepository = userClassroomRepository;
 
-        public UserClassroomValidator(IUserClassroomRepository userClassroomRepository)
-        {
-            RuleFor(uc => uc.UserGuid)
-                .NotEmpty();
+        RuleFor(uc => uc.UserGuid)
+            .NotEmpty().WithMessage("User guid is required");
 
-            RuleFor(uc => uc.ClassroomGuid)
-                .NotEmpty();
-        }
+        RuleFor(uc => uc.ClassroomGuid)
+            .NotEmpty().WithMessage("Classroom guid is required");
     }
 }

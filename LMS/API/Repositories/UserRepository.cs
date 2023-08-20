@@ -23,5 +23,22 @@ namespace API.Repositories
                            .SingleOrDefault(e => e.Email.Contains(value)
                                                || e.PhoneNumber.Contains(value)) is null;
         }
+
+        //Check data input is same as existing data
+        public bool IsDataUnique(string data)
+        {
+            var existingUser = _context.Set<User>().SingleOrDefault(u => u.Email == data || u.PhoneNumber == data);
+
+            if (existingUser is null)
+            {
+                return true;
+            }
+
+            else
+            {
+                bool isSameAsExistingData = existingUser.Email == data || existingUser.PhoneNumber == data;
+                return isSameAsExistingData;
+            }
+        }
     }
 }

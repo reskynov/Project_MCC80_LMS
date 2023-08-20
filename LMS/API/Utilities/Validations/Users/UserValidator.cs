@@ -27,18 +27,18 @@ namespace API.Utilities.Validations.Users
                 .NotEmpty().WithMessage("Email is required")
                 .MaximumLength(45).WithMessage("Email more than maximum length")
                 .EmailAddress().WithMessage("Email is not valid")
-                .Must(IsDuplicationValue).WithMessage("Email already exist");
+                .Must(IsDuplicateOrSame).WithMessage("Email already exists");
 
             RuleFor(u => u.PhoneNumber)
                 .MaximumLength(20)
                 .Matches(@"^\+[0-9]").WithMessage("Phone number must start with +")
-                .Must(IsDuplicationValue).WithMessage("Phone number already exist")
-                .When(u => !string.IsNullOrEmpty(u.PhoneNumber)); ;
+                .Must(IsDuplicateOrSame).WithMessage("Email already exists")
+                .When(u => !string.IsNullOrEmpty(u.PhoneNumber));
         }
 
-        private bool IsDuplicationValue(string arg)
+        private bool IsDuplicateOrSame(string arg)
         {
-            return _userRepository.IsNotExist(arg);
+            return _userRepository.IsDataUnique(arg);
         }
     }
 }
