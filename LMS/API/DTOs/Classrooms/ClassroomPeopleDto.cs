@@ -7,6 +7,7 @@ namespace API.DTOs.Classrooms
     {
         public Guid Guid { get; set; }
         public string FullName { get; set; }
+        public string Role { get; set; }
 
     }
 }
