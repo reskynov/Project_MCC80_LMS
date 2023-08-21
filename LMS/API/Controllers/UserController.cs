@@ -82,7 +82,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data",
+                Message = "Success insert data",
                 Data = newUserDto
             });
         }
@@ -150,6 +150,29 @@ namespace API.Controllers
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Success delete data"
+            });
+        }
+
+        [HttpGet("classroom")]
+        public IActionResult GetClassroomByUser(Guid guid)
+        {
+            var result = _userService.GetCLassroomByUser(guid);
+            if (!result.Any())
+            {
+                return NotFound(new ResponseHandler<IEnumerable<ClassroomByUserDto>>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Classroom not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<ClassroomByUserDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
             });
         }
     }

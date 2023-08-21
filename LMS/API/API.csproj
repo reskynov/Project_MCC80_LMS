@@ -28,7 +28,6 @@
     <Folder Include="DTOs\AccountRoles\" />
     <Folder Include="DTOs\Grades\" />
     <Folder Include="DTOs\Lessons\" />
-    <Folder Include="DTOs\Users\" />
     <Folder Include="DTOs\Tasks\" />
     <Folder Include="Utilities\Validations\Grades\" />
     <Folder Include="Utilities\Validations\Lessons\" />

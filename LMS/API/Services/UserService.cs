@@ -7,10 +7,42 @@ namespace API.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IClassroomRepository _classroomRepository;
+        private readonly IUserClassroomRepository _userClassroomRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IAccountRoleRepository _accountRoleRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, 
+            IClassroomRepository classroomRepository, 
+            IUserClassroomRepository userClassroomRepository,
+            IRoleRepository roleRepository,
+            IAccountRoleRepository accountRoleRepository)
         {
             _userRepository = userRepository;
+            _classroomRepository = classroomRepository;
+            _userClassroomRepository = userClassroomRepository;
+            _roleRepository = roleRepository;
+            _accountRoleRepository = accountRoleRepository;
+        }
+
+        public IEnumerable<ClassroomByUserDto> GetCLassroomByUser(Guid guid)
+        {
+            var getClassroomByUser = from c in _classroomRepository.GetAll()
+                                     join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
+                                     join u in _userRepository.GetAll() on uc.UserGuid equals u.Guid
+                                     where u.Guid == guid
+                                     select new ClassroomByUserDto
+                                     {
+                                         ClassroomGuid = c.Guid,
+                                         ClassroomName = c.Name
+                                     };
+
+            if (!getClassroomByUser.Any())
+            {
+                return Enumerable.Empty<ClassroomByUserDto>();
+            }
+
+            return getClassroomByUser;
         }
 
         public IEnumerable<UserDto> GetAll()
