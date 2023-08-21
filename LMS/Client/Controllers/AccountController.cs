@@ -37,5 +37,13 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            // Clear authentication cookies
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
