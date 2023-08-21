@@ -7,5 +7,6 @@ namespace Client.Contracts
     public interface IAccountRepository : IGeneralRepository<Account, Guid>
     {
         Task<ResponseHandler<TokenVM>> Login(LoginVM login);
+        Task<ResponseHandler<RegisterVM>> Register(RegisterVM register);
     }
 }
