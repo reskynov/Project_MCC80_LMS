@@ -33,7 +33,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public ActionResult SignUp()
+        public ActionResult Register()
         {
             return View();
         }
