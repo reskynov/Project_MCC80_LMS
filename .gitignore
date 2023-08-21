@@ -401,3 +401,4 @@ LMS/API/WeatherForecast.cs
 LMS/API/appsettings.json
 LMS/API/appsettings.Development.json
 LMS/API/migrations/*
+LMS/Client/appsettings.json

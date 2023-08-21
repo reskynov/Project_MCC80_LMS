@@ -1,9 +1,11 @@
-﻿using Client.Utilities.Handlers;
+﻿using Client.Models;
+using Client.Utilities.Handlers;
+using Client.ViewModels.Accounts;
 
 namespace Client.Contracts
 {
-    public interface IAccountRepository : IRepository<Account, Guid>
+    public interface IAccountRepository : IGeneralRepository<Account, Guid>
     {
-        Task<ResponseHandler<TokenDto>> Login(LoginDto login);
+        Task<ResponseHandler<TokenVM>> Login(LoginVM login);
     }
 }
