@@ -58,6 +58,12 @@ namespace Client.Controllers
             }
             return RedirectToAction(nameof(Index));
 
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            // Clear authentication cookies
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
