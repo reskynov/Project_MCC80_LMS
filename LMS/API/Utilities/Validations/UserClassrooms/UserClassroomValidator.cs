@@ -13,9 +13,18 @@ public class UserClassroomValidator : AbstractValidator<UserClassroomDto>
         _userClassroomRepository = userClassroomRepository;
 
         RuleFor(uc => uc.UserGuid)
-            .NotEmpty().WithMessage("User guid is required");
+            .NotEmpty().WithMessage("User guid is required")
+            .Must((dto, userGuid) => IsDuplicateOrSame(userGuid, dto.ClassroomGuid))
+            .WithMessage("A UserClassroom with the same UserGuid and ClassroomGuid already exists.");
 
         RuleFor(uc => uc.ClassroomGuid)
-            .NotEmpty().WithMessage("Classroom guid is required");
+            .NotEmpty().WithMessage("Classroom guid is required")
+            .Must((dto, classroomGuid) => IsDuplicateOrSame(dto.UserGuid, classroomGuid))
+            .WithMessage("A UserClassroom with the same UserGuid and ClassroomGuid already exists.");
+    }
+
+    private bool IsDuplicateOrSame(Guid userGuid, Guid classroomGuid)
+    {
+        return _userClassroomRepository.IsDataUnique(userGuid, classroomGuid);
     }
 }

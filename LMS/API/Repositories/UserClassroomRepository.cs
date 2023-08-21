@@ -10,9 +10,24 @@ namespace API.Repositories
         {
         }
 
+
         public bool IsNotExist(Guid userGuid, Guid classroomGuid)
         {
             return _context.Set<UserClassroom>().FirstOrDefault(uc => uc.UserGuid == userGuid && uc.ClassroomGuid == classroomGuid) is null;
+        }
+        public bool IsDataUnique(Guid userGuid, Guid classroomGuid)
+        {
+            var existingData = _context.Set<UserClassroom>().FirstOrDefault(uc => uc.UserGuid == userGuid && uc.ClassroomGuid == classroomGuid);
+
+            if (existingData is null)
+            {
+                return true;
+            }
+
+
+            bool isSameAsExisitingData = existingData.UserGuid == userGuid && existingData.ClassroomGuid == classroomGuid;
+
+            return isSameAsExisitingData;
         }
     }
 }
