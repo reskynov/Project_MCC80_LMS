@@ -1,7 +1,10 @@
-﻿@{
+﻿@model Client.ViewModels.Accounts.RegisterVM
+
+@{
     ViewData["Title"] = "Register";
     Layout = "_LoginLayout";
 }
+
 
 <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); background-position: top;">
     <span class="mask bg-gradient-dark opacity-6"></span>
@@ -27,24 +30,62 @@
                     <h5>Register</h5>
                 </div>
                 <div class="card-body">
-                    <form role="form">
-                        <div class="mb-3">
-                            <input  type="text" class="form-control" placeholder="First Name" aria-label="FirstName">
+                    <form action="/Account/register" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="FirstName" class="control-label">First Name</label>
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name" aria-label="FirstName" required>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Last Name" aria-label="LastName">
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                            <label asp-for="LastName" class="control-label">Last Name</label>
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name" aria-label="LastName">
+                            <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Password" aria-label="Password">
+                            <label asp-for="Gender" class="control-label">Gender</label>
+                            <select asp-for="Gender" class="form-control" required>
+                                <option selected>Select Gender</option>
+                                <option value="0">Female</option>
+                                <option value="1">Male</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="BirthDate" class="control-label">Birth Date</label>
+                            <input asp-for="BirthDate" class="form-control" required/>
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="control-label">Email</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email" aria-label="Email" required>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="control-label">Password</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" aria-label="Password" required>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Password" aria-label="Password" required>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="RoleGuid" class="control-label">Register As</label>
+                            <select asp-for="RoleGuid" class="form-control" required>
+                                <option selected>Select Role</option>
+                                <option value="5eeda544-ee8f-495d-9366-6c04e0904a5c">Teacher</option>
+                                <option value="4016bbf3-5514-4478-97f8-85a3baef09c2">Student</option>
+                            </select>
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                            <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                         </div>
-                        <p class="text-sm mt-3 mb-0">Already have an account? <a href="account/login" class="text-dark font-weight-bolder">Sign in</a></p>
+                        <p class="text-sm mt-3 mb-0">Already have an account? <a href="login" class="text-dark font-weight-bolder">Sign in</a></p>
                     </form>
                 </div>
             </div>
@@ -55,3 +96,7 @@
     <div class="container">
     </div>
 </footer>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
