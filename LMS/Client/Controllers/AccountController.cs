@@ -49,14 +49,13 @@ namespace Client.Controllers
             if (result.Code == 200)
             {
                 TempData["Success"] = $"Data has been Successfully Added! - {result.Message}!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Login));
             }
-            else if (result.Status == "409")
+            else
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

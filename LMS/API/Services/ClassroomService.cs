@@ -118,7 +118,12 @@ namespace API.Services
         public ClassroomDto? Create(NewClassroomDto newClassroomDto)
         {
             var classroomDto = _classroomRepository.Create(newClassroomDto);
-            if (classroomDto is null)
+            var userclassroomDto = _userClassroomRepository.Create(new NewUserClassroomDto
+            {
+                ClassroomGuid = classroomDto.Guid,
+                UserGuid = classroomDto.TeacherGuid
+            });
+            if (classroomDto is null && userclassroomDto is null)
             {
                 return null;
             }
