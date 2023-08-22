@@ -18,7 +18,6 @@ public class DashboardController : Controller
     {
         // Mendapatkan claim yang mengandung GUID pengguna dari token JWT
         var userGuidClaim = User.FindFirst("Guid");
-        Console.WriteLine(userGuidClaim);
 
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
