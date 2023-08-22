@@ -57,7 +57,7 @@ namespace API.Services
         public int EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
         {
             var getClassroom = (from c in _classroomRepository.GetAll()
-                              where c.Code == enrollClassroomDto.ClasroomCode
+                              where c.Code == enrollClassroomDto.ClassroomCode
                               select c).SingleOrDefault();
 
             if (getClassroom is null)

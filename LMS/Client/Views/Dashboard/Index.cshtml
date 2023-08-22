@@ -5,25 +5,25 @@
     Layout = "_DashboardLayout";
 }
 
-<h1>Classroom</h1>
+<h1 style="color:white;">Classroom</h1>
 
 @if (User.IsInRole("Student"))
 {
     <p>
-        <a class="btn btn-secondary" asp-action="">Enroll Class</a>
+        <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#enrollModal">Enroll Class</a>
     </p>
     <div class="container ms-0 me-0 ps-0">
         <div class="row row-cols-auto">
             @foreach (var item in Model)
             {
                 <div class="col">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 18rem; outline-style: solid; outline-color:darkgrey; outline-width: 0.5px;">
                         <img src="https://img.freepik.com/free-vector/students-watching-webinar-computer-studying-online_74855-15522.jpg?w=1060&t=st=1692673590~exp=1692674190~hmac=4abf566d1de74fbf791ca6f1f516091e2c076b20f1c7636b8a000cb24ab742e6" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.ClassroomName)</h5>
                             <p class="card-text">@Html.DisplayFor(modelItem => item.TeacherName)</p>
                             <a href="#" class="btn btn-primary">View Class </a>
-                            <a href="#" class="btn btn-secondary" style="position: absolute; top: 10px; right: 10px;"><i class="fa-solid fa-trash"></i></a>
+                            <a href="#" style="position: absolute; top: 10px; right: 15px;"><i class="fa-solid fa-trash" style="color: #4e617b;"></i></a>
                         </div>
                     </div>
                 </div>
@@ -32,4 +32,27 @@
     </div>
 }
 
-
+<div class="modal" tabindex="-1" id="enrollModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3" id="user-guid">
+                    <label for="userGuid" class="form-label"></label>
+                    <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
+                </div>
+                <div class="mb-3" id="classroom-code">
+                    <label for="classroomCode" class="form-label">Enroll Code</label>
+                    <input type="text" class="form-control" id="classroomCode">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,6 @@
     public class EnrollClassroomDto
     {
         public Guid UserGuid { get; set; }
-        public string ClasroomCode { get; set; }
+        public string ClassroomCode { get; set; }
     }
 }
