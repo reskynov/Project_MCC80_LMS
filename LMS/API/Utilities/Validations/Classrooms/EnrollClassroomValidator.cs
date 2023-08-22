@@ -10,7 +10,7 @@ namespace API.Utilities.Validations.Classrooms
             RuleFor(enroll => enroll.UserGuid)
                 .NotEmpty();
 
-            RuleFor(enroll => enroll.ClasroomCode)
+            RuleFor(enroll => enroll.ClassroomCode)
                 .NotEmpty()
                 .MaximumLength(10).WithMessage("Class code more than maximum length");
         }
