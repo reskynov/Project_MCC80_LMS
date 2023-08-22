@@ -27,7 +27,7 @@ namespace Client.Controllers
             if (result.Code == 200)
             {
                 HttpContext.Session.SetString("JWToken", result.Data.Token);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
