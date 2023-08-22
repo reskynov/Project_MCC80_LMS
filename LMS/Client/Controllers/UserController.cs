@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
-    public class TeacherController : Controller
+    public class UserController : Controller
     {
         private readonly IUserRepository userRepository;
 
-        public TeacherController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
         }
