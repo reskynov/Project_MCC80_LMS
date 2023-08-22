@@ -20,6 +20,7 @@ namespace API.Models
         public string? PhoneNumber { get; set; }
 
         //Cardinality
+        public ICollection<Classroom>? Classrooms { get; set; }
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
         public ICollection<Task>? Tasks { get; set; }
         public ICollection<Grade>? Grades { get; set; }

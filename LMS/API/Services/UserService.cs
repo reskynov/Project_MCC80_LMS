@@ -30,11 +30,13 @@ namespace API.Services
             var getClassroomByUser = from c in _classroomRepository.GetAll()
                                      join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
                                      join u in _userRepository.GetAll() on uc.UserGuid equals u.Guid
+                                     join t in _userRepository.GetAll() on c.TeacherGuid equals t.Guid
                                      where u.Guid == guid
                                      select new ClassroomByUserDto
                                      {
                                          ClassroomGuid = c.Guid,
-                                         ClassroomName = c.Name
+                                         ClassroomName = c.Name,
+                                         TeacherName = t.FirstName + " "+t.LastName
                                      };
 
             if (!getClassroomByUser.Any())
