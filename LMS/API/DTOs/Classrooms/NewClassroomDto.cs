@@ -7,6 +7,7 @@ public class NewClassroomDto
 {
     public string Name { get; set; }
     public string? Description { get; set; }
+    public Guid TeacherGuid { get; set; }
 
     public static implicit operator Classroom(NewClassroomDto newClassroomDto)
     {
@@ -17,7 +18,8 @@ public class NewClassroomDto
             Name = newClassroomDto.Name,
             Description = newClassroomDto.Description,
             CreatedDate = DateTime.Now,
-            ModifiedDate = DateTime.Now
+            ModifiedDate = DateTime.Now,
+            TeacherGuid = newClassroomDto.TeacherGuid
         };
     }
 
