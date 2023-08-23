@@ -1,4 +1,4 @@
-html {
+b html {
   font-size: 14px;
 }
 
@@ -19,4 +19,21 @@ body {
 
 .fa-trash:hover {
     color: #FF6969 !important;
+}
+
+div.dt-buttons{
+    margin-left: 50px;
+}
+
+div#myTable_filter.dataTables_filter{
+    margin-right:50px;
+}
+
+div#myTableClassroom_filter.dataTables_filter {
+    margin-right: 50px;
+}
+
+td{
+    font-size:14px;
+    text-align:center;
 }

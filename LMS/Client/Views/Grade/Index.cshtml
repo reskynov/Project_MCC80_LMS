@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Client.Models.Grade>
+@*@using System.Net.Http*@
+@{
+    //ViewData["Title"] = "Index";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Grade table</h6>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modalGrade"><i class="fas fa-plus"></i></button>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table id="myTableGrade" class="table align-items-center mb-0 table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nilai</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">User Guid</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Task Guid</th>
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalGrade">
+    <div class="modal-dialog  modal-dialog-centered ms-auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Create Grade</h5>
+                <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <div class="col">
+                    <form id="addGradeForm">
+                        <div class="mb-3">
+                            <label for="valueGrade" class="form-label">Nilai</label>
+                            <input type="number" class="form-control" id="valueGrade" name="valueGrade" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userGuid" class="form-label">User Guid</label>
+                            <input type="text" class="form-control" id="userGuidGrade" name="userGuidGrade" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskGuid" class="form-label">Task Guid</label>
+                            <input type="text" class="form-control" id="taskGuidGrade" name="taskGuidGrade" required>
+                        </div>
+                        <!-- Add other input fields as needed -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-header">
+                <button onclick="InsertGrade()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalUpdate">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Update Grade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateGradeForm">
+                    <div class="mb-3">
+                        <label for="guidGrade" class="form-label">Guid</label>
+                        <input type="text" class="form-control" id="guidGrade" name="guidGrade" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="nameGrade" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descriptionGrade" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="descriptionGrade" name="descriptionGrade" required>
+                    </div>
+                    <!-- Add other input fields as needed -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="UpdateGrade()" type="button" id="btnSave" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData["Success"]');
+    </script>
+    <script src="~/js/grade.js" asp-append-version="true"></script>
+}
+@section CSS{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+}
