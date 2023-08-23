@@ -25,7 +25,7 @@
                     <h5>Register</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/Account/register" method="post">
+                    <form action="/account/register" method="post">
                         <div class="form-group mb-3">
                             <label asp-for="FirstName" class="control-label">First Name</label>
                             <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name" aria-label="FirstName" required>
@@ -39,7 +39,7 @@
                         <div class="mb-3">
                             <label asp-for="Gender" class="control-label">Gender</label>
                             <select asp-for="Gender" class="form-control" required>
-                                <option selected>Select Gender</option>
+                                <option disabled value="" selected>Select Gender</option>
                                 <option value="0">Female</option>
                                 <option value="1">Male</option>
                             </select>
@@ -72,7 +72,7 @@
                         <div class="mb-3">
                             <label asp-for="RoleGuid" class="control-label">Register As</label>
                             <select asp-for="RoleGuid" class="form-control" required>
-                                <option selected>Select Role</option>
+                                <option disabled value="" selected>Select Role</option>
                                 <option value="5eeda544-ee8f-495d-9366-6c04e0904a5c">Teacher</option>
                                 <option value="4016bbf3-5514-4478-97f8-85a3baef09c2">Student</option>
                             </select>

@@ -31,6 +31,7 @@ namespace Client.Controllers
             }
             else
             {
+                TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
@@ -48,11 +49,12 @@ namespace Client.Controllers
             var result = await repository.Register(registerVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"Data has been Successfully Added! - {result.Message}!";
-                return RedirectToAction(nameof(Login));
+                TempData["Success"] = $"{result.Message}";
+                return View();
             }
             else
             {
+                TempData["Failed"] = $"{result.Message}. Check your input data and try again";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
@@ -78,11 +80,12 @@ namespace Client.Controllers
             var result = await repository.ForgotPassword(forgotVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"OTP has been sent - {result.Message}!";
-                return RedirectToAction(nameof(Login));
+                TempData["Success"] = $"{result.Message}";
+                return View();
             }
-            else
+            else 
             {
+                TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
@@ -100,11 +103,12 @@ namespace Client.Controllers
             var result = await repository.ChangePassword(changeVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"OTP has been sent - {result.Message}!";
-                return RedirectToAction(nameof(Login));
+                TempData["Success"] = $"{result.Message}";
+                return View();
             }
             else
             {
+                TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }

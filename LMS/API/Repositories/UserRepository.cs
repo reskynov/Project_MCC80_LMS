@@ -20,8 +20,8 @@ namespace API.Repositories
         {
             //return true if null
             return _context.Set<User>()
-                           .SingleOrDefault(e => e.Email.Contains(value)
-                                               || e.PhoneNumber.Contains(value)) is null;
+                           .SingleOrDefault(e => e.Email.Equals(value)
+                                               || e.PhoneNumber.Equals(value)) is null;
         }
 
         //Check data input is same as existing data
