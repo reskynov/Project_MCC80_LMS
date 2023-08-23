@@ -23,7 +23,12 @@
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.ClassroomName)</h5>
                             <p class="card-text">@Html.DisplayFor(modelItem => item.TeacherName)</p>
                             <a href="#" class="btn btn-primary">View Class </a>
-                            <a href="#" style="position: absolute; top: 10px; right: 15px;"><i class="fa-solid fa-trash" style="color: #4e617b;"></i></a>
+                            <form asp-action="Unenroll" id="UnenrollForm">
+                                <input type="hidden" name="userClassroomGuid" value="@item.UserClassroomGuid" />
+                                <button type="button" style="position: absolute; top: 10px; right: 15px; background: none; border: none;" onclick="Unenroll()">
+                                    <i class="fa-solid fa-trash" style="color: #4e617b;"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -32,15 +37,17 @@
     </div>
 }
 
+
+<!-- Modal Enroll -->
 <div class="modal" tabindex="-1" id="enrollModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Title</h5>
+                <h5 class="modal-title">Enroll in a Class</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3" id="user-guid">
+                <div class="mb-3" id="user-guid" style="display: none;">
                     <label for="userGuid" class="form-label"></label>
                     <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
                 </div>
