@@ -175,11 +175,21 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
-                    Message = "User has been enrolled to class"
+                    Message = "Classroom code already expired"
                 });
             }
 
             if (result is -2)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "User has been enrolled to class"
+                });
+            }
+
+            if (result is -3)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
                 {
