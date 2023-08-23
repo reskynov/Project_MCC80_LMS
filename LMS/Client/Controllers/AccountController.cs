@@ -27,7 +27,7 @@ namespace Client.Controllers
             if (result.Code == 200)
             {
                 HttpContext.Session.SetString("JWToken", result.Data.Token);
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "dashboard");
             }
             else
             {
@@ -63,7 +63,29 @@ namespace Client.Controllers
         {
             // Clear authentication cookies
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "home");
+        }
+
+        [HttpGet("/account/forgot-password")]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("/account/forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotVM)
+        {
+            var result = await repository.ForgotPassword(forgotVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"OTP has been sent - {result.Message}!";
+                return RedirectToAction(nameof(Login));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
         }
     }
 }
