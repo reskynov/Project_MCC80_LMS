@@ -44,5 +44,48 @@ function Enroll() {
             text: error.responseJSON.message
         })    
     })
-
 }
+
+async function Unenroll() {
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+        const form = document.getElementById("UnenrollForm");
+        await Swal.fire({
+            icon: 'success',
+            title: 'You have successfully unenrolled from the class.',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        // Menunggu pesan Swal selesai ditampilkan, kemudian submit formulir
+        setTimeout(() => {
+            form.submit();
+        }, 1500); // Tunggu selama 1,5 detik sebelum pengalihan halaman
+    }
+}
+
+
+//function Unenroll() {
+//    Swal.fire({
+//        title: 'Are you sure?',
+//        text: "You won't be able to revert this!",
+//        icon: 'warning',
+//        showCancelButton: true,
+//        confirmButtonColor: '#3085d6',
+//        cancelButtonColor: '#d33',
+//        confirmButtonText: 'Yes, delete it!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            document.getElementById("UnenrollForm").submit(); // Submit the form
+//        }
+//    })
+//}
