@@ -7,6 +7,7 @@ public class NewLessonDto
     public string Name { get; set; }
     public string? Description { get; set; }
     public string? SubjectAttachment { get; set; }
+    public bool IsTask { get; set; }
     public Guid ClassroomGuid { get; set; }
 
     public static implicit operator Lesson(NewLessonDto newLessonDto)
@@ -17,6 +18,7 @@ public class NewLessonDto
             Name = newLessonDto.Name,
             Description = newLessonDto.Description,
             SubjectAttachment = newLessonDto.SubjectAttachment,
+            IsTask = newLessonDto.IsTask,
             ClassroomGuid = newLessonDto.ClassroomGuid,
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now
@@ -30,6 +32,7 @@ public class NewLessonDto
             Name = lesson.Name,
             Description = lesson.Description,
             SubjectAttachment = lesson.SubjectAttachment,
+            IsTask = lesson.IsTask,
             ClassroomGuid = lesson.ClassroomGuid
         };
     }

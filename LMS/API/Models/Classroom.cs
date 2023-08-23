@@ -11,6 +11,8 @@ namespace API.Models
         public string Name { get; set; }
         [Column("description", TypeName = "nvarchar(max)")]
         public string? Description { get; set; }
+        [Column("expired_date")]
+        public DateTime ExpiredDate { get; set; }
         [Column("teacher_guid")]
         public Guid TeacherGuid { get; set; }
 
