@@ -7,6 +7,7 @@ public class NewClassroomDto
 {
     public string Name { get; set; }
     public string? Description { get; set; }
+    public DateTime ExpiredDate { get; set; }
     public Guid TeacherGuid { get; set; }
 
     public static implicit operator Classroom(NewClassroomDto newClassroomDto)
@@ -17,6 +18,7 @@ public class NewClassroomDto
             Code = GenerateHandler.ClassCode(),
             Name = newClassroomDto.Name,
             Description = newClassroomDto.Description,
+            ExpiredDate = DateTime.Now.AddDays(1),
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now,
             TeacherGuid = newClassroomDto.TeacherGuid
@@ -28,7 +30,8 @@ public class NewClassroomDto
         return new NewClassroomDto
         {
             Name = classroom.Name,
-            Description = classroom.Description
+            Description = classroom.Description,
+            ExpiredDate = classroom.ExpiredDate
         };
     }
 }

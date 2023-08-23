@@ -7,6 +7,8 @@ namespace API.Models
     {
         [Column("attachment", TypeName = "nvarchar(max)")]
         public string Attachment { get; set; }
+        [Column("deadline_date")]
+        public DateTime? DeadlineDate { get; set; }
         [Column("user_guid")]
         public Guid UserGuid { get; set; }
         [Column("lesson_guid")]
