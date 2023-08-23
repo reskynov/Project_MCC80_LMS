@@ -9,9 +9,11 @@ namespace Client.Controllers;
 public class DashboardController : Controller
 {
     private readonly IUserRepository _userRepository;
-    public DashboardController(IUserRepository userRepository)
+    private readonly IUserClassroomRepository _userClassroomRepository;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository)
     {
         _userRepository = userRepository;
+        _userClassroomRepository = userClassroomRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -38,5 +40,20 @@ public class DashboardController : Controller
         {
             return RedirectToAction("Index", "Home");
         }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Unenroll(Guid userClassroomGuid)
+    {
+        var result = await _userClassroomRepository.Delete(userClassroomGuid);
+        if (result.Code == 200)
+        {
+            TempData["Success"] = "You have successfully unenrolled from the class.";
+        }
+        else
+        {
+            TempData["Error"] = "Failed to unenroll from the class. Please try again later.";
+        }
+        return RedirectToAction(nameof(Index));
     }
 }
