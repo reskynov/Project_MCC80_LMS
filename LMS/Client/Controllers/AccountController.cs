@@ -87,5 +87,27 @@ namespace Client.Controllers
                 return View();
             }
         }
+
+        [HttpGet("/account/change-password")]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost("/account/change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM changeVM)
+        {
+            var result = await repository.ChangePassword(changeVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"OTP has been sent - {result.Message}!";
+                return RedirectToAction(nameof(Login));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
     }
 }
