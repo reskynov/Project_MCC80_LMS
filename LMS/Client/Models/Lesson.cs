@@ -11,6 +11,8 @@ namespace Client.Models
         public string? Description { get; set; }
         [Column("subject_attachment", TypeName = "nvarchar(max)")]
         public string? SubjectAttachment { get; set; }
+        [Column("is_task")]
+        public bool IsTask { get; set; }
         [Column("classroom_guid")]
         public Guid ClassroomGuid { get; set; }
 

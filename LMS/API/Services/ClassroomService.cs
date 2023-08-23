@@ -109,6 +109,11 @@ namespace API.Services
                 return 0; //classroom not found
             }
 
+            if (DateTime.Now > getClassroom.ExpiredDate)
+            {
+                return -1; //classroom code already expired
+            }
+
             var userClassroomToCreate = new NewUserClassroomDto {
                 ClassroomGuid = getClassroom.Guid,
                 UserGuid = enrollClassroomDto.UserGuid
@@ -117,14 +122,14 @@ namespace API.Services
             var valueNotExist =  _userClassroomRepository.IsNotExist(userClassroomToCreate.UserGuid, userClassroomToCreate.ClassroomGuid);
             if (!valueNotExist)
             {
-                return -1; //already enrolled
+                return -2; //already enrolled
             }
 
             var enrollResult = _userClassroomRepository.Create(userClassroomToCreate);
 
             if(enrollResult is null)
             {
-                return -2; //error when create
+                return -3; //error when create
             }
 
             return 1;
