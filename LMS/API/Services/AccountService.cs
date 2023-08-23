@@ -119,7 +119,13 @@ namespace API.Services
             {
                 ToEmail = forgotPasswordDto.Email,
                 Subject = "Forgot Password",
-                Message = $"Your OTP is {otp}"
+                Message = $"Your OTP is {otp}." +
+                $"<br>" +
+                $"<br>" +
+                $"Please click the link below to change your passsword" +
+                $"<br>" +
+                $"<a href='https://localhost:7059/account/change-password'>click here</a>"
+
             });
 
             return 1;

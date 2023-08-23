@@ -20,21 +20,21 @@ namespace Client.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/Unauthorized")]
+        [HttpGet("/unauthorized")]
         public IActionResult Unauthorized()
         {
             return View("401");
         }
 
         [AllowAnonymous]
-        [HttpGet("/Forbidden")]
+        [HttpGet("/forbidden")]
         public IActionResult Forbidden()
         {
             return View("403");
         }
 
         [AllowAnonymous]
-        [HttpGet("/NotFound")]
+        [HttpGet("/not-found")]
         public IActionResult NotFound()
         {
             return View("404");

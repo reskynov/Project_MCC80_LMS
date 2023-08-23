@@ -36,7 +36,9 @@ namespace API.Services
                                      {
                                          ClassroomGuid = c.Guid,
                                          ClassroomName = c.Name,
-                                         TeacherName = t.FirstName + " "+t.LastName
+                                         TeacherName = t.FirstName + " "+t.LastName,
+                                         UserClassroomGuid = uc.Guid
+                                         
                                      };
 
             if (!getClassroomByUser.Any())
