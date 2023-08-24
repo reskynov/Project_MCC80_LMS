@@ -63,6 +63,7 @@ namespace API.Services
                                          LessonGuid = l.Guid,
                                          Name = l.Name,
                                          Description = l.Description,
+                                         isTask = l.IsTask,
                                          CreatedDate = l.CreatedDate,
                                          SubjectAttachment = l.SubjectAttachment
                                      };

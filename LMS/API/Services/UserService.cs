@@ -36,9 +36,9 @@ namespace API.Services
                                      {
                                          ClassroomGuid = c.Guid,
                                          ClassroomName = c.Name,
-                                         TeacherName = t.FirstName + " "+t.LastName,
-                                         UserClassroomGuid = uc.Guid
-                                         
+                                         TeacherName = t.FirstName + " " + t.LastName,
+                                         UserClassroomGuid = uc.Guid,
+                                         StudentCount = _userClassroomRepository.GetAll().Where(uc => uc.ClassroomGuid == c.Guid && uc.UserGuid != guid).Count()
                                      };
 
             if (!getClassroomByUser.Any())
