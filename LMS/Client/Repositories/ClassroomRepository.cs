@@ -23,4 +23,15 @@ public class ClassroomRepository : GeneralRepository<Classroom, Guid>, IClassroo
 
         return lessonByClassroom;
     }
+
+    public async Task<ResponseHandler<IEnumerable<ClassroomPeopleVM>>> GetPeople(Guid guid)
+    {
+        ResponseHandler<IEnumerable<ClassroomPeopleVM>> student = null;
+        using (var response = await httpClient.GetAsync(request + "people?guid=" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            student = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<ClassroomPeopleVM>>>(apiResponse);
+        }
+        return student;
+    }
 }
