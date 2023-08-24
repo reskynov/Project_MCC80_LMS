@@ -35,34 +35,33 @@
             }
         </div>
     </div>
-}
 
-<!-- Modal Enroll -->
-<div class="modal" tabindex="-1" id="enrollModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Enroll in a Class</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3" id="user-guid" style="display: none;">
-                    <label for="userGuid" class="form-label"></label>
-                    <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
+    <div class="modal" tabindex="-1" id="enrollModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enroll in a Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3" id="user-guid">
+                    <div class="mb-3" id="user-guid" style="display: none;">
                         <label for="userGuid" class="form-label"></label>
                         <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
                     </div>
-                    <div class="mb-3" id="classroom-code">
-                        <label for="classroomCode" class="form-label">Enroll Code</label>
-                        <input type="text" class="form-control" id="classroomCode">
+                    <div class="modal-body">
+                        <div class="mb-3" id="user-guid">
+                            <label for="userGuid" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
+                        </div>
+                        <div class="mb-3" id="classroom-code">
+                            <label for="classroomCode" class="form-label">Enroll Code</label>
+                            <input type="text" class="form-control" id="classroomCode">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,7 +77,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i></button>
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i>Add Classroom</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -87,7 +86,7 @@
                                     <tr>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom Name</th>
-                                        <th class="text-secondary opacity-7"></th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Student Count</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
@@ -105,10 +104,10 @@
                                                 @Html.DisplayFor(modelItem => item.ClassroomName)
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalDetailStudent"><i class="fa-solid fa-eye"></i>Student</button>
+
                                             </td>
                                             <td>
-                                                <button onclick="ShowDetailLessonClassroom('${row.url}')" data-bs-toggle="modal" data-bs-target="#modalDetailLesson" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</button> |
+                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
                                                 <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
                                                 <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
                                                @* <form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
@@ -199,6 +198,9 @@
     </div>
 
     <script src="~/js/classroom.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
 }
 
 
