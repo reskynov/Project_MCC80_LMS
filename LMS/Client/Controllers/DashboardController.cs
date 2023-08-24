@@ -8,7 +8,7 @@ using System.Diagnostics.Contracts;
 
 namespace Client.Controllers;
 
-[Authorize]
+//[Authorize]
 public class DashboardController : Controller
 {
     private readonly IUserRepository _userRepository;
@@ -49,6 +49,20 @@ public class DashboardController : Controller
         }
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _classroomRepository.Delete(guid);
+        if (result.Status == "200")
+        {
+            TempData["Success"] = "Data Berhasil Dihapus";
+        }
+        else
+        {
+            TempData["Error"] = "Gagal Menghapus Data";
+        }
+        return RedirectToAction(nameof(Index));
+    }
     [HttpPost]
     public async Task<IActionResult> Unenroll(Guid userClassroomGuid)
     {
