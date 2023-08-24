@@ -35,8 +35,6 @@
             }
         </div>
     </div>
-}
-
 
 <!-- Modal Enroll -->
 <div class="modal" tabindex="-1" id="enrollModal">
@@ -51,15 +49,155 @@
                     <label for="userGuid" class="form-label"></label>
                     <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
                 </div>
-                <div class="mb-3" id="classroom-code">
-                    <label for="classroomCode" class="form-label">Enroll Code</label>
-                    <input type="text" class="form-control" id="classroomCode">
+                <div class="modal-body">
+                    <div class="mb-3" id="user-guid">
+                        <label for="userGuid" class="form-label"></label>
+                        <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
+                    </div>
+                    <div class="mb-3" id="classroom-code">
+                        <label for="classroomCode" class="form-label">Enroll Code</label>
+                        <input type="text" class="form-control" id="classroomCode">
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <script src="~/js/enroll.js" asp-append-version="true"></script>
+}
+
+@if (User.IsInRole("Teacher"))
+{
+    <div class="container ms-0 me-0 ps-0">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="myTableClassroom" class="table align-items-center mb-0 table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom Name</th>
+                                        <th class="text-secondary opacity-7"></th>
+                                        <th class="text-secondary opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(i++)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ClassroomName)
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalDetailStudent"><i class="fa-solid fa-eye"></i>Student</button>
+                                            </td>
+                                            <td>
+                                                <button onclick="ShowDetailLessonClassroom('${row.url}')" data-bs-toggle="modal" data-bs-target="#modalDetailLesson" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</button> |
+                                                <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
+                                                <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                                               @* <form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
+                                                    <input type="hidden" value="@item.ClassroomGuid" name="guid" />
+                                                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
+                                                </form>*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalClassroom">
+        <div class="modal-dialog  modal-dialog-centered ms-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Create Classroom</h5>
+                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col">
+                        <form id="addClassroomForm">
+                            <div class="mb-3">
+                                <label for="nameClassroom" class="form-label">Classroom Name</label>
+                                <input type="text" class="form-control" id="nameClassroom" name="NameClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descriptionClassroom" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="descriptionClassroom" name="descriptionClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="teacherGuidClassroom" name="teacherGuidClassroom" value="@User.FindFirst("Guid").Value" readonly>
+                            </div>
+                            <!-- Add other input fields as needed -->
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <button onclick="InsertClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalUpdate">
+        <div class="modal-dialog  modal-dialog-centered ms-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Update Classroom</h5>
+                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col">
+                        <form id="addClassroomForm">
+
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="guidUpdateClassroom" name="guidClassroom" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="codeUpdateClassroom" name="codeUpdateClassroom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nameClassroom" class="form-label">Classroom Name</label>
+                                <input type="text" class="form-control" id="nameUpdateClassroom" name="NameClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descriptionClassroom" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="descriptionUpdateClassroom" name="descriptionClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="teacherGuidUpdateClassroom" name="teacherGuidUpdateClassroom">
+                            </div>
+                            <!-- Add other input fields as needed -->
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <button onclick="UpdateClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
+}
+
+
