@@ -5,8 +5,6 @@ namespace API.Models
     [Table("tb_m_tasks")]
     public class Task : BaseEntity
     {
-        [Column("attachment", TypeName = "nvarchar(max)")]
-        public string Attachment { get; set; }
         [Column("deadline_date")]
         public DateTime? DeadlineDate { get; set; }
         [Column("user_guid")]
@@ -15,7 +13,7 @@ namespace API.Models
         public Guid LessonGuid { get; set; }
 
         //Cardinality
-        public ICollection<Grade>? Grades { get; set; }
+        public ICollection<UserTask>? Grades { get; set; }
         public Lesson? Lesson { get; set; }
         public User? User { get; set; }
     }

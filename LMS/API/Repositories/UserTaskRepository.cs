@@ -4,21 +4,21 @@ using API.Models;
 
 namespace API.Repositories
 {
-    public class GradeRepository : GenericRepository<Grade>, IGradeRepository
+    public class UserTaskRepository : GenericRepository<UserTask>, IUserTaskRepository
     {
-        public GradeRepository(LmsDbContext context) : base(context)
+        public UserTaskRepository(LmsDbContext context) : base(context)
         {
         }
 
 
         public bool IsNotExist(Guid userGuid, Guid taskGuid)
         {
-            return _context.Set<Grade>()
+            return _context.Set<UserTask>()
                 .FirstOrDefault(g => g.UserGuid == userGuid && g.TaskGuid == taskGuid) is null;
         }
         public bool IsDataUnique(Guid userGuid, Guid taskGuid)
         {
-            var existingData = _context.Set<Grade>()
+            var existingData = _context.Set<UserTask>()
                 .FirstOrDefault(g => g.UserGuid == userGuid && g.TaskGuid == taskGuid);
 
             if (existingData is null)

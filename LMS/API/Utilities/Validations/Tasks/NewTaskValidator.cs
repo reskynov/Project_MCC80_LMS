@@ -12,9 +12,6 @@ public class NewTaskValidator : AbstractValidator<NewTaskDto>
     {
         _taskRepository = taskRepository;
 
-        RuleFor(t => t.Attachment)
-            .NotEmpty().WithMessage("Attachment is required");
-
         RuleFor(t => t.UserGuid)
             .NotEmpty().WithMessage("User guid is required")
             .Must((dto, userGuid) => IsDuplicateValue(userGuid, dto.LessonGuid))

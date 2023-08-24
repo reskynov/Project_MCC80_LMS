@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Models
+namespace Client.Models
 {
     [Table("tb_tr_grades")]
-    public class Grade : BaseEntity
+    public class UserTask : BaseEntity
     {
+        [Column("attachment", TypeName = "nvarchar(max)")]
+        public string Attachment { get; set; }
         [Column("value")]
-        public int Value { get; set; }
+        public int Grade { get; set; }
         [Column("user_guid")]
         public Guid UserGuid { get; set; }
         [Column("task_guid")]

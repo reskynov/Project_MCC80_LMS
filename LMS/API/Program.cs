@@ -25,7 +25,7 @@ builder.Services.AddDbContext<LmsDbContext>(option => option.UseSqlServer(connec
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
-builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -36,7 +36,7 @@ builder.Services.AddScoped<IUserClassroomRepository, UserClassroomRepository>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRoleService>();
 builder.Services.AddScoped<ClassroomService>();
-builder.Services.AddScoped<GradeService>();
+builder.Services.AddScoped<UserTaskService>();
 builder.Services.AddScoped<LessonService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<TaskService>();

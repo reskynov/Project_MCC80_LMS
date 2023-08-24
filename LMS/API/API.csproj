@@ -26,10 +26,8 @@
 
   <ItemGroup>
     <Folder Include="DTOs\AccountRoles\" />
-    <Folder Include="DTOs\Grades\" />
     <Folder Include="DTOs\Lessons\" />
     <Folder Include="DTOs\Tasks\" />
-    <Folder Include="Utilities\Validations\Grades\" />
     <Folder Include="Utilities\Validations\Lessons\" />
     <Folder Include="Utilities\Validations\UserClassrooms\" />
     <Folder Include="Utilities\Validations\Users\" />

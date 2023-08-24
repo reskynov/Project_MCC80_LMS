@@ -6,7 +6,6 @@ namespace API.DTOs.Tasks
     public class TaskDto
     {
         public Guid Guid { get; set; }
-        public string Attachment { get; set; }
         public DateTime? DeadlineDate { get; set; }
         public Guid UserGuid { get; set; }
         public Guid LessonGuid { get; set; }
@@ -16,7 +15,6 @@ namespace API.DTOs.Tasks
             return new Task
             {
                 Guid = taskDto.Guid,
-                Attachment = taskDto.Attachment,
                 DeadlineDate = taskDto.DeadlineDate,
                 UserGuid = taskDto.UserGuid,
                 LessonGuid = taskDto.LessonGuid,
@@ -29,7 +27,6 @@ namespace API.DTOs.Tasks
             return new TaskDto
             {
                 Guid = task.Guid,
-                Attachment = task.Attachment,
                 DeadlineDate = task.DeadlineDate,
                 UserGuid = task.UserGuid,
                 LessonGuid = task.LessonGuid

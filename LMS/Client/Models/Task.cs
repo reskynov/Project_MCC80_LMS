@@ -15,7 +15,7 @@ namespace Client.Models
         public Guid LessonGuid { get; set; }
 
         //Cardinality
-        public ICollection<Grade>? Grades { get; set; }
+        public ICollection<UserTask>? UserTasks { get; set; }
         public Lesson? Lesson { get; set; }
         public User? User { get; set; }
     }
