@@ -1,5 +1,4 @@
-﻿using API.DTOs.Grades;
-using API.DTOs.Lessons;
+﻿using API.DTOs.Lessons;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;

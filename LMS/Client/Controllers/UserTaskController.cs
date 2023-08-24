@@ -1,29 +1,29 @@
 ﻿using Client.Contracts;
 using Client.Models;
-using Client.ViewModels.Grades;
+using Client.ViewModels.UserTasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
-    public class GradeController : Controller
+    public class UserTaskController : Controller
     {
-        private readonly IGradeRepository gradeRepository;
+        private readonly IUserTaskRepository _userTaskRepository;
 
-        public GradeController(IGradeRepository gradeRepository)
+        public UserTaskController(IUserTaskRepository userTaskRepository)
         {
-            this.gradeRepository = gradeRepository;
+            _userTaskRepository = userTaskRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await gradeRepository.GetAll();
-            var ListGrade = new List<Grade>();
+            var result = await _userTaskRepository.GetAll();
+            var ListUserTask = new List<UserTask>();
 
             if (result.Data != null)
             {
-                ListGrade = result.Data.ToList();
+                ListUserTask = result.Data.ToList();
             }
-            return View(ListGrade);
+            return View(ListUserTask);
         }
 
         [HttpGet]
@@ -33,10 +33,10 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(NewGradeVM newGradeVM)
+        public async Task<IActionResult> Create(NewUserTaskVM newUserTaskVM)
         {
 
-            var result = await gradeRepository.Post(newGradeVM);
+            var result = await _userTaskRepository.Post(newUserTaskVM);
             if (result.Status == "200")
             {
                 TempData["Success"] = "Data berhasil masuk";
@@ -54,7 +54,7 @@ namespace Client.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Guid guid)
         {
-            var result = await gradeRepository.Delete(guid);
+            var result = await _userTaskRepository.Delete(guid);
             if (result.Status == "200")
             {
                 TempData["Success"] = "Data Berhasil Dihapus";
@@ -69,20 +69,20 @@ namespace Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var result = await gradeRepository.Get(id);
-            var ListGrade = new Grade();
+            var result = await _userTaskRepository.Get(id);
+            var ListUserTask = new UserTask();
 
             if (result.Data != null)
             {
-                ListGrade = result.Data;
+                ListUserTask = result.Data;
             }
-            return View(ListGrade);
+            return View(ListUserTask);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Grade grade)
+        public async Task<IActionResult> Update(UserTask UserTask)
         {
-            var result = await gradeRepository.Put(grade.Guid, grade);
+            var result = await _userTaskRepository.Put(UserTask.Guid, UserTask);
 
             if (result.Code == 200)
             {

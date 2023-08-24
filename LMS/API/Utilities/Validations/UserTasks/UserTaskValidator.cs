@@ -1,21 +1,24 @@
 ﻿using API.Contracts;
-using API.DTOs.Grades;
+using API.DTOs.UserTasks;
 using FluentValidation;
 
-namespace API.Utilities.Validations.Grades;
+namespace API.Utilities.Validations.UserTasks;
 
-public class GradeValidator : AbstractValidator<GradeDto>
+public class UserTaskValidator : AbstractValidator<UserTaskDto>
 {
-    private readonly IGradeRepository _gradeRepository;
-    public GradeValidator(IGradeRepository gradeRepository)
+    private readonly IUserTaskRepository _userTaskRepository;
+    public UserTaskValidator(IUserTaskRepository userTaskRepository)
     {
-        _gradeRepository = gradeRepository;
+        _userTaskRepository = userTaskRepository;
 
         RuleFor(g => g.Guid)
             .NotEmpty().WithMessage("Guid is required");
 
-        RuleFor(g => g.Value)
-            .NotEmpty().WithMessage("Value is required. Please provide a valid integer value.");
+        RuleFor(g => g.Attachment)
+            .NotEmpty().WithMessage("Attachment is required");
+
+        RuleFor(g => g.Grade)
+            .InclusiveBetween(0, 100).WithMessage("Value must be between 0 and 100.");
 
         RuleFor(g => g.UserGuid)
             .NotEmpty().WithMessage("User guid is required")
@@ -30,6 +33,6 @@ public class GradeValidator : AbstractValidator<GradeDto>
 
     private bool IsDuplicateOrSame(Guid userGuid, Guid taskGuid)
     {
-        return _gradeRepository.IsDataUnique(userGuid, taskGuid);
+        return _userTaskRepository.IsDataUnique(userGuid, taskGuid);
     }
 }

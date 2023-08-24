@@ -13,7 +13,7 @@ namespace API.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
-        public DbSet<Grade> Grades { get; set; }
+        public DbSet<UserTask> Grades { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Models.Task> Tasks { get; set; }

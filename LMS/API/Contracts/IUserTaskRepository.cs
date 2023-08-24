@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IGradeRepository : IGeneralRepository<Grade>
+    public interface IUserTaskRepository : IGeneralRepository<UserTask>
     {
         bool IsNotExist(Guid userGuid, Guid taskGuid);
 
