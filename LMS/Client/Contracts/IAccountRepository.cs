@@ -8,5 +8,7 @@ namespace Client.Contracts
     {
         Task<ResponseHandler<TokenVM>> Login(LoginVM login);
         Task<ResponseHandler<RegisterVM>> Register(RegisterVM register);
+        Task<ResponseHandler<ForgotPasswordVM>> ForgotPassword(ForgotPasswordVM forgotPassword);
+        Task<ResponseHandler<ChangePasswordVM>> ChangePassword(ChangePasswordVM changePassword);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using API.DTOs.Accounts;
 using API.DTOs.Classrooms;
+using API.DTOs.Lessons;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -174,11 +175,21 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
-                    Message = "User has been enrolled to class"
+                    Message = "Classroom code already expired"
                 });
             }
 
             if (result is -2)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "User has been enrolled to class"
+                });
+            }
+
+            if (result is -3)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EnrollClassroomDto>
                 {
@@ -216,6 +227,62 @@ namespace API.Controllers
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Success retrieve data",
                 Data = result
+            });
+        }
+
+        [HttpGet("lesson")]
+        public IActionResult GetClassroomLesson(Guid guid)
+        {
+            var result = _classroomService.GetClassroomLessons(guid);
+            if (!result.Any())
+            {
+                return NotFound(new ResponseHandler<ClassroomLessonDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<ClassroomLessonDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
+        }
+
+        [HttpPut("new-code")]
+        public IActionResult CreateNewClassCode(Guid guid)
+        {
+            var result = _classroomService.CreateNewClassCode(guid);
+
+            if (result is -1)
+            {
+                return NotFound(new ResponseHandler<ClassroomDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
+            }
+
+            if (result is 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<ClassroomDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
+            }
+
+            return Ok(new ResponseHandler<ClassroomDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success create new class code"
             });
         }
     }

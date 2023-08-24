@@ -1,10 +1,12 @@
 ﻿using API.Contracts;
 using API.DTOs.Accounts;
 using API.DTOs.Classrooms;
+using API.DTOs.Lessons;
 using API.DTOs.UserClassrooms;
 using API.DTOs.Users;
 using API.Models;
 using API.Repositories;
+using API.Utilities.Handlers;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
@@ -16,18 +18,61 @@ namespace API.Services
         private readonly IUserRepository _userRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly ILessonRepository _lessonRepository;
 
         public ClassroomService(IClassroomRepository classroomRepository, 
             IUserClassroomRepository userClassroomRepository, 
             IUserRepository userRepository, 
             IAccountRoleRepository accountRoleRepository,
-            IRoleRepository roleRepository)
+            IRoleRepository roleRepository,
+            ILessonRepository lessonRepository)
         {
             _classroomRepository = classroomRepository;
             _userClassroomRepository = userClassroomRepository;
             _userRepository = userRepository;
             _accountRoleRepository = accountRoleRepository;
             _roleRepository = roleRepository;
+            _lessonRepository = lessonRepository;
+        }
+
+        public int CreateNewClassCode(Guid guid)
+        {
+            var classroom = _classroomRepository.GetByGuid(guid);
+            if (classroom is null)
+            {
+                return -1; // classroom is null or not found;
+            }
+
+            Classroom toUpdate = classroom;
+            toUpdate.Code = GenerateHandler.ClassCode();
+            toUpdate.ExpiredDate = DateTime.Now.AddDays(1);
+            var result = _classroomRepository.Update(toUpdate);
+
+            return result ? 1 // classroom is updated;
+                : 0; // classroom failed to update;
+        }
+
+        public IEnumerable<ClassroomLessonDto> GetClassroomLessons(Guid guid)
+        {
+            var getClassroomLesson = from c in _classroomRepository.GetAll()
+                                     join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                     where c.Guid == guid
+                                     select new ClassroomLessonDto
+                                     {
+                                         ClassroomGuid = c.Guid,
+                                         LessonGuid = l.Guid,
+                                         Name = l.Name,
+                                         Description = l.Description,
+                                         CreatedDate = l.CreatedDate,
+                                         SubjectAttachment = l.SubjectAttachment
+                                     };
+
+            if (getClassroomLesson is null)
+            {
+                return Enumerable.Empty<ClassroomLessonDto>(); //classroom lesson not found
+            }
+
+            return getClassroomLesson; // classroom lesson is found;
         }
 
         public IEnumerable<ClassroomPeopleDto> GetClassroomPeoples(Guid guid) 
@@ -51,7 +96,6 @@ namespace API.Services
             }
 
             return getClassroomPeople; // classroom is found;
-
         }
 
         public int EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
@@ -65,6 +109,11 @@ namespace API.Services
                 return 0; //classroom not found
             }
 
+            if (DateTime.Now > getClassroom.ExpiredDate)
+            {
+                return -1; //classroom code already expired
+            }
+
             var userClassroomToCreate = new NewUserClassroomDto {
                 ClassroomGuid = getClassroom.Guid,
                 UserGuid = enrollClassroomDto.UserGuid
@@ -73,14 +122,14 @@ namespace API.Services
             var valueNotExist =  _userClassroomRepository.IsNotExist(userClassroomToCreate.UserGuid, userClassroomToCreate.ClassroomGuid);
             if (!valueNotExist)
             {
-                return -1; //already enrolled
+                return -2; //already enrolled
             }
 
             var enrollResult = _userClassroomRepository.Create(userClassroomToCreate);
 
             if(enrollResult is null)
             {
-                return -2; //error when create
+                return -3; //error when create
             }
 
             return 1;

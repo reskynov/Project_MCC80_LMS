@@ -27,10 +27,11 @@ namespace Client.Controllers
             if (result.Code == 200)
             {
                 HttpContext.Session.SetString("JWToken", result.Data.Token);
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "dashboard");
             }
             else
             {
+                TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
@@ -48,11 +49,12 @@ namespace Client.Controllers
             var result = await repository.Register(registerVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"Data has been Successfully Added! - {result.Message}!";
-                return RedirectToAction(nameof(Login));
+                TempData["Success"] = $"{result.Message}";
+                return View();
             }
             else
             {
+                TempData["Failed"] = $"{result.Message}. Check your input data and try again";
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
@@ -63,7 +65,53 @@ namespace Client.Controllers
         {
             // Clear authentication cookies
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "home");
+        }
+
+        [HttpGet("/account/forgot-password")]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("/account/forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotVM)
+        {
+            var result = await repository.ForgotPassword(forgotVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}";
+                return View();
+            }
+            else 
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
+
+        [HttpGet("/account/change-password")]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost("/account/change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM changeVM)
+        {
+            var result = await repository.ChangePassword(changeVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}";
+                return View();
+            }
+            else
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
         }
     }
 }
