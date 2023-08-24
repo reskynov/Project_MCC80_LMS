@@ -27,13 +27,18 @@
                     <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
                         <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
                         <p class="card-text" style="margin-top: -10px;"><small class="text-muted" style="font-size: 0.75em">@item.CreatedDate.ToString("d MMMM")</small></p>
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                            <button onclick="DeleteLesson('@item.ClassroomGuid')" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
-                        }
+                        
                     </div>
                 </div>
+                
+                <div class="col">
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+                        <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                    }
+                </div>
+                
             </div>
         </a>
     }
