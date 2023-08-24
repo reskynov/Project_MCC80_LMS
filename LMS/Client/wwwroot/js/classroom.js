@@ -9,7 +9,7 @@
 //})
 //function GetClassroom() {
 //$(document).ready(function () {
-//    let table = new DataTable('#myTableClassroom', {
+//    let table = new DataTable('#myTableClassroom1', {
         //    ajax: {
         //        url: "https://localhost:7026/api/classrooms",
         //        dataSrc: "data",
@@ -59,21 +59,6 @@
             ]
         });
     });
-
-
-    //$(document).ready(function () {
-    //    $('#mytableclassroom').datatable({
-    //        dom: 'blfrtip',
-    //            buttons: [
-    //                'copy', 'csv', 'excel', 'pdf', 'print',
-    //                {
-    //                    extend: 'colvis',
-    //                    title: 'colvis',
-    //                    text: 'column visibility'
-    //                }
-    //            ]
-    //    });
-    //});
 
     function InsertClassroom() {
         var classroom = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
