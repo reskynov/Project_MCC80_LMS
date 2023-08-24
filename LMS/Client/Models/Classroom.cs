@@ -11,7 +11,7 @@ namespace Client.Models
         public string Name { get; set; }
         [Column("description", TypeName = "nvarchar(max)")]
         public string? Description { get; set; }
-
+        public Guid TeacherGuid { get; set; }
         //Cardinality
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
         public ICollection<Lesson>? Lessons { get; set; }
