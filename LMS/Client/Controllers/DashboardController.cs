@@ -1,7 +1,10 @@
 ﻿using Client.Contracts;
+using Client.ViewModels.Classrooms;
+using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace Client.Controllers;
 
@@ -10,10 +13,12 @@ public class DashboardController : Controller
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserClassroomRepository _userClassroomRepository;
-    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository)
+    private readonly IClassroomRepository _classroomRepository;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository)
     {
         _userRepository = userRepository;
         _userClassroomRepository = userClassroomRepository;
+        _classroomRepository = classroomRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -55,5 +60,65 @@ public class DashboardController : Controller
             TempData["Error"] = "Failed to unenroll from the class. Please try again later.";
         }
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Lessons(Guid lessonByClassroomGuid)
+    {
+        var resultClassroomDetails = await _classroomRepository.Get(lessonByClassroomGuid);
+        if (resultClassroomDetails is null)
+        {
+            return View("No Data");
+        }
+
+        var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
+
+        var classroomDescription = resultClassroomDetails.Data;
+
+        // Memeriksa apakah ada data lesson atau tidak
+        if (resultLesson != null && resultLesson.Data != null && resultLesson.Data.Any())
+        {
+            var listLesson = resultLesson.Data;
+
+            var classroomDetailView = new ClassroomDetailsVM
+            {
+                ClassroomModel = classroomDescription,
+                ClassroomLessonViewModels = listLesson
+            };
+
+            return View(classroomDetailView);
+        }
+        else
+        {
+            // Kasus ketika tidak ada data lesson
+            var classroomDetailView = new ClassroomDetailsVM
+            {
+                ClassroomModel = classroomDescription,
+                ClassroomLessonViewModels = new List<ClassroomLessonVM>() // Koleksi kosong
+            };
+
+            return View(classroomDetailView);
+        }
+
+        //var resultClassroomDetails = await _classroomRepository.Get(lessonByClassroomGuid);
+        //if (resultClassroomDetails is null)
+        //{
+        //    return View("No Data");
+        //}
+        //var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
+        //if (resultLesson is null)
+        //{
+        //    return View(new List<ClassroomDetailsVM>());
+        //}
+
+        //var classroomDescription = resultClassroomDetails.Data;
+        //var listLesson = resultLesson.Data;
+
+        //var classroomDetailView = new ClassroomDetailsVM
+        //{
+        //    ClassroomModel = classroomDescription,
+        //    ClassroomLessonViewModels = listLesson
+        //};
+
+        //return View(classroomDetailView);
     }
 }
