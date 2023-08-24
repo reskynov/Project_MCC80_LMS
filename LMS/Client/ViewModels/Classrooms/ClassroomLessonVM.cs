@@ -1,6 +1,6 @@
-﻿namespace API.DTOs.Classrooms;
+﻿namespace Client.ViewModels.Classrooms;
 
-public class ClassroomLessonDto
+public class ClassroomLessonVM
 {
     public Guid ClassroomGuid { get; set; }
     public string Name { get; set; }

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Client.ViewModels.Users.ClassroomByUserVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Classroom";
     Layout = "_DashboardLayout";
 }
 
@@ -13,16 +13,16 @@
         <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#enrollModal">Enroll Class</a>
     </p>
     <div class="container ms-0 me-0 ps-0">
-        <div class="row row-cols-auto">
+        <div class="row row-cols-auto g-3">
             @foreach (var item in Model)
             {
                 <div class="col">
-                    <div class="card" style="width: 18rem; outline-style: solid; outline-color:darkgrey; outline-width: 0.5px;">
+                    <div class="card" style="width: 16rem; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;">
                         <img src="https://img.freepik.com/free-vector/students-watching-webinar-computer-studying-online_74855-15522.jpg?w=1060&t=st=1692673590~exp=1692674190~hmac=4abf566d1de74fbf791ca6f1f516091e2c076b20f1c7636b8a000cb24ab742e6" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.ClassroomName)</h5>
                             <p class="card-text">@Html.DisplayFor(modelItem => item.TeacherName)</p>
-                            <a href="#" class="btn btn-primary">View Class </a>
+                            <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-primary">View Class </a>
                             <form asp-action="Unenroll" id="UnenrollForm">
                                 <input type="hidden" name="userClassroomGuid" value="@item.UserClassroomGuid" />
                                 <button type="button" style="position: absolute; top: 10px; right: 15px; background: none; border: none;" onclick="Unenroll()">
