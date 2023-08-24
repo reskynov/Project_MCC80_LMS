@@ -22,7 +22,7 @@ namespace Client.Models
         //Cardinality
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
         public ICollection<Task>? Tasks { get; set; }
-        public ICollection<Grade>? Grades { get; set; }
+        public ICollection<UserTask>? UserTasks { get; set; }
         public Account? Account { get; set; }
     }
 }

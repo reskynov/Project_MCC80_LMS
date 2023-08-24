@@ -1,4 +1,4 @@
-﻿using API.DTOs.Grades;
+﻿using API.DTOs.UserTasks;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -7,23 +7,23 @@ using System.Net;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/grades")]
-public class GradeController : ControllerBase
+[Route("api/user-tasks")]
+public class UserTaskController : ControllerBase
 {
-    private readonly GradeService _gradeService;
+    private readonly UserTaskService _userTaskService;
 
-    public GradeController(GradeService gradeService)
+    public UserTaskController(UserTaskService userTaskService)
     {
-        _gradeService = gradeService;
+        _userTaskService = userTaskService;
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        var result = _gradeService.GetAll();
+        var result = _userTaskService.GetAll();
         if (!result.Any())
         {
-            return NotFound(new ResponseHandler<GradeDto>
+            return NotFound(new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -31,7 +31,7 @@ public class GradeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<GradeDto>>
+        return Ok(new ResponseHandler<IEnumerable<UserTaskDto>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -43,10 +43,10 @@ public class GradeController : ControllerBase
     [HttpGet("{guid}")]
     public IActionResult GetByGuid(Guid guid)
     {
-        var result = _gradeService.GetByGuid(guid);
+        var result = _userTaskService.GetByGuid(guid);
         if (result is null)
         {
-            return NotFound(new ResponseHandler<GradeDto>
+            return NotFound(new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -54,7 +54,7 @@ public class GradeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GradeDto>
+        return Ok(new ResponseHandler<UserTaskDto>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -64,12 +64,12 @@ public class GradeController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewGradeDto newGradeDto)
+    public IActionResult Create(NewUserTaskDto newUserTaskDto)
     {
-        var result = _gradeService.Create(newGradeDto);
+        var result = _userTaskService.Create(newUserTaskDto);
         if (result is null)
         {
-            return StatusCode(500, new ResponseHandler<NewGradeDto>
+            return StatusCode(500, new ResponseHandler<NewUserTaskDto>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -77,22 +77,22 @@ public class GradeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<NewGradeDto>
+        return Ok(new ResponseHandler<NewUserTaskDto>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Success! Data has been created successfully.",
-            Data = newGradeDto
+            Data = newUserTaskDto
         });
     }
 
     [HttpPut]
-    public IActionResult Update(GradeDto gradeDto)
+    public IActionResult Update(UserTaskDto UserTaskDto)
     {
-        var result = _gradeService.Update(gradeDto);
+        var result = _userTaskService.Update(UserTaskDto);
         if (result is -1)
         {
-            return NotFound(new ResponseHandler<GradeDto>
+            return NotFound(new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -102,7 +102,7 @@ public class GradeController : ControllerBase
 
         if (result is 0)
         {
-            return StatusCode(500, new ResponseHandler<GradeDto>
+            return StatusCode(500, new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -110,7 +110,7 @@ public class GradeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GradeDto>
+        return Ok(new ResponseHandler<UserTaskDto>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -121,10 +121,10 @@ public class GradeController : ControllerBase
     [HttpDelete]
     public IActionResult Delete(Guid guid)
     {
-        var result = _gradeService.Delete(guid);
+        var result = _userTaskService.Delete(guid);
         if (result is -1)
         {
-            return NotFound(new ResponseHandler<GradeDto>
+            return NotFound(new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -134,7 +134,7 @@ public class GradeController : ControllerBase
 
         if (result is 0)
         {
-            return StatusCode(500, new ResponseHandler<GradeDto>
+            return StatusCode(500, new ResponseHandler<UserTaskDto>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -142,7 +142,7 @@ public class GradeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GradeDto>
+        return Ok(new ResponseHandler<UserTaskDto>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),

@@ -1,18 +1,20 @@
 ﻿using API.Contracts;
-using API.DTOs.Grades;
+using API.DTOs.UserTasks;
 using FluentValidation;
 
-namespace API.Utilities.Validations.Grades;
+namespace API.Utilities.Validations.UserTasks;
 
-public class NewGradeValidator : AbstractValidator<NewGradeDto>
+public class NewUserTaskValidator : AbstractValidator<NewUserTaskDto>
 {
-    private readonly IGradeRepository _gradeRepository;
-    public NewGradeValidator(IGradeRepository gradeRepository)
+    private readonly IUserTaskRepository _gradeRepository;
+    public NewUserTaskValidator(IUserTaskRepository gradeRepository)
     {
         _gradeRepository = gradeRepository;
 
-        RuleFor(g => g.Value)
-            .NotEmpty().WithMessage("Value is required. Please provide a valid integer value.")
+        RuleFor(g => g.Attachment)
+            .NotEmpty().WithMessage("Attachment is required");
+
+        RuleFor(g => g.Grade)
             .InclusiveBetween(0, 100).WithMessage("Value must be between 0 and 100.");
 
         RuleFor(g => g.UserGuid)
