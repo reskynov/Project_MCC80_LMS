@@ -47,33 +47,6 @@ public class DashboardController : Controller
         }
     }
 
-
-    [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
-    {
-        var result = await _classroomRepository.Get(id);
-        var ListClassroom = new Classroom();
-
-        if (result.Data != null)
-        {
-            ListClassroom = result.Data;
-        }
-        return View(ListClassroom);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Update(Classroom classroom)
-    {
-        var result = await _classroomRepository.Put(classroom.Guid, classroom);
-
-        if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return RedirectToAction("Index", "Classroom");
-        }
-        return RedirectToAction(nameof(Edit));
-    }
-
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
