@@ -15,7 +15,6 @@ namespace Client.Models
         [Column("expired_date")]
         public DateTime ExpiredDate { get; set; }
         [Column("teacher_guid")]
-        public Guid TeacherGuid { get; set; }
 
         //Cardinality
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
