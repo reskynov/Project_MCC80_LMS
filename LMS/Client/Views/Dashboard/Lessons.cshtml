@@ -6,7 +6,7 @@
 }
 
 <div class="card">
-    <div class="card mt-3 mx-3 h-100" style="min-height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
+    <div class="card my-3 mx-3 h-100" style="min-height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
         <a href="/dashboard/getpeople?classroomGuid=@Model.ClassroomModel.Guid" style="position: absolute; top: 5px; right: 12px; z-index:99; color:white;">See All Student</a>
         <div class="ms-3 my-2 w-75" style="position: absolute; bottom: 0; left: 0;">
             <p class="h3" style="color:aliceblue;">@Model.ClassroomModel.Name</p>
@@ -18,7 +18,7 @@
     {
         @if (item.isTask is true)
         {
-            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card my-3 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
                 <div class="row row-cols-auto">
                     <div class="col d-flex justify-content-center align-items-center">
                         <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
@@ -47,7 +47,7 @@
         }
         else
         {
-            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card my-3 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
                 <div class="row row-cols-auto">
                     <div class="col d-flex justify-content-center align-items-center">
                         <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
