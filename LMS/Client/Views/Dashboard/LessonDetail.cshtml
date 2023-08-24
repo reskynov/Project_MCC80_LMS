@@ -1,0 +1,102 @@
+﻿@model Client.Models.Lesson
+
+@{
+    ViewData["Title"] = "LessonDetail";
+    Layout = "_DashboardLayout";
+}
+<div class="card">
+    <div class="row">
+        <div class="col">
+            <div id="titleLesson" class="mx-4 my-3" style="border-bottom: 1px solid darkgrey;">
+                <h3>
+                    @Html.DisplayFor(model => model.Name)
+                </h3>
+                <p style="margin-top:-10px">
+                    <small class="text-muted">
+                        @Model.CreatedDate.ToString("d MMMM")
+                    </small></>
+                </p>
+            </div>
+            <div id="contentLesson" class="mx-4" style="text-align:justify;">
+                <p>
+                    @Html.DisplayFor(model => model.Description)
+                </p>
+                <div>
+                    <p class="m-0">Referensi :</p>
+                    <p>
+                        @Html.DisplayFor(model => model.SubjectAttachment)
+                    </p>
+                </div>
+            </div>
+        </div>
+        @if(Model.IsTask is true)
+        {
+            <div class="col-4 mx-2">
+            </div>
+        }
+        else
+        {
+            <div class="col-4" style="display: none;"></div>
+        }
+    </div>
+</div>
+@*
+<h1>LessonDetail</h1>
+
+<div>
+    <h4>Lesson</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SubjectAttachment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SubjectAttachment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsTask)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsTask)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassroomGuid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ClassroomGuid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Guid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Guid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>*@
