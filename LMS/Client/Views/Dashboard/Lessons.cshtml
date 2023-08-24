@@ -16,30 +16,64 @@
 
     @foreach (var item in Model.ClassroomLessonViewModels)
     {
-        <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mb-3 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
-            <div class="row row-cols-auto">
-                <div class="col d-flex justify-content-center align-items-center">
-                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
-                        <i class="fa-solid fa-book"></i>
+        @if (item.isTask is true)
+        {
+            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card my-3 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+                <div class="row row-cols-auto">
+                    <div class="col d-flex justify-content-center align-items-center">
+                        <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                            <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                            <p class="card-text" style="margin-top: -10px;">
+                                <small class="text-muted" style="font-size: 0.75em">
+                                    @item.CreatedDate.ToString("d MMMM")
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+                            <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                        }
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
-                        <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
-                        <p class="card-text" style="margin-top: -10px;"><small class="text-muted" style="font-size: 0.75em">@item.CreatedDate.ToString("d MMMM")</small></p>
-                        
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card my-3 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+                <div class="row row-cols-auto">
+                    <div class="col d-flex justify-content-center align-items-center">
+                        <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                            <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                            <p class="card-text" style="margin-top: -10px;">
+                                <small class="text-muted" style="font-size: 0.75em">
+                                    @item.CreatedDate.ToString("d MMMM")
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+                            <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                        }
                     </div>
                 </div>
-                
-                <div class="col">
-                    @if (User.IsInRole("Teacher"))
-                    {
-                        <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                        <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
-                    }
-                </div>
-                
-            </div>
-        </a>
+            </a>
+        }
     }
 </div>
