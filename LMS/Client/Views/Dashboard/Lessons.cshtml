@@ -5,7 +5,8 @@
     Layout = "_Dashboardlayout";
 }
 <div class="card">
-    <div class="card mt-3 mx-3" style="height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
+    <div class="card mt-3 mx-3 h-100" style="min-height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
+        <a href="/dashboard/getpeople?classroomGuid=@Model.ClassroomModel.Guid" style="position: absolute; top: 5px; right: 12px; z-index:99; color:white;">See All Student</a>
         <div class="ms-3 my-2 w-75" style="position: absolute; bottom: 0; left: 0;">
             <p class="h3" style="color:aliceblue;">@Model.ClassroomModel.Name</p>
             <p class="" style="color:aliceblue;">@Model.ClassroomModel.Description</p>
@@ -14,7 +15,7 @@
 
     @foreach (var item in Model.ClassroomLessonViewModels)
     {
-        <div class="card mb-3 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;">
+        <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mb-3 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
             <div class="row row-cols-auto">
                 <div class="col d-flex justify-content-center align-items-center">
                     <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
@@ -24,10 +25,11 @@
                 <div class="col">
                     <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
                         <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
-                        <p class="card-text" style="margin-top: -10px;"><small class="text-muted" style="font-size: 0.75em">@Html.DisplayFor(modelItem => item.CreatedDate)</small></p>
+                        <p class="card-text" style="margin-top: -10px;"><small class="text-muted" style="font-size: 0.75em">@item.CreatedDate.ToString("d MMMM")
+                        </small></p>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     }
 </div>

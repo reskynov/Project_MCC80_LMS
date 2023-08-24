@@ -8,7 +8,7 @@ public class ClassroomVM
     public string Code { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
-
+    public Guid TeacherGuid { get; set; }
     public static implicit operator Classroom(ClassroomVM classroomDto)
     {
         return new Classroom

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Client.ViewModels.Classrooms.ClassroomPeopleVM>
+
+@{
+    ViewData["Title"] = "GetPeople";
+    Layout = "_DashboardLayout";
+}
+<div class="card">
+    <div id="listTeacher" class="mx-4 mt-2">
+        <div style="border-bottom: 1px solid darkgrey;">
+            <h3>Teachers</h3>
+        </div>
+        @foreach (var item in Model)
+        {
+            @if(item.Role is "Teacher")
+            {
+                <div class="container m-0 p-0 my-2">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex align-items-center">
+                            <img class="rounded-circle" src="https://img.freepik.com/free-vector/online-class-illustration_52683-42415.jpg?w=740&t=st=1692858919~exp=1692859519~hmac=2a485621f2eaadb33fc1b63894f001e04bbe3d2eb9429c5a19c0d13d29edfaa2" alt="Teacher" width="45" height="45">
+                        </div>
+                        <div class="col d-flex align-items-center p-0"><p class="m-0">@Html.DisplayFor(modelItem => item.FullName)</p></div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div id="listStudent" class="mx-4 mt-3">
+        <div class="" style="border-bottom: 1px solid darkgrey;">
+            <h3>Classmates</h3>
+        </div>
+        @foreach(var item in Model)
+        {
+            @if (item.Role is "Student")
+            {
+                <div class="container m-0 p-0 my-2">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex align-items-center">
+                            <img class="rounded-circle" src="https://img.freepik.com/free-vector/happy-students-background_23-2147900865.jpg?w=740&t=st=1692859716~exp=1692860316~hmac=771064ef25778fd2170ec6eef9f4e072cd755f040743674a455a72e771ced950" alt="Student" width="45" height="45">
+                        </div>
+                        <div class="col d-flex align-items-center p-0"><p class="m-0">@Html.DisplayFor(modelItem => item.FullName)</p></div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>    
+
+@*
+<h1>GetPeople</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Guid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+*@

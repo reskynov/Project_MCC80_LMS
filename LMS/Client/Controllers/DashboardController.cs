@@ -4,21 +4,23 @@ using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Diagnostics.Contracts;
 
 namespace Client.Controllers;
 
-[Authorize]
+//[Authorize]
 public class DashboardController : Controller
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserClassroomRepository _userClassroomRepository;
     private readonly IClassroomRepository _classroomRepository;
-    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository)
+    private readonly ILessonRepository _lessonRepository;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository)
     {
         _userRepository = userRepository;
         _userClassroomRepository = userClassroomRepository;
         _classroomRepository = classroomRepository;
+        _lessonRepository = lessonRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -48,6 +50,20 @@ public class DashboardController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _classroomRepository.Delete(guid);
+        if (result.Status == "200")
+        {
+            TempData["Success"] = "Data Berhasil Dihapus";
+        }
+        else
+        {
+            TempData["Error"] = "Gagal Menghapus Data";
+        }
+        return RedirectToAction(nameof(Index));
+    }
+    [HttpPost]
     public async Task<IActionResult> Unenroll(Guid userClassroomGuid)
     {
         var result = await _userClassroomRepository.Delete(userClassroomGuid);
@@ -57,7 +73,7 @@ public class DashboardController : Controller
         }
         else
         {
-            TempData["Error"] = "Failed to unenroll from the class. Please try again later.";
+            TempData["Failed"] = "Failed to unenroll from the class. Please try again later.";
         }
         return RedirectToAction(nameof(Index));
     }
@@ -98,27 +114,28 @@ public class DashboardController : Controller
 
             return View(classroomDetailView);
         }
+    }
 
-        //var resultClassroomDetails = await _classroomRepository.Get(lessonByClassroomGuid);
-        //if (resultClassroomDetails is null)
-        //{
-        //    return View("No Data");
-        //}
-        //var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
-        //if (resultLesson is null)
-        //{
-        //    return View(new List<ClassroomDetailsVM>());
-        //}
+    public async Task<IActionResult> LessonDetail(Guid lessonGuid)
+    {
+        var result = await _lessonRepository.Get(lessonGuid);
+        if (result != null)
+        {
+            var lessonDetail = result.Data;
+            return View(lessonDetail);
+        }
 
-        //var classroomDescription = resultClassroomDetails.Data;
-        //var listLesson = resultLesson.Data;
+        return View(null);
+    }
 
-        //var classroomDetailView = new ClassroomDetailsVM
-        //{
-        //    ClassroomModel = classroomDescription,
-        //    ClassroomLessonViewModels = listLesson
-        //};
-
-        //return View(classroomDetailView);
+    public async Task<IActionResult> GetPeople(Guid classroomGuid)
+    {
+        var result = await _classroomRepository.GetPeople(classroomGuid);
+        if (result != null)
+        {
+            var listPeople = result.Data;
+            return View(listPeople);
+        }
+        return View(null);
     }
 }
