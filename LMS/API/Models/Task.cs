@@ -7,14 +7,11 @@ namespace API.Models
     {
         [Column("deadline_date")]
         public DateTime? DeadlineDate { get; set; }
-        [Column("user_guid")]
-        public Guid UserGuid { get; set; }
         [Column("lesson_guid")]
         public Guid LessonGuid { get; set; }
 
         //Cardinality
         public ICollection<UserTask>? Grades { get; set; }
         public Lesson? Lesson { get; set; }
-        public User? User { get; set; }
     }
 }

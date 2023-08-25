@@ -22,7 +22,6 @@ namespace API.Models
         //Cardinality
         public ICollection<Classroom>? Classrooms { get; set; }
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
-        public ICollection<Task>? Tasks { get; set; }
         public ICollection<UserTask>? Grades { get; set; }
         public Account? Account { get; set; }
     }

@@ -17,6 +17,8 @@ public class UserTaskController : ControllerBase
         _userTaskService = userTaskService;
     }
 
+    [HttpPost("submit-task")]
+
     [HttpGet]
     public IActionResult GetAll()
     {
