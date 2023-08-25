@@ -8,7 +8,7 @@ using System.Diagnostics.Contracts;
 
 namespace Client.Controllers;
 
-//[Authorize]
+[Authorize]
 public class DashboardController : Controller
 {
     private readonly IUserRepository _userRepository;

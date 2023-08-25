@@ -7,7 +7,7 @@
 <div class="card">
     <div class="row">
         <div class="col">
-            <div id="titleLesson" class="mx-4 my-3" style="border-bottom: 1px solid darkgrey;">
+            <div id="titleLesson" class="ms-4 me-1 my-3" style="border-bottom: 1px solid #5e72e4;">
                 <h3>
                     @Html.DisplayFor(model => model.Name)
                 </h3>
@@ -17,8 +17,9 @@
                     </small></>
                 </p>
             </div>
-            <div id="contentLesson" class="mx-4" style="text-align:justify;">
+            <div id="contentLesson" class="ms-4 me-1" style="text-align:justify;">
                 <p>
+                    @Html.Raw(Model.Description.Replace("\n", "<br>"))
                     @Html.DisplayFor(model => model.Description)
                 </p>
                 <div>
@@ -31,8 +32,16 @@
         </div>
         @if(Model.IsTask is true)
         {
-            <div class="col-4 mx-2">
-                <p>hayooop</p>
+            <div class="col-md-4">
+                <div class="card my-3 me-4 shadow-lg bg-body rounded" style="">
+                    <div class="mx-3 mt-2">
+                        <label class="h6 form-label">Your Work</label>
+                        <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com">
+                    </div>
+                    <div class="my-2 mx-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
             </div>
         }
         else
