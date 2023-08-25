@@ -9,6 +9,12 @@
 
 @if (User.IsInRole("Student"))
 {
+    @*<div>
+        <div class="" id="">
+            <input type="text" class="form-control" id="classroomCode">
+        </div>
+        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#enrollModal">+ Enroll Class</a>
+    </div>*@
     <p>
         <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#enrollModal">+ Enroll Class</a>
     </p>
@@ -43,6 +49,43 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 class="modal-title">Preview Enroll</h5>
+                    <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="classroomCode">
+                        </div>
+                        <div class="col-2">
+                            <button onclick="GetEnroll()" id="enrollCheck" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>
+                    <div id="getEnrollView" class="card" style="width: 18rem; display: none;">
+                        <img src="https://img.freepik.com/free-vector/students-watching-webinar-computer-studying-online_74855-15522.jpg?w=1060&t=st=1692673590~exp=1692674190~hmac=4abf566d1de74fbf791ca6f1f516091e2c076b20f1c7636b8a000cb24ab742e6" class="card-img-top" alt="...">
+                        <div class="card-body" id="cardBodyEnroll">
+                            <h5 class="card-title" id="classroomNameEnroll"></h5>
+                            <p class="card-text" id="teacherNameEnroll"></p>
+                            <div class="mb-3" id="user-guid" style="display: none;">
+                                <label for="userGuid" class="form-label"></label>
+                                <input type="hidden" class="form-control" id="userGuid" value="@User.FindFirst("Guid").Value" readonly>
+                            </div>
+                            <div class="mb-3" id="classroom-code" style="display: none;">
+                                <label for="classroomCode" class="form-label"></label>
+                                <input type="text" class="form-control" id="classroomCode">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   @* <div class="modal" tabindex="-1" id="enrollModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title">Enroll in a Class</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -62,7 +105,7 @@
                     </div>
             </div>
         </div>
-    </div>
+    </div>*@
 }
 
 @if (User.IsInRole("Teacher"))

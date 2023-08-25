@@ -3,13 +3,25 @@
 
 // Write your JavaScript code.
 
+//$(document).ready(function () {
+//    $("#enrollNow").click(function () {
+//        Enroll();
+
+//        $("#enrollModal").modal("hide");
+//    });
+//});
+
 $(document).ready(function () {
+    $("#enrollCheck").click(function () {
+        GetEnroll(classroomCode);
+    })
+   
     $("#enrollNow").click(function () {
         Enroll();
-
         $("#enrollModal").modal("hide");
     });
 });
+
 
 
 function Enroll() {
@@ -43,6 +55,30 @@ function Enroll() {
             title: 'Oops...',
             text: error.responseJSON.message
         })    
+    })
+}
+
+function GetEnroll(enrollCode) {
+    var enrollCode = document.getElementById('classroomCode').value;
+    $.ajax({
+        url: `https://localhost:7026/api/classrooms/enroll?classCode=${enrollCode}`,
+        type: "GET",
+        dataType: "json"
+    }).done((result) => {
+        $("#classroomGuidEnroll").val(result.data.classroomGuid);
+        $("#classroomNameEnroll").html(result.data.classroomName);
+        $("#teacherNameEnroll").html(result.data.teacherName);
+        $("#peopleCountEnroll").val(result.datapeopleCount);
+
+        var success = document.getElementById('getEnrollView');
+        success.style.display = 'block';
+
+    }).fail((error) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.responseJSON.message
+        });
     })
 }
 
