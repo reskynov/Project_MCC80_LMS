@@ -8,6 +8,7 @@ using API.Models;
 using API.Repositories;
 using API.Utilities.Handlers;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace API.Services
 {
@@ -99,6 +100,27 @@ namespace API.Services
             return getClassroomPeople; // classroom is found;
         }
 
+        public ClassroomByCodeDto? GetEnrollClassroomByCode(string classCode)
+        {
+            var getClassroom = (from c in _classroomRepository.GetAll()
+                               join t in _userRepository.GetAll() on c.TeacherGuid equals t.Guid
+                               where c.Code == classCode
+                               select new ClassroomByCodeDto
+                               {
+                                   ClassroomGuid = c.Guid,
+                                   ClassroomName = c.Name,
+                                   TeacherName = t.FirstName + " " + t.LastName,
+                                   PeopleCount = _userClassroomRepository.GetAll().Where(uc => uc.ClassroomGuid == c.Guid).Count()
+                               }).SingleOrDefault();
+
+            if (getClassroom is null)
+            {
+                return null; //classroom not found
+            }
+
+            return getClassroom;
+        }
+
         public int EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
         {
             var getClassroom = (from c in _classroomRepository.GetAll()
@@ -134,7 +156,6 @@ namespace API.Services
             }
 
             return 1;
-
         }
 
         public IEnumerable<ClassroomDto> GetAll()

@@ -154,6 +154,30 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("enroll")]
+        public IActionResult EnrollClassroom(string classCode)
+        {
+            var result = _classroomService.GetEnrollClassroomByCode(classCode);
+
+            if (result is null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<ClassroomByCodeDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Classroom not found or classroom code already expired"
+                });
+            }
+
+            return Ok(new ResponseHandler<ClassroomByCodeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success get classroom by code",
+                Data = result
+            });
+        }
+
         [HttpPost("enroll")]
         public IActionResult EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
         {

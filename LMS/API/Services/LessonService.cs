@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.DTOs.Lessons;
+using API.DTOs.Tasks;
 using API.Models;
 
 namespace API.Services;
@@ -7,10 +8,45 @@ namespace API.Services;
 public class LessonService
 {
     private readonly ILessonRepository _lessonRepository;
+    private readonly ITaskRepository _taskRepository;
 
-    public LessonService(ILessonRepository lessonRepository)
+    public LessonService(ILessonRepository lessonRepository, ITaskRepository taskRepository)
     {
         _lessonRepository = lessonRepository;
+        _taskRepository = taskRepository;
+    }
+
+    public LessonDto? CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
+    {
+        var lesson = new NewLessonDto
+        {
+            Name = newLessonTaskDto.Name,
+            Description = newLessonTaskDto.Description,
+            SubjectAttachment = newLessonTaskDto.SubjectAttachment,
+            IsTask = newLessonTaskDto.IsTask,
+            ClassroomGuid = newLessonTaskDto.ClassroomGuid
+        };
+        var resultLesson = _lessonRepository.Create(lesson);
+        if (resultLesson is null)
+        {
+            return null; //buat lesson gagal
+        }
+
+        if(newLessonTaskDto.IsTask is true )
+        {
+            var task = new NewTaskDto
+            {
+                DeadlineDate = newLessonTaskDto.DeadlineDate,
+                LessonGuid = resultLesson.Guid
+            };
+            var resultTask = _taskRepository.Create(task);
+            if (resultTask is null) 
+            {
+                return null; //buat task gagal
+            }
+        }
+
+        return (LessonDto)resultLesson;
     }
 
     public IEnumerable<LessonDto> GetAll()
