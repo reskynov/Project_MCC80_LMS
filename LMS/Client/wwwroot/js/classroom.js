@@ -65,6 +65,7 @@
         //ini ngambil value dari tiap inputan di form nya
         classroom.Name = $("#nameClassroom").val();
         classroom.Description = $("#descriptionClassroom").val();
+        /*classroom.Description = tinymce.get("descriptionClassroom").getContent();*/
         classroom.TeacherGuid = $("#teacherGuidClassroom").val();
         //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
         $.ajax({
