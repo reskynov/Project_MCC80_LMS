@@ -3,13 +3,37 @@
 
 // Write your JavaScript code.
 
+//$(document).ready(function () {
+//    $("#enrollNow").click(function () {
+//        Enroll();
+
+//        $("#enrollModal").modal("hide");
+//    });
+//});
+
 $(document).ready(function () {
+    $("#enrollCheck").click(function () {
+        GetEnroll(classroomCode);
+    })
+   
     $("#enrollNow").click(function () {
         Enroll();
-
         $("#enrollModal").modal("hide");
     });
+
+    $("#enrollModal").on("hidden.bs.modal", function () {
+        // Hapus data yang diperoleh dari GetEnroll
+        // Misalnya, mengosongkan elemen-elemen HTML atau variabel-variabel yang menyimpan data tersebut
+        $("#classroomGuidEnroll").val("");
+        $("#classroomNameEnroll").html("");
+        $("#teacherNameEnroll").html("");
+        $("#peopleCountEnroll").val("");
+
+        var success = document.getElementById('getEnrollView');
+        success.style.display = 'none'; // Menyembunyikan elemen
+    });
 });
+
 
 
 function Enroll() {
@@ -43,6 +67,34 @@ function Enroll() {
             title: 'Oops...',
             text: error.responseJSON.message
         })    
+    })
+}
+
+function GetEnroll(enrollCode) {
+    var enrollCode = document.getElementById('classroomCode').value;
+    $.ajax({
+        url: `https://localhost:7026/api/classrooms/enroll?classCode=${enrollCode}`,
+        type: "GET",
+        dataType: "json"
+    }).done((result) => {
+        $("#classroomGuidEnroll").val(result.data.classroomGuid);
+        $("#classroomNameEnroll").html(result.data.classroomName);
+        $("#teacherNameEnroll").html(result.data.teacherName);
+        $("#peopleCountEnroll").val(result.datapeopleCount);
+
+        //var success = document.getElementById('getEnrollView');
+        //success.style.display = 'block';
+
+        var success = document.getElementById('getEnrollView');
+        success.style.display = 'block';
+        success.classList.add('slide-top-card'); // Menambahkan class animasi
+
+    }).fail((error) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.responseJSON.message
+        });
     })
 }
 
