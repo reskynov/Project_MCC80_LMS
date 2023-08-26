@@ -20,6 +20,18 @@ $(document).ready(function () {
         Enroll();
         $("#enrollModal").modal("hide");
     });
+
+    $("#enrollModal").on("hidden.bs.modal", function () {
+        // Hapus data yang diperoleh dari GetEnroll
+        // Misalnya, mengosongkan elemen-elemen HTML atau variabel-variabel yang menyimpan data tersebut
+        $("#classroomGuidEnroll").val("");
+        $("#classroomNameEnroll").html("");
+        $("#teacherNameEnroll").html("");
+        $("#peopleCountEnroll").val("");
+
+        var success = document.getElementById('getEnrollView');
+        success.style.display = 'none'; // Menyembunyikan elemen
+    });
 });
 
 
@@ -70,8 +82,12 @@ function GetEnroll(enrollCode) {
         $("#teacherNameEnroll").html(result.data.teacherName);
         $("#peopleCountEnroll").val(result.datapeopleCount);
 
+        //var success = document.getElementById('getEnrollView');
+        //success.style.display = 'block';
+
         var success = document.getElementById('getEnrollView');
         success.style.display = 'block';
+        success.classList.add('slide-top-card'); // Menambahkan class animasi
 
     }).fail((error) => {
         Swal.fire({
