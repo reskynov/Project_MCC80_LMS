@@ -3,3 +3,6 @@
 
 // Write your JavaScript code.
 
+//document.getElementById("listCardLesson").addEventListener("click", function{
+//    window.location.href = "Dashboard/LessonDetail?lessonGuid=@item.LessonGuid";
+//})
