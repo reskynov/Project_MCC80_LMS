@@ -5,58 +5,58 @@
 // Write your JavaScript code.
 
 //--------LESSON--------
-$(document).ready(function () {
-    let table = new DataTable('#myTableLesson', {
-        ajax: {
-            url: "https://localhost:7026/api/lessons",
-            dataSrc: "data",
-            dataType: "JSON"
-        },
+//$(document).ready(function () {
+//    let table = new DataTable('#myTableLesson', {
+//        ajax: {
+//            url: "https://localhost:7026/api/lessons",
+//            dataSrc: "data",
+//            dataType: "JSON"
+//        },
 
-        columns: [
-            {
-                data: null,
-                render: function (data, type, row, no) {
-                    return no.row + 1;
-                }
-            },
-            { data: "name" },
-            { data: "description" },
-            { data: "subjectAttachment" },
-            { data: "classroomGuid" },
-            {
-                data: '',
-                render: function (data, type, row) {
-                    return `<button onclick="ShowUpdateLesson('${row.url}')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                    <button onclick="DeleteLesson('${row.guid}')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>`;
-                }
-            }
-        ],
-        dom: 'Blfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print',
-            {
-                extend: 'colvis',
-                title: 'Colvis',
-                text: 'Column Visibility'
-            }
-        ]
-    });
-});
+//        columns: [
+//            {
+//                data: null,
+//                render: function (data, type, row, no) {
+//                    return no.row + 1;
+//                }
+//            },
+//            { data: "name" },
+//            { data: "description" },
+//            { data: "subjectAttachment" },
+//            { data: "LessonGuid" },
+//            {
+//                data: '',
+//                render: function (data, type, row) {
+//                    return `<button onclick="ShowUpdateLesson('${row.url}')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+//                    <button onclick="DeleteLesson('${row.guid}')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>`;
+//                }
+//            }
+//        ],
+//        dom: 'Blfrtip',
+//        buttons: [
+//            'copy', 'csv', 'excel', 'pdf', 'print',
+//            {
+//                extend: 'colvis',
+//                title: 'Colvis',
+//                text: 'Column Visibility'
+//            }
+//        ]
+//    });
+//});
 
-$.ajax({
-    url: "https://localhost:7026/api/classrooms"
-}).done(function (result) {
-    // Assuming the API response contains a property named "totalClassroom"
-    let getClassroom = ""
-    $.each(result.data, (key, val) => {
-        console.log(result)
-        getClassroom += ` <option value="${val.guid}">${val.guid}</option>`
-    })
-    $('.selectClassroom').html(getClassroom)
-}).fail(function () {
-    $(".selectClassroom").text("Failed to fetch data");
-});
+//$.ajax({
+//    url: "https://localhost:7026/api/Lessons"
+//}).done(function (result) {
+//    // Assuming the API response contains a property named "totalLesson"
+//    let getLesson = ""
+//    $.each(result.data, (key, val) => {
+//        console.log(result)
+//        getLesson += ` <option value="${val.guid}">${val.guid}</option>`
+//    })
+//    $('.selectLesson').html(getLesson)
+//}).fail(function () {
+//    $(".selectLesson").text("Failed to fetch data");
+//});
 
 
 function InsertLesson() {
@@ -65,7 +65,7 @@ function InsertLesson() {
     lesson.Name = $("#nameLesson").val();
     lesson.Description = $("#descriptionLesson").val();
     lesson.SubjectAttachment = $("#subjectAttachmentLesson").val();
-    lesson.ClassroomGuid = $("#classroomGuidLesson").val();
+    lesson.LessonGuid = $("#LessonGuidLesson").val();
     //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
     $.ajax({
         url: "https://localhost:7026/api/lessons",
@@ -93,7 +93,7 @@ function InsertLesson() {
     })
 }
 
-function DeleteClassroom(guid) {
+function DeleteLesson(guid) {
     Swal.fire({
         title: 'Are you sure?',
         text: 'Changes cannot be reverted!',

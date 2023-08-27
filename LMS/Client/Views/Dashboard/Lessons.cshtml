@@ -7,74 +7,269 @@
 
 <div class="card">
     <div class="card my-3 mx-3 h-100" style="min-height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
-        <a href="/dashboard/getpeople?classroomGuid=@Model.ClassroomModel.Guid" style="position: absolute; top: 5px; right: 12px; z-index:99; color:white;">See All Student</a>
+        @if (User.IsInRole("Teacher"))
+        {
+            <div class="d-flex align-items-start flex-column">
+                <button onclick="ShowUpdateClassroom('@Model.ClassroomModel.Guid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-light"><i class="fas fa-edit"></i> Update Classroom</button>
+        </div>
+        }
+        <div class="d-flex align-items-end flex-column">
+            <a href="/dashboard/getpeople?classroomGuid=@Model.ClassroomModel.Guid" style="position: absolute; top: 5px; right: 12px; z-index:99; color:white;">See All Student</a>
+        </div>
+
         <div class="ms-3 my-2 w-75" style="position: absolute; bottom: 0; left: 0;">
             <p class="h3" style="color:aliceblue;">@Model.ClassroomModel.Name</p>
             <p class="" style="color:aliceblue;">
                 @Html.Raw(Model.ClassroomModel.Description.Replace("\n", "<br>"))
             </p>
+            <p>
+
+            </p>
         </div>
     </div>
+    @if (User.IsInRole("Teacher"))
+    {
+        <div style="position:relative; left:15px;">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
+    </div>
+    }
     @foreach (var item in Model.ClassroomLessonViewModels)
     {
-        @if (item.isTask is true)
+        @if (User.IsInRole("Teacher"))
         {
-            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
-                <div class="row row-cols-auto">
-                    <div class="col d-flex justify-content-center align-items-center">
-                        <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
-                            <i class="fa-solid fa-clipboard"></i>
+            @if (item.isTask is true)
+            {
+                <div class="card mt-2 mx-3 p-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                                <i class="fa-solid fa-clipboard"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
-                            <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
-                            <p class="card-text" style="margin-top: -10px;">
-                                <small class="text-muted" style="font-size: 0.75em">
-                                    @item.CreatedDate.ToString("d MMMM")
-                                </small>
-                            </p>
+                        <div class="col">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                                <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                                <p class="card-text" style="margin-top: -10px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        @item.CreatedDate.ToString("d MMMM")
+                                    </small>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                            <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
-                        }
+                        <div class="col">
+                            <div class="col justify-content-center" style="position:absolute; right:24px;">
+                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                    <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
+                                    <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                @*<form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
+                    <input type="hidden" value="@item.ClassroomGuid" name="guid" />
+                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
+                    </form>*@
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </a>
+            }
+            else
+            {
+                <div class="card mt-2 mx-3 p-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                                <i class="fa-solid fa-book"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                                <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                                <p class="card-text" style="margin-top: -10px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        @item.CreatedDate.ToString("d MMMM")
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="col justify-content-center" style="position:absolute; right:24px;">
+                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
+                                <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                @*<form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
+                    <input type="hidden" value="@item.ClassroomGuid" name="guid" />
+                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
+                    </form>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        else if (User.IsInRole("Student"))
+        {
+        @if (item.isTask is true)
+        {
+                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                                <i class="fa-solid fa-clipboard"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                                <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                                <p class="card-text" style="margin-top: -10px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        @item.CreatedDate.ToString("d MMMM")
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+                                <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                            }
+                        </div>
+                    </div>
+                </a>
         }
         else
         {
-            <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
-                <div class="row row-cols-auto">
-                    <div class="col d-flex justify-content-center align-items-center">
-                        <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
-                            <i class="fa-solid fa-book"></i>
+                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
+                    <div class="row row-cols-auto">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                                <i class="fa-solid fa-book"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
-                            <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
-                            <p class="card-text" style="margin-top: -10px;">
-                                <small class="text-muted" style="font-size: 0.75em">
-                                    @item.CreatedDate.ToString("d MMMM")
-                                </small>
-                            </p>
+                        <div class="col">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                                <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                                <p class="card-text" style="margin-top: -10px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        @item.CreatedDate.ToString("d MMMM")
+                                    </small>
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col">
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                            <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
-                        }
+                        <div class="col">
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                <button class="btn btn-warning"><i class="fas fa-edit"></i> </button>
+                                <button class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                            }
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            }
+
+        }
+
+        else
+        {
+            <h3>Check your account!</h3>
         }
     }
 </div>
+
+@*-----------------MODAL INSERT LESSON-----------------*@
+<div class="modal" tabindex="-1" id="modalLesson">
+    <div class="modal-dialog  modal-dialog-centered ms-auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Create Lesson</h5>
+                <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <div class="col">
+                    <form id="addLessonForm">
+                        <div class="mb-3">
+                            <label for="nameLesson" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameLesson" name="nameLesson" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionLesson" class="form-label">Description</label>
+                            <textarea class="form-control" id="descriptionLesson" name="descriptionLesson"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subjectAttachment" class="form-label">Subject Attachment</label>
+                            <input type="url" class="form-control" id="subjectAttachment" name="subjectAttachment" required>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                No
+                            </label>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="classroomGuidLesson" name="classroomGuidLesson" value="@Model.ClassroomModel.Guid" readonly>
+                        </div>
+                        <!-- Add other input fields as needed -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-header">
+                <button onclick="InsertClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------------MODAL UPDATE LESSON-----------------*@
+<div class="modal" tabindex="-1" id="modalUpdateLesson">
+    <div class="modal-dialog  modal-dialog-centered ms-auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Update Lesson</h5>
+                <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <div class="col">
+                    <form id="addLessonForm">
+
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="guidUpdateLesson" name="guidUpdateLesson" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nameUpdateLesson" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameUpdateLesson" name="nameUpdateLesson" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionUpdateLesson" class="form-label">Description</label>
+                            <textarea class="form-control" id="descriptionUpdateLesson" name="descriptionUpdateLesson"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
+                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="isTaskUpdateLesson" class="form-label">Is there any task?</label>
+                            <input type="text" class="form-control" id="isTaskUpdateLesson" name="isTaskUpdateLesson" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="classroomGuidUpdateLesson" name="classroomGuidUpdateLesson">
+                        </div>
+                        <!-- Add other input fields as needed -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-header">
+                <button onclick="UpdateLesson()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/lesson.js" asp-append-version="true"></script>
+}
