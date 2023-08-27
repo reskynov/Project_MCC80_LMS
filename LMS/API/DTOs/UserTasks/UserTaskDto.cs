@@ -7,7 +7,7 @@ public class UserTaskDto
 {
     public Guid Guid { get; set; }
     public string Attachment { get; set; }
-    public int Grade { get; set; }
+    public int? Grade { get; set; }
     public Guid UserGuid { get; set; }
     public Guid TaskGuid { get; set; }
 

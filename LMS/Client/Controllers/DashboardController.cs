@@ -1,9 +1,12 @@
 ﻿using Client.Contracts;
+using Client.DTOs.Accounts;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Differencing;
+using NuGet.Protocol.Core.Types;
 using System.Diagnostics.Contracts;
 
 namespace Client.Controllers;
@@ -150,13 +153,59 @@ public class DashboardController : Controller
         var userGuidClaim = User.FindFirst("Guid");
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var result = await _userRepository.Get(guid);
+            var result = await _userRepository.GetProfile(guid);
             if (result != null)
             {
-                var userDetail = (UserVM) result.Data;
+                var userDetail = result.Data;
                 return View(userDetail);
             }
         }
         return View(null);
+    }
+
+    [HttpPost("/dashboard/update-profile")]
+    public async Task<IActionResult> UpdateProfile(UserVM user)
+    {
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            user.Guid = guid;
+            var result = await _userRepository.Put(user.Guid, user);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}!";
+                return RedirectToAction("Profile","Dashboard");
+            }
+            else
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return RedirectToAction("Profile", "Dashboard");
+            }
+        }
+        return RedirectToAction("Profile", "Dashboard");
+    }
+
+    [HttpPost("/dashboard/profile-change-password")]
+    public async Task<IActionResult> ProfileChangePassword(ProfileChangePasswordVM profileChangePasswordVM)
+    {
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            profileChangePasswordVM.GuidAccount = guid;
+            var result = await _userRepository.ProfileChangePassword(profileChangePasswordVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}!";
+                return RedirectToAction("Profile", "Dashboard");
+            }
+            else
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return RedirectToAction("Profile", "Dashboard");
+            }
+        }
+        return RedirectToAction("Profile", "Dashboard");
     }
 }

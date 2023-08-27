@@ -104,7 +104,7 @@ namespace API.Services
         {
             var getClassroom = (from c in _classroomRepository.GetAll()
                                join t in _userRepository.GetAll() on c.TeacherGuid equals t.Guid
-                               where c.Code == classCode
+                               where c.Code == classCode && c.ExpiredDate > DateTime.Now
                                select new ClassroomByCodeDto
                                {
                                    ClassroomGuid = c.Guid,

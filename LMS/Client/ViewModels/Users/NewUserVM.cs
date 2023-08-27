@@ -1,4 +1,4 @@
-﻿using Client.Models;
+﻿﻿using Client.Models;
 using Client.Utilities.Enums;
 
 namespace Client.ViewModels.Users
