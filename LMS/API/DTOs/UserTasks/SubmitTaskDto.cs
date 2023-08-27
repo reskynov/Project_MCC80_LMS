@@ -6,7 +6,6 @@ namespace API.DTOs.UserTasks;
 public class SubmitTaskDto
 {
     public string Attachment { get; set; }
-    public int Grade { get; set; }
     public Guid UserGuid { get; set; }
     public Guid LessonGuid { get; set; }
 

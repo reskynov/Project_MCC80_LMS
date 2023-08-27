@@ -18,7 +18,36 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpPost("submit-task")]
+    public IActionResult SubmitTask(SubmitTaskDto submitTaskDto)
+    {
+        var result = _userTaskService.SubmitTask(submitTaskDto);
+        if (result is 0)
+        {
+            return NotFound(new ResponseHandler<SubmitTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
 
+        if (result is -1)
+        {
+            return StatusCode(500, new ResponseHandler<SubmitTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to submit task from the database."
+            });
+        }
+
+        return Ok(new ResponseHandler<SubmitTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Task has been successfully submitted"
+        });
+    }
 
     [HttpGet]
     public IActionResult GetAll()

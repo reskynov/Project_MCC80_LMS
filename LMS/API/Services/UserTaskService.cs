@@ -1,4 +1,6 @@
 ﻿using API.Contracts;
+using API.DTOs.Accounts;
+using API.DTOs.Tasks;
 using API.DTOs.UserTasks;
 using API.Models;
 
@@ -8,23 +10,43 @@ public class UserTaskService
 {
     private readonly IUserTaskRepository _userTaskRepository;
     private readonly ITaskRepository _taskRepository;
+    private readonly ILessonRepository _lessonRepository;
 
-    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository)
+    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository, ILessonRepository lessonRepository)
     {
         _userTaskRepository = UserTaskRepository;
         _taskRepository = taskRepository;
+        _lessonRepository = lessonRepository;
     }
 
-    public UserTaskDto? Create(NewUserTaskDto newUserTaskDto)
+    public int SubmitTask(SubmitTaskDto submitTaskDto)
     {
-        var UserTask = _userTaskRepository.Create(newUserTaskDto);
+        var getTask = (from l in _lessonRepository.GetAll()
+                          join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                          where l.Guid == submitTaskDto.LessonGuid
+                          select t).FirstOrDefault();
+
+        if (getTask is null)
+        {
+            return 0;
+        }
+
+        var newUserTask = new NewUserTaskDto
+        {
+            Attachment = submitTaskDto.Attachment,
+            Grade = -1,
+            TaskGuid = getTask.Guid,
+            UserGuid = submitTaskDto.UserGuid
+        };
+
+        var UserTask = _userTaskRepository.Create(newUserTask);
 
         if (UserTask is null)
         {
-            return null;
+            return -1;
         }
 
-        return (UserTaskDto)UserTask;
+        return 1;
     }
 
     public IEnumerable<UserTaskDto> GetAll()
