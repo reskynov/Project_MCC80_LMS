@@ -17,6 +17,29 @@ public class UserTaskController : ControllerBase
         _userTaskService = userTaskService;
     }
 
+    [HttpGet("submit-task")]
+    public IActionResult GetSubmittedTask([FromQuery] FindSubmittedTaskDto findSubmittedTaskDto)
+    {
+        var result = _userTaskService.GetSubmittedTask(findSubmittedTaskDto);
+        if (result is null)
+        {
+            return NotFound(new ResponseHandler<GetSubmittedTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data not found."
+            });
+        }
+
+        return Ok(new ResponseHandler<GetSubmittedTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data retrieved successfully.",
+            Data = result
+        });
+    }
+
     [HttpPost("submit-task")]
     public IActionResult SubmitTask(SubmitTaskDto submitTaskDto)
     {
@@ -48,6 +71,39 @@ public class UserTaskController : ControllerBase
             Message = "Task has been successfully submitted"
         });
     }
+
+    [HttpPut("submit-task")]
+    public IActionResult EditSubmittedTask(SubmitTaskDto submitTaskDto)
+    {
+        var result = _userTaskService.EditSubmittedTask(submitTaskDto);
+        if (result is -1)
+        {
+            return NotFound(new ResponseHandler<UserTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
+
+        if (result is 0)
+        {
+            return StatusCode(500, new ResponseHandler<UserTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to retrieve data from the database."
+            });
+        }
+
+        return Ok(new ResponseHandler<UserTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data has been updated successfully."
+        });
+    }
+
 
     [HttpGet]
     public IActionResult GetAll()

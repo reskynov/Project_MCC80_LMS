@@ -11,12 +11,69 @@ public class UserTaskService
     private readonly IUserTaskRepository _userTaskRepository;
     private readonly ITaskRepository _taskRepository;
     private readonly ILessonRepository _lessonRepository;
+    private readonly IUserRepository _userRepository;
 
-    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository, ILessonRepository lessonRepository)
+    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository, ILessonRepository lessonRepository, IUserRepository userRepository)
     {
         _userTaskRepository = UserTaskRepository;
         _taskRepository = taskRepository;
         _lessonRepository = lessonRepository;
+        _userRepository = userRepository;
+    }
+
+    public int EditSubmittedTask(SubmitTaskDto submitTaskDto)
+    {
+        var getSubmittedTask = (from l in _lessonRepository.GetAll()
+                                join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
+                                where l.Guid == submitTaskDto.LessonGuid && ut.UserGuid == submitTaskDto.UserGuid
+                                select new GetSubmittedTaskDto
+                                {
+                                    UserTaskGuid = ut.Guid,
+                                    Attachment = ut.Attachment,
+                                    Grade = ut.Grade,
+                                    UserGuid = ut.UserGuid,
+                                    TaskGuid = ut.TaskGuid
+                                }).FirstOrDefault();
+
+        if (getSubmittedTask is null)
+        {
+            return -1; //submitted task not found
+        }
+
+        var toUpdate = new UserTaskDto
+        {
+            Guid = getSubmittedTask.UserTaskGuid,
+            Attachment = submitTaskDto.Attachment,
+            Grade = getSubmittedTask.Grade,
+            TaskGuid = getSubmittedTask.TaskGuid,
+            UserGuid = getSubmittedTask.UserGuid,
+        };
+
+        return Update(toUpdate);
+    }
+
+    public GetSubmittedTaskDto? GetSubmittedTask(FindSubmittedTaskDto findSubmittedTaskDto)
+    {
+        var getSubmittedTask = (from l in _lessonRepository.GetAll()
+                       join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                       join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
+                       where l.Guid == findSubmittedTaskDto.LessonGuid && ut.UserGuid == findSubmittedTaskDto.UserGuid
+                       select new GetSubmittedTaskDto
+                       {
+                           UserTaskGuid = ut.Guid,
+                           Attachment = ut.Attachment,
+                           Grade = ut.Grade,
+                           UserGuid = ut.UserGuid,
+                           TaskGuid = ut.TaskGuid
+                       }).FirstOrDefault();
+
+        if (getSubmittedTask is null)
+        {
+            return null;
+        }
+
+        return getSubmittedTask;
     }
 
     public int SubmitTask(SubmitTaskDto submitTaskDto)
@@ -34,17 +91,12 @@ public class UserTaskService
         var newUserTask = new NewUserTaskDto
         {
             Attachment = submitTaskDto.Attachment,
-            Grade = -1,
+            Grade = null,
             TaskGuid = getTask.Guid,
             UserGuid = submitTaskDto.UserGuid
         };
 
-        var UserTask = _userTaskRepository.Create(newUserTask);
-
-        if (UserTask is null)
-        {
-            return -1;
-        }
+        var UserTask = Create(newUserTask);
 
         return 1;
     }
