@@ -240,10 +240,50 @@
       <i class="fa fa-cog py-2"> </i>
     </a>
   </div>
-    
+    @*----------------------------MODAL UPDATE CLASSROOM----------------------------*@
+    <div class="modal" tabindex="-1" id="modalUpdate">
+        <div class="modal-dialog  modal-dialog-centered ms-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Update Classroom</h5>
+                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col">
+                        <form id="addClassroomForm">
+
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="guidUpdateClassroom" name="guidClassroom" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="codeUpdateClassroom" name="codeUpdateClassroom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nameClassroom" class="form-label">Classroom Name</label>
+                                <input type="text" class="form-control" id="nameUpdateClassroom" name="NameClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descriptionClassroom" class="form-label">Description</label>
+                                <textarea class="form-control" id="descriptionUpdateClassroom" name="descriptionClassroom"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="teacherGuidUpdateClassroom" name="teacherGuidUpdateClassroom">
+                            </div>
+                            <!-- Add other input fields as needed -->
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <button onclick="UpdateClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @*  <script src="~/lib/jquery/dist/jquery.min.js"></script>
 *@  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
 
   <!--   Core JS Files   -->
   <script src="~/assets/js/core/popper.min.js"></script>
@@ -281,6 +321,23 @@
         </script>
     }
 
+    <script>
+        $(document).ready(function () {
+            $('#myTableClassroom').DataTable({
+                dom: 'Blfrtip',
+                    buttons: [
+                    //'copy', 'csv',
+                    'excel', 'pdf', 'print',
+                        {
+                            extend: 'colvis',
+                            title: 'Colvis',
+                            text: 'Column Visibility'
+                        }
+                    ]
+            });
+        });
+    </script>
+
     <!--   Core JS Files   -->    
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/core/popper.min.js"></script>
@@ -289,6 +346,7 @@
     <script src="~/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="~/assets/js/plugins/chartjs.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
 
     <!-- Chart-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>

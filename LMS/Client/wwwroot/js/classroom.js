@@ -45,20 +45,7 @@
     //    });
     //}
 
-    $(document).ready(function () {
-        $('#myTableClassroom').DataTable({
-            dom: "blfrtip",
-            buttons: [
-                {
-                    extend: 'colvis',
-                    postfixButtons: ['colvisrestore'],
-                    collectionLayout: 'fixed two-column',
-                    className: 'btn btn-primary'
-                },
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-    });
+  
 
     function InsertClassroom() {
         var classroom = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
