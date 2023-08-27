@@ -115,7 +115,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i>Add Classroom</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -142,7 +142,7 @@
                                                 @Html.DisplayFor(modelItem => item.ClassroomName)
                                             </td>
                                             <td>
-
+                                                @Html.DisplayFor(modelItem => item.StudentCount)
                                             </td>
                                             <td>
                                                 <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
@@ -164,6 +164,7 @@
         </div>
     </div>
 
+    @*-----------------MODAL INSERT CLASSROOM-----------------*@
     <div class="modal" tabindex="-1" id="modalClassroom">
         <div class="modal-dialog  modal-dialog-centered ms-auto">
             <div class="modal-content">
@@ -195,50 +196,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal" tabindex="-1" id="modalUpdate">
-        <div class="modal-dialog  modal-dialog-centered ms-auto">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Update Classroom</h5>
-                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body row">
-                    <div class="col">
-                        <form id="addClassroomForm">
-
-                            <div class="mb-3">
-                                <input type="hidden" class="form-control" id="guidUpdateClassroom" name="guidClassroom" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <input type="hidden" class="form-control" id="codeUpdateClassroom" name="codeUpdateClassroom">
-                            </div>
-                            <div class="mb-3">
-                                <label for="nameClassroom" class="form-label">Classroom Name</label>
-                                <input type="text" class="form-control" id="nameUpdateClassroom" name="NameClassroom" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="descriptionClassroom" class="form-label">Description</label>
-                                <textarea class="form-control" id="descriptionUpdateClassroom" name="descriptionClassroom"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <input type="hidden" class="form-control" id="teacherGuidUpdateClassroom" name="teacherGuidUpdateClassroom">
-                            </div>
-                            <!-- Add other input fields as needed -->
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-header">
-                    <button onclick="UpdateClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="~/js/classroom.js" asp-append-version="true"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-
 }
 
 
