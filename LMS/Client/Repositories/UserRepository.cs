@@ -1,8 +1,11 @@
 ﻿using Client.Contracts;
+using Client.DTOs.Accounts;
 using Client.Models;
 using Client.Utilities.Handlers;
 using Client.ViewModels.Users;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Client.Repositories
 {
@@ -21,6 +24,29 @@ namespace Client.Repositories
                 classroomByUser = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<ClassroomByUserVM>>>(apiResponse);
             }
             return classroomByUser;
+        }
+
+        public async Task<ResponseHandler<ProfileVM>> GetProfile(Guid guid)
+        {
+            ResponseHandler<ProfileVM> user = null;
+            using (var response = await httpClient.GetAsync(request + "profile?guid=" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                user = JsonConvert.DeserializeObject<ResponseHandler<ProfileVM>>(apiResponse);
+            }
+            return user;
+        }
+
+        public async Task<ResponseHandler<ProfileChangePasswordVM>> ProfileChangePassword(ProfileChangePasswordVM entity)
+        {
+            ResponseHandler<ProfileChangePasswordVM> entityVM = null;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            using (var response = httpClient.PutAsync(request + "profile-change-password", content).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseHandler<ProfileChangePasswordVM>>(apiResponse);
+            }
+            return entityVM;
         }
     }
 }

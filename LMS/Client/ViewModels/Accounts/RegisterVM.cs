@@ -17,7 +17,7 @@ namespace Client.ViewModels.Accounts
         public string ConfirmPassword { get; set; }
 
         //User
-        [Required(ErrorMessage = "Confirm password is required")]
+        [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
 
         public string? LastName { get; set; }

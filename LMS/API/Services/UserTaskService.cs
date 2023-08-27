@@ -15,17 +15,17 @@ public class UserTaskService
         _taskRepository = taskRepository;
     }
 
-    ////public TaskByLessonDto? GetTaskByLesson(Guid guid)
-    ////{
-    ////    var UserTask = _userTaskRepository.Create();
+    public UserTaskDto? Create(NewUserTaskDto newUserTaskDto)
+    {
+        var UserTask = _userTaskRepository.Create(newUserTaskDto);
 
-    ////    if (UserTask is null)
-    ////    {
-    ////        return null;
-    ////    }
+        if (UserTask is null)
+        {
+            return null;
+        }
 
-    ////    return UserTask;
-    ////}
+        return (UserTaskDto)UserTask;
+    }
 
     public IEnumerable<UserTaskDto> GetAll()
     {

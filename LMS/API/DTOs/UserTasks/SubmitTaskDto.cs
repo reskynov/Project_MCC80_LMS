@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.DTOs.UserTasks;
 
-public class TaskByLessonDto
+public class SubmitTaskDto
 {
     public string Attachment { get; set; }
     public int Grade { get; set; }
     public Guid UserGuid { get; set; }
-    public Guid TaskGuid { get; set; }
+    public Guid LessonGuid { get; set; }
 
 }
