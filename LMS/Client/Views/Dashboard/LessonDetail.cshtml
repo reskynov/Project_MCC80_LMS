@@ -7,7 +7,7 @@
 <div class="card">
     <div class="row">
         <div class="col">
-            <div id="titleLesson" class="ms-4 me-1 my-3" style="border-bottom: 1px solid #5e72e4;">
+            <div id="titleLesson" class="mx-4 my-3" style="border-bottom: 1px solid #5e72e4;">
                 <h3>
                     @Html.DisplayFor(model => model.Name)
                 </h3>
@@ -17,7 +17,7 @@
                     </small></>
                 </p>
             </div>
-            <div id="contentLesson" class="ms-4 me-1" style="text-align:justify;">
+            <div id="contentLesson" class="mx-4" style="text-align:justify;">
                 <p>
                     @Html.Raw(Model.Description.Replace("\n", "<br>"))
                     @Html.DisplayFor(model => model.Description)
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        @if(Model.IsTask is true)
+        @if(Model.IsTask is true && User.IsInRole("Student"))
         {
             <div class="col-md-4">
                 <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">

@@ -35,9 +35,9 @@ td{
     text-align:center;
 }
 
-/*#listCardLesson:hover {
-    background-color: rgba(0, 0, 255, 0.1);*/ /* Warna hitam dengan opacity 0.1 */
-/*}*/
+#listCardLessonStudent:hover {
+    background-color: rgba(0, 0, 255, 0.1);  Warna hitam dengan opacity 0.1 
+}
 
 .slide-top-card {
     animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
