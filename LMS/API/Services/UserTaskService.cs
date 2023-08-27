@@ -7,11 +7,25 @@ namespace API.Services;
 public class UserTaskService
 {
     private readonly IUserTaskRepository _userTaskRepository;
+    private readonly ITaskRepository _taskRepository;
 
-    public UserTaskService(IUserTaskRepository UserTaskRepository)
+    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository)
     {
         _userTaskRepository = UserTaskRepository;
+        _taskRepository = taskRepository;
     }
+
+    ////public TaskByLessonDto? GetTaskByLesson(Guid guid)
+    ////{
+    ////    var UserTask = _userTaskRepository.Create();
+
+    ////    if (UserTask is null)
+    ////    {
+    ////        return null;
+    ////    }
+
+    ////    return UserTask;
+    ////}
 
     public IEnumerable<UserTaskDto> GetAll()
     {

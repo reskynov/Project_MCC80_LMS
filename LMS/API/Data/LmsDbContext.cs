@@ -98,11 +98,6 @@ namespace API.Data
                         .HasForeignKey(task => task.LessonGuid);
 
             //TASK
-            //One User to many Task (1:N)
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Tasks)
-                        .WithOne(task => task.User)
-                        .HasForeignKey(task => task.UserGuid);
 
             //One Task to many Grade (1:N)
             modelBuilder.Entity<Task>()

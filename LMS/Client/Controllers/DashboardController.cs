@@ -31,7 +31,6 @@ public class DashboardController : Controller
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
             var result = await _userRepository.GetClassroomByUser(guid);
-            Console.WriteLine(guid);
             if (result != null && result.Data != null)
             {
                 var ListClass = result.Data;
@@ -55,14 +54,15 @@ public class DashboardController : Controller
         var result = await _classroomRepository.Delete(guid);
         if (result.Status == "200")
         {
-            TempData["Success"] = "Data Berhasil Dihapus";
+            TempData["Success"] = "Data has been successfully deleted";
         }
         else
         {
-            TempData["Error"] = "Gagal Menghapus Data";
+            TempData["Failed"] = "Failed to delete Data";
         }
         return RedirectToAction(nameof(Index));
     }
+
     [HttpPost]
     public async Task<IActionResult> Unenroll(Guid userClassroomGuid)
     {
@@ -135,6 +135,22 @@ public class DashboardController : Controller
         {
             var listPeople = result.Data;
             return View(listPeople);
+        }
+        return View(null);
+    }
+
+    [HttpGet("/dashboard/profile")]
+    public async Task<ActionResult> Profile()
+    {
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            var result = await _userRepository.Get(guid);
+            if (result != null)
+            {
+                var userDetail = (UserVM) result.Data;
+                return View(userDetail);
+            }
         }
         return View(null);
     }

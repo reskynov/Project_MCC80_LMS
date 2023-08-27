@@ -7,7 +7,6 @@ namespace API.DTOs.Tasks
     {
         public Guid Guid { get; set; }
         public DateTime? DeadlineDate { get; set; }
-        public Guid UserGuid { get; set; }
         public Guid LessonGuid { get; set; }
 
         public static implicit operator Task(TaskDto taskDto)
@@ -16,7 +15,6 @@ namespace API.DTOs.Tasks
             {
                 Guid = taskDto.Guid,
                 DeadlineDate = taskDto.DeadlineDate,
-                UserGuid = taskDto.UserGuid,
                 LessonGuid = taskDto.LessonGuid,
                 ModifiedDate = DateTime.Now
             };
@@ -28,7 +26,6 @@ namespace API.DTOs.Tasks
             {
                 Guid = task.Guid,
                 DeadlineDate = task.DeadlineDate,
-                UserGuid = task.UserGuid,
                 LessonGuid = task.LessonGuid
             };
         }

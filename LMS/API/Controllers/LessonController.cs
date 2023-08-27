@@ -148,4 +148,27 @@ public class LessonController : ControllerBase
             Message = "Success! Data has been deleted successfully."
         });
     }
+
+    [HttpPost("lesson-task")]
+    public IActionResult CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
+    {
+        var result = _lessonService.CreateLessonTask(newLessonTaskDto);
+        if (result is null)
+        {
+            return StatusCode(500, new ResponseHandler<NewLessonTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to retrieve data from the database."
+            });
+        }
+
+        return Ok(new ResponseHandler<NewLessonTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data has been created successfully.",
+            Data = newLessonTaskDto
+        });
+    }
 }
