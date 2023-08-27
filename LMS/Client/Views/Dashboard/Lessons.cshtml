@@ -32,7 +32,7 @@
     {
         @if (item.isTask is true)
         {
-            <div asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+            <div class="card mt-2 mx-3 p-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
                 <div class="row row-cols-auto">
                     <div class="col d-flex justify-content-center align-items-center">
                         <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
@@ -50,18 +50,18 @@
                         </div>
                     </div>
                     <div class="col">
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <div style="position:absolute; right:24px;">
-                                <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-                                <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
-
+                        <div class="col justify-content-center" style="position:absolute; right:24px;">
+                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                @if (User.IsInRole("Teacher"))
+                                {
+                                <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
+                                <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                }
                                 @*<form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
                     <input type="hidden" value="@item.ClassroomGuid" name="guid" />
                     <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
                     </form>*@
                             </div>
-                        }
                     </div>
                 </div>
             </div>
@@ -95,13 +95,13 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label" for="flexRadioDefault1">
-                                Default radio
+                                Yes
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
                             <label class="form-check-label" for="flexRadioDefault2">
-                                Default checked radio
+                                No
                             </label>
                         </div>
                         <div class="mb-3">
