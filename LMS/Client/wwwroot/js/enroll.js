@@ -128,7 +128,7 @@ function GetEnroll(enrollCode) {
 
 function Unenroll(className) {
     Swal.fire({
-        title: 'Are you sure you want to unenroll from the ' + className +"?",
+        title: 'Are you sure you want to unenroll from ' + className +"?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
