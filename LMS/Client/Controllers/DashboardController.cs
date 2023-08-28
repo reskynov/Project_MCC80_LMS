@@ -129,6 +129,7 @@ public class DashboardController : Controller
     public async Task<IActionResult> LessonDetail(Guid lessonGuid)
     {
         var userGuidClaim = User.FindFirst("Guid");
+
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
 
