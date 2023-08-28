@@ -145,7 +145,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/classroom.js" asp-append-version="true"></script>
-
+    <script src="~/js/submitTask.js" asp-append-version="true"></script>
   <!--   Core JS Files   -->
   <script src="~/assets/js/core/popper.min.js"></script>
   <script src="~/assets/js/core/bootstrap.min.js"></script>
@@ -243,7 +243,7 @@
     <script src="https://cdn.tiny.cloud/1/58id1g5egyl2gf98nbldh7q3zub3ci964t4ezaniurgnx5rh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            selector: 'textarea#contentLesson',
+            selector: 'textarea',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
