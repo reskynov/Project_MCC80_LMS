@@ -2,12 +2,12 @@
 
 namespace API.Models
 {
-    [Table("tb_tr_grades")]
+    [Table("tb_tr_user_tasks")]
     public class UserTask : BaseEntity
     {
         [Column("attachment", TypeName = "nvarchar(max)")]
         public string Attachment { get; set; }
-        [Column("value")]
+        [Column("grade")]
         public int? Grade { get; set; }
         [Column("user_guid")]
         public Guid UserGuid { get; set; }

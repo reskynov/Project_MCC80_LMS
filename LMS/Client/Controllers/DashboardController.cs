@@ -180,7 +180,7 @@ public class DashboardController : Controller
             {
                 TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
-                return RedirectToAction("Profile", "Dashboard");
+                return View(nameof(Profile));
             }
         }
         return RedirectToAction("Profile", "Dashboard");
@@ -203,7 +203,7 @@ public class DashboardController : Controller
             {
                 TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
-                return RedirectToAction("Profile", "Dashboard");
+                return View(nameof(Profile));
             }
         }
         return RedirectToAction("Profile", "Dashboard");
