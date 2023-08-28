@@ -12,9 +12,10 @@ namespace Client.Models
         [Column("description", TypeName = "nvarchar(max)")]
         public string? Description { get; set; }
         public Guid TeacherGuid { get; set; }
-        [Column("expired_date")]
-        public DateTime ExpiredDate { get; set; }
         [Column("teacher_guid")]
+        public DateTime ExpiredDate { get; set; }
+        [Column("expired_date")]
+        
 
         //Cardinality
         public ICollection<UserClassroom>? UserClassrooms { get; set; }
