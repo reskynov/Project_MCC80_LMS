@@ -19,7 +19,7 @@ body {
 
 
 div.dt-buttons{
-    margin-left: 50px;
+    margin-left: 25px;
 }
 
 div#myTable_filter.dataTables_filter{
@@ -52,3 +52,25 @@ td{
         transform: translateY(-35px);
     }
 }
+
+.refresh-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: black;
+}
+
+.refresh-button {
+    background-color: green;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 24px;
+    color: green;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .refresh-button:hover {
+        transform: rotate(180deg);
+    }

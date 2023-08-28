@@ -61,17 +61,24 @@
 
 function InsertLesson() {
     var lesson = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
-    //ini ngambil value dari tiap inputan di form nya
+    //ini ngambil value dari tiap inputan di form nya   
     lesson.Name = $("#nameLesson").val();
     lesson.Description = $("#descriptionLesson").val();
     lesson.SubjectAttachment = $("#subjectAttachmentLesson").val();
-    lesson.LessonGuid = $("#LessonGuidLesson").val();
+    
+    if ($("#isTask").val() == "true") {
+        lesson.IsTask = true;
+    } else {
+        lesson.IsTask = false;
+    }
+    lesson.ClassroomGuid = $("#classroomGuidLesson").val();
+    lesson.DeadlineDate = $("#deadlineDateLesson").val();
     //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
     $.ajax({
-        url: "https://localhost:7026/api/lessons",
+        url: "https://localhost:7026/api/lessons/lesson-task",
         type: "POST",
         //jika terkena 415 unsupported media type (tambahkan headertype Json & JSON.Stringify();)
-        data: JSON.stringify(lessons),
+        data: JSON.stringify(lesson),
         contentType: "application/json",
         dataType: "json"
     }).done((result) => {
@@ -90,6 +97,7 @@ function InsertLesson() {
             text: 'Lesson failed added',
             icon: 'error'
         })
+        console.log(error);
     })
 }
 
@@ -121,3 +129,54 @@ function DeleteLesson(guid) {
         }
     });
 }
+
+//function RefreshCodeLesson(guid) {
+//    $.ajax({
+//        url: "https://localhost:7026/api/classrooms/new-code?guid=" + guid,
+//        success: function (data) {
+//            var newCode = data;
+//            document.getElementById("codeContainer").innerHTML = newCode;
+//            window.location.reload();
+//        },
+//        error: function (xhr, status, error) {
+//            console.error("Error fetching new code:", error);
+//        }
+//    });
+//}
+
+//function ShowCodeLesson(guid) {
+//    $.ajax({
+//        url: "https://localhost:7026/api/classrooms/" + guid,
+//        type: "GET",
+//        dataType: "json"
+//    }).done((result) => {
+//        console.log(result)
+//        $("#guidClassroomCode").val(result.data.guid);
+//    }).fail((error) => {
+//        alert("Failed to fetch classroom data. Please try again.");
+//        console.log(error)
+//    });
+//}
+
+function RefreshCodeLesson(guid) {
+    $.ajax({
+        url: "https://localhost:7026/api/classrooms/new-code?guid=" + guid,
+        type: "PUT",
+    }).done(function () {
+        //var newCode = data;
+        //document.getElementById("codeContainer").innerHTML = newCode;
+        /*.then(function () {*/
+        console.log();
+        location.reload();
+
+        //});
+    }).fail(function (error) {
+        console.error("Error fetching new code:", error);
+    });
+}
+
+//$(document).ready(function () {
+//    $("#refreshCode").click(function () {
+//        RefreshCodeLesson(guid);
+//    })
+//})
