@@ -1,5 +1,6 @@
 ﻿using Client.Contracts;
 using Client.DTOs.Accounts;
+using Client.Models;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
@@ -18,12 +19,14 @@ public class DashboardController : Controller
     private readonly IUserClassroomRepository _userClassroomRepository;
     private readonly IClassroomRepository _classroomRepository;
     private readonly ILessonRepository _lessonRepository;
-    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository)
+    private readonly IUserTaskRepository _userTaskRepository;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository, IUserTaskRepository userTaskRepository)
     {
         _userRepository = userRepository;
         _userClassroomRepository = userClassroomRepository;
         _classroomRepository = classroomRepository;
         _lessonRepository = lessonRepository;
+        _userTaskRepository = userTaskRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -93,10 +96,9 @@ public class DashboardController : Controller
         {
             return View("No Data");
         }
+        var classroomDescription = resultClassroomDetails.Data;
 
         var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
-
-        var classroomDescription = resultClassroomDetails.Data;
 
         // Memeriksa apakah ada data lesson atau tidak
         if (resultLesson != null && resultLesson.Data != null && resultLesson.Data.Any())
@@ -126,14 +128,54 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> LessonDetail(Guid lessonGuid)
     {
-        var result = await _lessonRepository.Get(lessonGuid);
-        if (result != null)
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var lessonDetail = result.Data;
-            return View(lessonDetail);
+
+           var resultSubmittedTask = await _userTaskRepository.GetSubmittedTask(guid, lessonGuid);
+           if (resultSubmittedTask is null)
+           {
+               return View("LessonDetail","Dashboard");
+           }
+           var dataSubmittedTask = resultSubmittedTask.Data;
+         
+           var resultLessonDetail = await _lessonRepository.Get(lessonGuid);
+         
+           if (resultLessonDetail != null && resultLessonDetail.Data != null)
+           {
+               var lessonDetail = resultLessonDetail.Data;
+         
+               var lessonDetailView = new LessonDetailsVM
+               {
+                   LessonModel = lessonDetail,
+                   GetSubmittedTaskVM = dataSubmittedTask
+               };
+         
+               return View(lessonDetailView);
+           }
+           else
+           {
+               var lessonDetailView = new LessonDetailsVM
+               {
+                   LessonModel = new Lesson(),
+                   GetSubmittedTaskVM = dataSubmittedTask
+               };
+               return View(lessonDetailView);
+           }
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
         }
 
-        return View(null);
+
+        //if (result != null)
+        //{
+        //    var lessonDetail = result.Data;
+        //    return View(lessonDetail);
+        //}
+
+        //return View(null);
     }
 
     public async Task<IActionResult> GetPeople(Guid classroomGuid)
