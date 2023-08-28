@@ -8,6 +8,7 @@ public class LessonVM
     public string? Description { get; set; }
     public string? SubjectAttachment { get; set; }
     public Guid ClassroomGuid { get; set; }
+    public DateTime DateCreated { get; set; }
 
     public static implicit operator Lesson(LessonVM lessonDto)
     {
@@ -30,7 +31,8 @@ public class LessonVM
             Name = lesson.Name,
             Description = lesson.Description,
             SubjectAttachment = lesson.SubjectAttachment,
-            ClassroomGuid = lesson.ClassroomGuid
+            ClassroomGuid = lesson.ClassroomGuid,
+            DateCreated = lesson.CreatedDate
         };
     }
 }

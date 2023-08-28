@@ -11,6 +11,7 @@ public class LessonDto
     public string? SubjectAttachment { get; set; }
     public bool IsTask { get; set; }
     public Guid ClassroomGuid { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public static implicit operator Lesson(LessonDto lessonDto)
     {
@@ -35,7 +36,8 @@ public class LessonDto
             Description = lesson.Description,
             SubjectAttachment = lesson.SubjectAttachment,
             IsTask = lesson.IsTask,
-            ClassroomGuid = lesson.ClassroomGuid
+            ClassroomGuid = lesson.ClassroomGuid,
+            CreatedDate = lesson.CreatedDate
         };
     }
 }
