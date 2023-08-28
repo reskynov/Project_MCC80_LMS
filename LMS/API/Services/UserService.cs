@@ -43,6 +43,37 @@ namespace API.Services
             _lessonRepository = lessonRepository;
         }
 
+        public DashboardStudentDto? GetDashboardStudentDto(Guid guid)
+        {
+            var totalClassroom = _userClassroomRepository.GetAll().Where(uc => uc.UserGuid == guid).Count();
+
+            var detailAssignment = (from u in _userRepository.GetAll()
+                                    join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                    join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                    join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                    join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
+                                    from ut in utj.DefaultIfEmpty()
+                                    where u.Guid == guid
+                                    select new { uc, t, ut});
+
+            if(detailAssignment is null)
+            {
+                return null;
+            }
+
+            var dashboard = new DashboardStudentDto
+            {
+                TotalClassroom = totalClassroom,
+                TotalAssignment = detailAssignment.Count(),
+                TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
+                TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count()
+            };
+
+            return dashboard;
+
+        }
+
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
         {
             var getStudentTask = from u in _userRepository.GetAll()

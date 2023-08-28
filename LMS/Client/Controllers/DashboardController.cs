@@ -1,6 +1,6 @@
 ﻿using Client.Contracts;
-using Client.DTOs.Accounts;
 using Client.Models;
+using Client.ViewModels.Accounts;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
@@ -31,7 +31,23 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
-        return View();
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            var result = await _userRepository.DashboardStudent(guid);
+            if (result != null && result.Data != null)
+            {
+                var dataDashboard = result.Data;
+                return View(dataDashboard); // Mengembalikan ListClass ke tampilan
+            }
+            else
+            {
+                return View(null);
+            }
+        } else
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 
     public async Task<IActionResult> Classroom()
