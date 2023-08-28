@@ -136,7 +136,7 @@
         }
         else
         {
-                <div asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
+                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3 " style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
                     <div class="row row-cols-auto">
                         <div class="col d-flex justify-content-center align-items-center">
                             <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
@@ -154,7 +154,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             }
 
         }

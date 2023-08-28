@@ -5,6 +5,7 @@ using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace API.Services
@@ -17,13 +18,19 @@ namespace API.Services
         private readonly IAccountRepository _accountRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IUserTaskRepository _userTaskRepository;
+        private readonly ILessonRepository _lessonRepository;
 
         public UserService(IUserRepository userRepository, 
             IClassroomRepository classroomRepository, 
             IUserClassroomRepository userClassroomRepository,
             IRoleRepository roleRepository,
             IAccountRoleRepository accountRoleRepository,
-            IAccountRepository accountRepository)
+            IAccountRepository accountRepository,
+            ITaskRepository taskRepository,
+            IUserTaskRepository userTaskRepository,
+            ILessonRepository lessonRepository)
         {
             _userRepository = userRepository;
             _classroomRepository = classroomRepository;
@@ -31,6 +38,38 @@ namespace API.Services
             _roleRepository = roleRepository;
             _accountRoleRepository = accountRoleRepository;
             _accountRepository = accountRepository;
+            _taskRepository = taskRepository;
+            _userTaskRepository = userTaskRepository;
+            _lessonRepository = lessonRepository;
+        }
+
+        public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
+        {
+            var getStudentTask = from u in _userRepository.GetAll()
+                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                 join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
+                                 from ut in utj.DefaultIfEmpty()
+                                 where u.Guid == guid
+                                 select new StudentTaskDto
+                                     {
+                                         ClassroomName = c.Name,
+                                         LessonGuid = l.Guid,
+                                         LessonName = l.Name,
+                                         TaskGuid = t.Guid,
+                                         Deadline = t.DeadlineDate,
+                                         Grade = ut?.Grade,
+                                         IsSubmitted = ut?.Attachment is null
+                                     };
+
+            if (!getStudentTask.Any())
+            {
+                return Enumerable.Empty<StudentTaskDto>();
+            }
+
+            return getStudentTask;
         }
 
         public int ChangePassword(ProfileChangePasswordDto profileChangePasswordDto)
