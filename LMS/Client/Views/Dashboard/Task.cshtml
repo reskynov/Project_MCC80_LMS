@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Client.ViewModels.Users.ClassroomByUserVM>
+
+@{
+    ViewData["Title"] = "Task";
+    Layout = "_DashboardLayout";
+}
+
+
+<h1 style="color:white;">Classroom</h1>
+
+@if (User.IsInRole("Teacher"))
+{
+    <div class="container ms-0 me-0 ps-0">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="myTableClassroom" class="table align-items-center mb-0 table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom Name</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Student Count</th>
+                                        <th class="text-secondary opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(i++)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ClassroomName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StudentCount)
+                                            </td>
+                                            <td>
+                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
+                                                <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
+                                                <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                                                @* <form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
+                                        <input type="hidden" value="@item.ClassroomGuid" name="guid" />
+                                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
+                                        </form>*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*-----------------MODAL INSERT CLASSROOM-----------------*@
+    <div class="modal" tabindex="-1" id="modalClassroom">
+        <div class="modal-dialog  modal-dialog-centered ms-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Create Classroom</h5>
+                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col">
+                        <form id="addClassroomForm">
+                            <div class="mb-3">
+                                <label for="nameClassroom" class="form-label">Classroom Name</label>
+                                <input type="text" class="form-control" id="nameClassroom" name="NameClassroom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descriptionClassroom" class="form-label">Description</label>
+                                <textarea class="form-control" id="descriptionClassroom" name="descriptionClassroom"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="teacherGuidClassroom" name="teacherGuidClassroom" value="@User.FindFirst("Guid").Value" readonly>
+                            </div>
+                            <!-- Add other input fields as needed -->
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <button onclick="InsertClassroom()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

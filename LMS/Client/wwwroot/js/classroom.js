@@ -100,7 +100,6 @@
             alert("Failed to fetch classroom data. Please try again.");
             console.log(error)
         });
-
     }
 
     function UpdateClassroom() {
