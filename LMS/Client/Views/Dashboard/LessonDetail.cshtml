@@ -14,7 +14,7 @@
                 <p style="margin-top:-10px">
                     <small class="text-muted">
                         @Model.LessonModel.CreatedDate.ToString("d MMMM")
-                    </small></>
+                    </small>
                 </p>
                 @*<p style ="margin-top:-10px">
                     Deadline Date :
@@ -24,7 +24,6 @@
             <div id="contentLesson" class="mx-4" style="text-align:justify;">
                 <p>
                     @Html.Raw(Model.LessonModel.Description.Replace("\n", "<br>"))
-                    @Model.LessonModel.Description
                 </p>
                 <div>
                     <p class="m-0">Referensi :</p>

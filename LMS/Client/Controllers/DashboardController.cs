@@ -129,6 +129,7 @@ public class DashboardController : Controller
     public async Task<IActionResult> LessonDetail(Guid lessonGuid)
     {
         var userGuidClaim = User.FindFirst("Guid");
+
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
 
@@ -222,7 +223,7 @@ public class DashboardController : Controller
             {
                 TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
-                return RedirectToAction("Profile", "Dashboard");
+                return View(nameof(Profile));
             }
         }
         return RedirectToAction("Profile", "Dashboard");
@@ -245,7 +246,7 @@ public class DashboardController : Controller
             {
                 TempData["Failed"] = $"{result.Message}";
                 ModelState.AddModelError(string.Empty, result.Message);
-                return RedirectToAction("Profile", "Dashboard");
+                return View(nameof(Profile));
             }
         }
         return RedirectToAction("Profile", "Dashboard");
