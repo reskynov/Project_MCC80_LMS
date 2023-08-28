@@ -1,6 +1,11 @@
 ﻿using API.Contracts;
+using API.DTOs.Accounts;
 using API.DTOs.Users;
 using API.Models;
+using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Services
 {
@@ -9,6 +14,7 @@ namespace API.Services
         private readonly IUserRepository _userRepository;
         private readonly IClassroomRepository _classroomRepository;
         private readonly IUserClassroomRepository _userClassroomRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
 
@@ -16,13 +22,76 @@ namespace API.Services
             IClassroomRepository classroomRepository, 
             IUserClassroomRepository userClassroomRepository,
             IRoleRepository roleRepository,
-            IAccountRoleRepository accountRoleRepository)
+            IAccountRoleRepository accountRoleRepository,
+            IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
             _classroomRepository = classroomRepository;
             _userClassroomRepository = userClassroomRepository;
             _roleRepository = roleRepository;
             _accountRoleRepository = accountRoleRepository;
+            _accountRepository = accountRepository;
+        }
+
+        public int ChangePassword(ProfileChangePasswordDto profileChangePasswordDto)
+        {
+            var getAccount = (from  a in _accountRepository.GetAll()
+                              where a.Guid == profileChangePasswordDto.GuidAccount
+                              select a).FirstOrDefault();
+
+            if (getAccount is null)
+            {
+                return 0; //account not found
+            }
+
+            if(!HashingHandler.ValidateHash(profileChangePasswordDto.CurrentPassword, getAccount.Password))
+            {
+                return -1;
+            }
+
+            var account = new Account
+            {
+                Guid = getAccount.Guid,
+                IsUsed = true,
+                ModifiedDate = DateTime.Now,
+                CreatedDate = getAccount.CreatedDate,
+                OTP = getAccount.OTP,
+                ExpiredDate = getAccount.ExpiredDate,
+                Password = HashingHandler.GenerateHash(profileChangePasswordDto.NewPassword),
+            };
+
+            _accountRepository.Clear();
+
+            var isUpdated = _accountRepository.Update(account);
+            if (!isUpdated)
+            {
+                return -2; //Account not Update
+            }
+
+            return 1;
+        }
+
+        public ProfileDto GetProfile(Guid guid)
+        {
+            var getUser = (from u in _userRepository.GetAll()
+                                     where u.Guid == guid
+                                     select new ProfileDto
+                                     {
+                                         Guid = u.Guid,
+                                         FirstName = u.FirstName,
+                                         LastName = u.LastName,
+                                         BirthDate = u.BirthDate,
+                                         Gender = u.Gender,
+                                         Email = u.Email,
+                                         PhoneNumber = u.PhoneNumber
+                                     }).SingleOrDefault();
+
+            if (getUser is null)
+            {
+                return null;
+            }
+
+            return getUser;
         }
 
         public IEnumerable<ClassroomByUserDto> GetCLassroomByUser(Guid guid)

@@ -1,4 +1,4 @@
-﻿@model Client.Models.Lesson
+﻿@model Client.ViewModels.CombinedViews.LessonDetailsVM
 
 @{
     ViewData["Title"] = "LessonDetail";
@@ -9,40 +9,99 @@
         <div class="col">
             <div id="titleLesson" class="mx-4 my-3" style="border-bottom: 1px solid #5e72e4;">
                 <h3>
-                    @Html.DisplayFor(model => model.Name)
+                    @Model.LessonModel.Name
                 </h3>
                 <p style="margin-top:-10px">
                     <small class="text-muted">
-                        @Model.CreatedDate.ToString("d MMMM")
+                        @Model.LessonModel.CreatedDate.ToString("d MMMM")
                     </small></>
                 </p>
             </div>
             <div id="contentLesson" class="mx-4" style="text-align:justify;">
                 <p>
-                    @Html.Raw(Model.Description.Replace("\n", "<br>"))
-                    @Html.DisplayFor(model => model.Description)
+                    @Html.Raw(Model.LessonModel.Description.Replace("\n", "<br>"))
+                    @Model.LessonModel.Description
                 </p>
                 <div>
                     <p class="m-0">Referensi :</p>
                     <p>
-                        @Html.DisplayFor(model => model.SubjectAttachment)
+                        @Model.LessonModel.SubjectAttachment
                     </p>
                 </div>
             </div>
         </div>
-        @if(Model.IsTask is true && User.IsInRole("Student"))
+        @if (Model.LessonModel.IsTask is true && User.IsInRole("Student"))
         {
+            @if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Attachment != null && Model.GetSubmittedTaskVM.Grade is null)
+            {
+                <div class="col-md-4">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        <div class="mb-3" id="user-guid-edit" style="display: none;">
+                            <label for="userGuidEditTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="userGuidEditTask" value="@User.FindFirst("Guid").Value" readonly>
+                        </div>
+                        <div class="mb-3" id="lesson-guid-edit" style="display: none;">
+                            <label for="lessonGuidEditTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="lessonGuidEditTask" value="@Model.LessonModel.Guid" readonly>
+                        </div>
+                        <div class="mx-3 mt-2">
+                            <label class="h6 form-label">Your Work<span style="position:absolute; top:8px; right:16px; background-color:none;" id="editButtonAttachment"><i class="fa-solid fa-pen-to-square"></i></span></label>
+                            <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
+                        </div>
+                        <div class="my-2 mx-3">
+                            <button type="submit" class="btn btn-primary" id="buttonEditTask" style="display: none;">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Grade != null)
+            {
+                <div class="col-md-4">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        @*<div class="mb-3" id="user-guid" style="display: none;">
+                            <label for="userGuidSubmitTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
+                        </div>
+                        <div class="mb-3" id="lesson-guid" style="display: none;">
+                            <label for="lessonGuidSubmitTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonModel.Guid" readonly>
+                        </div>*@
+                        <div class="mx-3 mt-2">
+                            <div class="row">
+                                <div class="col">
+                                    <label class="h6 form-label">Your Work</label>
+                                    <p style="position:absolute; right:0; top:0;">Score : @Model.GetSubmittedTaskVM.Grade</p>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="attacmentSubmitTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {    
             <div class="col-md-4">
                 <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                    <div class="mb-3" id="user-guid" style="display: none;">
+                        <label for="userGuidSubmitTask" class="form-label"></label>
+                        <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
+                    </div>
+                    <div class="mb-3" id="lesson-guid" style="display: none;">
+                        <label for="lessonGuidSubmitTask" class="form-label"></label>
+                        <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonModel.Guid" readonly>
+                    </div>
                     <div class="mx-3 mt-2">
                         <label class="h6 form-label">Your Work</label>
-                        <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com">
+                        <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask">
                     </div>
                     <div class="my-2 mx-3">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
                     </div>
                 </div>
             </div>
+            }
         }
         else
         {

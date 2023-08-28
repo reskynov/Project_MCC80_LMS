@@ -1,6 +1,8 @@
-﻿using API.DTOs.Users;
+﻿using API.DTOs.Accounts;
+using API.DTOs.Users;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -173,6 +175,71 @@ namespace API.Controllers
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Success retrieve data",
                 Data = result
+            });
+        }
+
+        [HttpGet("profile")]
+        public IActionResult GetProfile(Guid guid)
+        {
+            var result = _userService.GetProfile(guid);
+            if (result is null)
+            {
+                return NotFound(new ResponseHandler<ProfileDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Account not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<ProfileDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
+        }
+
+        [HttpPut("profile-change-password")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword(ProfileChangePasswordDto changePasswordDto)
+        {
+            var update = _userService.ChangePassword(changePasswordDto);
+            if (update == 0)
+            {
+                return NotFound(new ResponseHandler<ProfileChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            if (update == -1)
+            {
+                return NotFound(new ResponseHandler<ProfileChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Current password incorret"
+                });
+            }
+
+            if (update == -2)
+            {
+                return NotFound(new ResponseHandler<ChangePasswordDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Failed to update password"
+                });
+            }
+            return Ok(new ResponseHandler<ChangePasswordDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Succesfully updated new password"
             });
         }
     }

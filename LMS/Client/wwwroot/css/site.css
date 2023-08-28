@@ -36,7 +36,7 @@ td{
 }
 
 #listCardLessonStudent:hover {
-    background-color: rgba(0, 0, 255, 0.1);  Warna hitam dengan opacity 0.1 
+    background-color: rgba(0, 0, 255, 0.1);  /*Warna hitam dengan opacity 0.1*/ 
 }
 
 .slide-top-card {
@@ -74,3 +74,6 @@ td{
     .refresh-button:hover {
         transform: rotate(180deg);
     }
+#editButtonAttachment:hover {
+    color: #7b8594;
+}

@@ -1,16 +1,30 @@
 ﻿using Client.Models;
 using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Client.ViewModels.Users
 {
     public class UserVM
     {
         public Guid Guid { get; set; }
+
+        [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
         public string? LastName { get; set; }
+
+        [Required(ErrorMessage = "Please choose your gender")]
         public GenderLevel Gender { get; set; }
+
+        [Required(ErrorMessage = "Birth date is required")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [RegularExpression(@"^\+[0-9]", ErrorMessage = "Phone number need to start with '+' and input only number")]
         public string? PhoneNumber { get; set; }
 
         public static implicit operator User(UserVM userDto)

@@ -8,7 +8,7 @@ namespace API.Models
         [Column("attachment", TypeName = "nvarchar(max)")]
         public string Attachment { get; set; }
         [Column("value")]
-        public int Grade { get; set; }
+        public int? Grade { get; set; }
         [Column("user_guid")]
         public Guid UserGuid { get; set; }
         [Column("task_guid")]

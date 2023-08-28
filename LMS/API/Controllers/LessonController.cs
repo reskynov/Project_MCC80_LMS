@@ -149,7 +149,7 @@ public class LessonController : ControllerBase
         });
     }
 
-    [HttpPost("lesson-task")]
+    [HttpPost("task")]
     public IActionResult CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
     {
         var result = _lessonService.CreateLessonTask(newLessonTaskDto);

@@ -1,9 +1,13 @@
 ﻿using Client.Contracts;
+using Client.DTOs.Accounts;
+using Client.Models;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Differencing;
+using NuGet.Protocol.Core.Types;
 using System.Diagnostics.Contracts;
 
 namespace Client.Controllers;
@@ -15,12 +19,14 @@ public class DashboardController : Controller
     private readonly IUserClassroomRepository _userClassroomRepository;
     private readonly IClassroomRepository _classroomRepository;
     private readonly ILessonRepository _lessonRepository;
-    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository)
+    private readonly IUserTaskRepository _userTaskRepository;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository, IUserTaskRepository userTaskRepository)
     {
         _userRepository = userRepository;
         _userClassroomRepository = userClassroomRepository;
         _classroomRepository = classroomRepository;
         _lessonRepository = lessonRepository;
+        _userTaskRepository = userTaskRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -90,10 +96,9 @@ public class DashboardController : Controller
         {
             return View("No Data");
         }
+        var classroomDescription = resultClassroomDetails.Data;
 
         var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
-
-        var classroomDescription = resultClassroomDetails.Data;
 
         // Memeriksa apakah ada data lesson atau tidak
         if (resultLesson != null && resultLesson.Data != null && resultLesson.Data.Any())
@@ -123,14 +128,54 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> LessonDetail(Guid lessonGuid)
     {
-        var result = await _lessonRepository.Get(lessonGuid);
-        if (result != null)
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var lessonDetail = result.Data;
-            return View(lessonDetail);
+
+           var resultSubmittedTask = await _userTaskRepository.GetSubmittedTask(guid, lessonGuid);
+           if (resultSubmittedTask is null)
+           {
+               return View("LessonDetail","Dashboard");
+           }
+           var dataSubmittedTask = resultSubmittedTask.Data;
+         
+           var resultLessonDetail = await _lessonRepository.Get(lessonGuid);
+         
+           if (resultLessonDetail != null && resultLessonDetail.Data != null)
+           {
+               var lessonDetail = resultLessonDetail.Data;
+         
+               var lessonDetailView = new LessonDetailsVM
+               {
+                   LessonModel = lessonDetail,
+                   GetSubmittedTaskVM = dataSubmittedTask
+               };
+         
+               return View(lessonDetailView);
+           }
+           else
+           {
+               var lessonDetailView = new LessonDetailsVM
+               {
+                   LessonModel = new Lesson(),
+                   GetSubmittedTaskVM = dataSubmittedTask
+               };
+               return View(lessonDetailView);
+           }
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
         }
 
-        return View(null);
+
+        //if (result != null)
+        //{
+        //    var lessonDetail = result.Data;
+        //    return View(lessonDetail);
+        //}
+
+        //return View(null);
     }
 
     public async Task<IActionResult> GetPeople(Guid classroomGuid)
@@ -150,13 +195,59 @@ public class DashboardController : Controller
         var userGuidClaim = User.FindFirst("Guid");
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var result = await _userRepository.Get(guid);
+            var result = await _userRepository.GetProfile(guid);
             if (result != null)
             {
-                var userDetail = (UserVM) result.Data;
+                var userDetail = result.Data;
                 return View(userDetail);
             }
         }
         return View(null);
+    }
+
+    [HttpPost("/dashboard/update-profile")]
+    public async Task<IActionResult> UpdateProfile(UserVM user)
+    {
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            user.Guid = guid;
+            var result = await _userRepository.Put(user.Guid, user);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}!";
+                return RedirectToAction("Profile","Dashboard");
+            }
+            else
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return RedirectToAction("Profile", "Dashboard");
+            }
+        }
+        return RedirectToAction("Profile", "Dashboard");
+    }
+
+    [HttpPost("/dashboard/profile-change-password")]
+    public async Task<IActionResult> ProfileChangePassword(ProfileChangePasswordVM profileChangePasswordVM)
+    {
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        {
+            profileChangePasswordVM.GuidAccount = guid;
+            var result = await _userRepository.ProfileChangePassword(profileChangePasswordVM);
+            if (result.Code == 200)
+            {
+                TempData["Success"] = $"{result.Message}!";
+                return RedirectToAction("Profile", "Dashboard");
+            }
+            else
+            {
+                TempData["Failed"] = $"{result.Message}";
+                ModelState.AddModelError(string.Empty, result.Message);
+                return RedirectToAction("Profile", "Dashboard");
+            }
+        }
+        return RedirectToAction("Profile", "Dashboard");
     }
 }
