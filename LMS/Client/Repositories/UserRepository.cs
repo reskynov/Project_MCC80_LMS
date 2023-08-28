@@ -1,9 +1,10 @@
 ﻿using Client.Contracts;
-using Client.DTOs.Accounts;
 using Client.Models;
 using Client.Utilities.Handlers;
+using Client.ViewModels.Accounts;
 using Client.ViewModels.Users;
 using Newtonsoft.Json;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,6 +14,17 @@ namespace Client.Repositories
     {
         public UserRepository(string request = "users/") : base(request)
         {
+        }
+
+        public async Task<ResponseHandler<DashboardStudentVM>> DashboardStudent(Guid guid)
+        {
+            ResponseHandler<DashboardStudentVM> dashboardStudent = null;
+            using (var response = await httpClient.GetAsync(request + "student-dashboard?guid=" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                dashboardStudent = JsonConvert.DeserializeObject<ResponseHandler<DashboardStudentVM>>(apiResponse);
+            }
+            return dashboardStudent;
         }
 
         public async Task<ResponseHandler<IEnumerable<ClassroomByUserVM>>> GetClassroomByUser(Guid guid)
