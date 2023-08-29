@@ -1,4 +1,4 @@
-﻿@model Client.ViewModels.Users.DashboardStudentVM
+﻿@model Client.ViewModels.Users.DashboardUserVM
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "_DashboardLayout";
@@ -7,101 +7,206 @@
 @*JUDUL*@
 <h1 style="color:white;">Dashboard</h1>
 @*Main Content*@
-<div class="row">
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="numbers">
-                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Classroom</p>
-                            <h5 class="font-weight-bolder">
-                                @Model.TotalClassroom
-                            </h5>
-                            <p class="mb-0">
-                                Attended classroom
-                            </p>
+@if (User.IsInRole("Teacher"))
+{
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Classroom</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Teacher.TotalClassroom
+                                </h5>
+                                <p class="mb-0">
+                                    Attended classroom
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-hat-3 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                            <i class="ni ni-hat-3 text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Task</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Teacher.TotalAssignment
+                                </h5>
+                                <p class="mb-0">
+                                    Total of task created
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow-danger text-center rounded-circle">
+                                <i class="ni ni-archive-2 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Graded</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Teacher.TotalGraded
+                                </h5>
+                                <p class="mb-0">
+                                    Task has been graded
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                <i class="fa fa-check text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Not Graded</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Teacher.TotalNotGraded
+                                </h5>
+                                <p class="mb-0">
+                                    Task has not been graded
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-danger shadow-warning text-center rounded-circle">
+                                <i class="fa fa-times text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="numbers">
-                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Assignment</p>
-                            <h5 class="font-weight-bolder">
-                                @Model.TotalAssignment
-                            </h5>
-                            <p class="mb-0">
-                                Total of assignment
-                            </p>
+}
+
+@if (User.IsInRole("Student"))
+{
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Classroom</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Student.TotalClassroom
+                                </h5>
+                                <p class="mb-0">
+                                    Attended classroom
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-hat-3 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-gradient-warning shadow-danger text-center rounded-circle">
-                            <i class="ni ni-archive-2 text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Task</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Student.TotalAssignment
+                                </h5>
+                                <p class="mb-0">
+                                    Total of task given
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow-danger text-center rounded-circle">
+                                <i class="ni ni-archive-2 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Submitted</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Student.TotalSubmitted
+                                </h5>
+                                <p class="mb-0">
+                                    Total task submitted
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                <i class="fa fa-check text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Not Submitted</p>
+                                <h5 class="font-weight-bolder">
+                                    @Model.Student.TotalNotSubmitted
+                                </h5>
+                                <p class="mb-0">
+                                    Total task not submitted
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-danger shadow-warning text-center rounded-circle">
+                                <i class="fa fa-times text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="numbers">
-                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Submitted</p>
-                            <h5 class="font-weight-bolder">
-                                @Model.TotalSubmitted
-                            </h5>
-                            <p class="mb-0">
-                                Assignment submitted
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                            <i class="fa fa-check text-lg opacity-10" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-sm-6">
-        <div class="card">
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="numbers">
-                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Not Submitted</p>
-                            <h5 class="font-weight-bolder">
-                                @Model.TotalNotSubmitted
-                            </h5>
-                            <p class="mb-0">
-                                Assignment not submitted
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-gradient-danger shadow-warning text-center rounded-circle">
-                            <i class="fa fa-times text-lg opacity-10" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+}
