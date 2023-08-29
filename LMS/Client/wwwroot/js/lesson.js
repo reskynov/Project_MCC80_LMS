@@ -68,15 +68,14 @@ function InsertLesson() {
     
     if ($("#isTask").val() == "true") {
         lesson.IsTask = true;
-        lesson.DeadlineDate = $("#deadlineDateLesson").val();
     } else {
         lesson.IsTask = false;
-        lesson.DeadlineDate = null;
     }
     lesson.ClassroomGuid = $("#classroomGuidLesson").val();
+    lesson.DeadlineDate = $("#deadlineDateLesson").val();
     //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
     $.ajax({
-        url: "https://localhost:7026/api/lessons/task",
+        url: "https://localhost:7026/api/lessons/lesson-task",
         type: "POST",
         //jika terkena 415 unsupported media type (tambahkan headertype Json & JSON.Stringify();)
         data: JSON.stringify(lesson),
@@ -159,56 +158,6 @@ function DeleteLesson(guid) {
 //    });
 //}
 
-function ShowUpdateLesson(guid) {
-    $.ajax({
-        url: "https://localhost:7026/api/classrooms/" + guid,
-        type: "GET",
-        dataType: "json"
-    }).done((result) => {
-        console.log(result)
-        $("#guidUpdateClassroom").val(result.data.guid);
-        $("#codeUpdateClassroom").val(result.data.code);
-        $("#nameUpdateClassroom").val(result.data.name);
-        $("#descriptionUpdateClassroom").val(result.data.description);
-        $("#teacherGuidUpdateClassroom").val(result.data.teacherGuid);
-        //const teacherGuid = result.data.teacherGuid;
-        //const code = result.data.code;
-        //UpdateClassroom(result.data)
-    }).fail((error) => {
-        alert("Failed to fetch classroom data. Please try again.");
-        console.log(error)
-    });
-}
-
-function UpdateLesson() {
-    let data = {
-        guid: $("#guidUpdateClassroom").val(),
-        code: $("#codeUpdateClassroom").val(),
-        name: $("#nameUpdateClassroom").val(),
-        description: $("#descriptionUpdateClassroom").val(),
-        teacherGuid: $("#teacherGuidUpdateClassroom").val(),
-    };
-    $.ajax({
-        url: "https://localhost:7026/api/classrooms",
-        type: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify(data)
-    }).done((result) => {
-        Swal.fire(
-            'Data has been successfully updated!',
-            'success'
-        ).then(() => {
-            location.reload();
-        });
-    }).fail((error) => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to update data! Please try again.'
-        })
-        console.log(error)
-    })
-}
 function RefreshCodeLesson(guid) {
     $.ajax({
         url: "https://localhost:7026/api/classrooms/new-code?guid=" + guid,

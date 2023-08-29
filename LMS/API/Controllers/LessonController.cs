@@ -171,4 +171,56 @@ public class LessonController : ControllerBase
             Data = newLessonTaskDto
         });
     }
+
+    [HttpPut("task")]
+    public IActionResult UpdateLessonTask(UpdateLessonTaskDto updateLessonTaskDto)
+    {
+        var result = _lessonService.UpdateLessonTask(updateLessonTaskDto);
+        if (result is -1)
+        {
+            return NotFound(new ResponseHandler<UpdateLessonTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Lesson is not found."
+            });
+        }
+
+        if (result is -2)
+        {
+            return NotFound(new ResponseHandler<UpdateLessonTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Task is not found."
+            });
+        }
+
+        if (result is -3)
+        {
+            return StatusCode(500, new ResponseHandler<UpdateLessonTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to update task to the database."
+            });
+        }
+
+        if (result is 0)
+        {
+            return StatusCode(500, new ResponseHandler<UpdateLessonTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to update lesson to the database."
+            });
+        }
+
+        return Ok(new ResponseHandler<UpdateLessonTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data has been updated successfully."
+        });
+    }
 }
