@@ -16,6 +16,51 @@ public class LessonService
         _taskRepository = taskRepository;
     }
 
+    public int UpdateLessonTask(UpdateLessonTaskDto updateLessonTaskDto)
+    {
+        var lesson = _lessonRepository.GetByGuid(updateLessonTaskDto.LessonGuid);
+
+        if (lesson is null)
+        {
+            return -1;
+        }
+
+        if (lesson.IsTask) // cek apakah lesson berupa task
+        {
+            var task = (from u in _taskRepository.GetAll()
+                        where u.LessonGuid == updateLessonTaskDto.LessonGuid
+                        select u).FirstOrDefault();
+
+            if (task is null)
+            {
+                return -2; // task is null
+            }
+
+            task.DeadlineDate = updateLessonTaskDto.DeadlineDate;
+
+            var resultUpdateTask = _taskRepository.Update(task);
+            if(resultUpdateTask is false)
+            {
+                return -3; // update task failed
+            }
+        }
+
+        var toUpdate = new LessonDto
+        {
+            Guid = lesson.Guid,
+            ClassroomGuid = lesson.ClassroomGuid,
+            CreatedDate = lesson.CreatedDate,
+            IsTask = lesson.IsTask,
+            Name = updateLessonTaskDto.Name,
+            Description = updateLessonTaskDto.Description,  
+            SubjectAttachment = updateLessonTaskDto.SubjectAttachment
+        };
+
+        var result = _lessonRepository.Update(toUpdate);
+
+        return result ? 1 : 0;
+    }
+
     public LessonDto? CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
     {
         var lesson = new NewLessonDto

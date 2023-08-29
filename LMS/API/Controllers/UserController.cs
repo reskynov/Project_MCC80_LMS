@@ -253,11 +253,36 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "Guid is not found"
+                    Message = "No assignment found",
+                    Data = result
                 });
             }
 
             return Ok(new ResponseHandler<IEnumerable<StudentTaskDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
+        }
+
+        [HttpGet("student-dashboard")]
+        public IActionResult DashboardStudent(Guid guid)
+        {
+            var result = _userService.GetDashboardStudentDto(guid);
+            if (result is null)
+            {
+                return NotFound(new ResponseHandler<DashboardStudentDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Guid is not found",
+                    Data = result
+                });
+            }
+
+            return Ok(new ResponseHandler<DashboardStudentDto>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),

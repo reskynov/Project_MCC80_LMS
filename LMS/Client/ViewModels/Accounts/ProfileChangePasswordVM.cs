@@ -1,4 +1,4 @@
-﻿namespace Client.DTOs.Accounts
+﻿namespace Client.ViewModels.Accounts
 {
     public class ProfileChangePasswordVM
     {

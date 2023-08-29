@@ -1,6 +1,6 @@
-﻿using Client.DTOs.Accounts;
-using Client.Models;
+﻿using Client.Models;
 using Client.Utilities.Handlers;
+using Client.ViewModels.Accounts;
 using Client.ViewModels.Users;
 using System.Collections;
 
@@ -12,5 +12,6 @@ namespace Client.Contracts
         public Task<ResponseHandler<ProfileVM>> GetProfile(Guid guid);
         public Task<ResponseHandler<ProfileChangePasswordVM>> ProfileChangePassword(ProfileChangePasswordVM entity);
         public Task<ResponseHandler<IEnumerable<StudentTaskVM>>> GetStudentTask(Guid guid);
+        public Task<ResponseHandler<DashboardStudentVM>> DashboardStudent(Guid guid);
     }
 }
