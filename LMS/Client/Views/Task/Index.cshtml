@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Client.ViewModels.Users.StudentTaskVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_DashboardLayout";
+}
+<h1 style="color:white;">Task List</h1>
+
+<div class="card">
+    <div class="card-body px-0 pt-0 pb-2 text-center">
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0" id="studentTaskTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">No</th>
+                        <th scope="col" class="text-center">Classroom</th>
+                        <th scope="col" class="text-center">Task</th>
+                        <th scope="col" class="text-center">Deadline</th>
+                        <th scope="col" class="text-center">Submitted</th>
+                        <th scope="col" class="text-center">Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = item.LessonGuid })'">
+                            <td>@(i++)</td>
+                            <td>@item.ClassroomName</td>
+                            <td>@item.LessonName</td>
+                            <td>@item.Deadline</td>
+                            <td>
+                                @if (item.IsSubmitted is true)
+                                {
+                                    <i class="fa-solid fa-check" style="color: #A2FF86;"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-x" style="color: #900C3F;"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (item.Grade != null)
+                                {
+                                    @item.Grade
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-minus"></i>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts { 
+<script src="~/js/task.js" asp-append-version="true"></script>
+}
+
+
+
+
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassroomName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskGuid)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassroomName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSubmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskGuid)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+*@
