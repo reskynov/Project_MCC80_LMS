@@ -226,12 +226,15 @@
     <div class="modal-dialog  modal-dialog-centered ms-auto">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Update Lesson</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Lesson</h5>
                 <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row">
                 <div class="col">
                     <form id="addLessonForm">
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="guidUpdateLesson" name="guidUpdateLesson">
+                        </div>
                         <div class="mb-3">
                             <label for="nameUpdateLesson" class="form-label">Name</label>
                             <input type="text" class="form-control" id="nameUpdateLesson" name="nameUpdateLesson" required>
@@ -242,13 +245,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="url" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
                         </div>
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" id="classroomGuidLesson" name="classroomGuidUpdateLesson" value="@Model.ClassroomModel.Guid">
-                        </div>
-                        @*@if (item.isTask is true)*@
-                            <div class="mb-3" id="deadlineContainer" style="display: none;">
+                        @*@if (item.isTask is true)
+                        {*@
+                            <div class="mb-3">
                                 <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
                                 <input type="datetime-local" class="form-control" id="deadlineDateUpdateLesson" name="deadlineDateUpdateLesson" required>
                             </div>

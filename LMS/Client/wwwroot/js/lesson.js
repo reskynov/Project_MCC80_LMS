@@ -81,13 +81,8 @@ function RefreshCodeLesson(guid) {
         url: "https://localhost:7026/api/classrooms/new-code?guid=" + guid,
         type: "PUT",
     }).done(function () {
-        //var newCode = data;
-        //document.getElementById("codeContainer").innerHTML = newCode;
-        /*.then(function () {*/
         console.log();
         location.reload();
-
-        //});
     }).fail(function (error) {
         console.error("Error fetching new code:", error);
     });
@@ -95,35 +90,32 @@ function RefreshCodeLesson(guid) {
 
 +function ShowUpdateLesson(guid) {
     $.ajax({
-        url: "https://localhost:7026/api/classrooms/" + guid,
+        url: "https://localhost:7026/api/lessons/" + guid,
         type: "GET",
         dataType: "json"
     }).done((result) => {
         console.log(result)
-        $("#guidUpdateClassroom").val(result.data.guid);
-        $("#codeUpdateClassroom").val(result.data.code);
-        $("#nameUpdateClassroom").val(result.data.name);
-        $("#descriptionUpdateClassroom").val(result.data.description);
-        $("#teacherGuidUpdateClassroom").val(result.data.teacherGuid);
-        //const teacherGuid = result.data.teacherGuid;
-        //const code = result.data.code;
-        //UpdateClassroom(result.data)
+        $("#guidUpdateLesson").val(result.data.lessonGuid);
+        $("#nameUpdateLesson").val(result.data.name);
+        $("#descriptionUpdateLesson").val(result.data.description);
+        $("#subjectAttachmentUpdateLesson").val(result.data.subjectAttachment);
+        $("#deadlineDateUpdateLesson").val(result.data.deadlineDate);
     }).fail((error) => {
-        alert("Failed to fetch classroom data. Please try again.");
+        alert("Failed to fetch lesson data. Please try again.");
         console.log(error)
     });
 }
 
 function UpdateLesson() {
     let data = {
-        guid: $("#guidUpdateClassroom").val(),
-        code: $("#codeUpdateClassroom").val(),
-        name: $("#nameUpdateClassroom").val(),
-        description: $("#descriptionUpdateClassroom").val(),
-        teacherGuid: $("#teacherGuidUpdateClassroom").val(),
+        lessonGuid: $("#guidUpdateLesson").val(),
+        name: $("#nameUpdateLesson").val(),
+        description: $("#descriptionUpdateLesson").val(),
+        subjectAttachment: $("#subjectAttachmentUpdateLesson").val(),
+        deadlineDate: $("#deadlineDateUpdateLesson").val(),
     };
     $.ajax({
-        url: "https://localhost:7026/api/classrooms",
+        url: "https://localhost:7026/api/lessons/task",
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(data)
