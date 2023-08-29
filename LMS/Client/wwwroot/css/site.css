@@ -37,6 +37,11 @@ td{
 
 #listCardLessonStudent:hover {
     background-color: rgba(0, 0, 255, 0.1);  /*Warna hitam dengan opacity 0.1*/ 
+    cursor:pointer;
+}
+#studentTaskList:hover {
+    background-color: rgba(0, 0, 255, 0.1); /*Warna hitam dengan opacity 0.1*/
+    cursor: pointer;
 }
 
 .slide-top-card {
@@ -76,4 +81,22 @@ td{
     }
 #editButtonAttachment:hover {
     color: #7b8594;
+}
+
+div#studentTaskTable_info.dataTables_info {
+    margin-left: 25px;
+}
+#studentTaskTable_wrapper .dt-buttons{
+    margin-top:10px;
+}
+
+#studentTaskTable_filter{
+    margin-top:10px
+}
+
+div#studentTaskTable_filter.dataTables_filter{
+    margin-right:25px;
+}
+div.dataTables_paginate paging_simple_numbers#studentTaskTable_paginate{
+    margin-right:25px;
 }

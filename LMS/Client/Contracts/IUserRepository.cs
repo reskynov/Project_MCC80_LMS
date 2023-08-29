@@ -2,6 +2,7 @@
 using Client.Models;
 using Client.Utilities.Handlers;
 using Client.ViewModels.Users;
+using System.Collections;
 
 namespace Client.Contracts
 {
@@ -10,5 +11,6 @@ namespace Client.Contracts
         public Task<ResponseHandler<IEnumerable<ClassroomByUserVM>>> GetClassroomByUser(Guid guid);
         public Task<ResponseHandler<ProfileVM>> GetProfile(Guid guid);
         public Task<ResponseHandler<ProfileChangePasswordVM>> ProfileChangePassword(ProfileChangePasswordVM entity);
+        public Task<ResponseHandler<IEnumerable<StudentTaskVM>>> GetStudentTask(Guid guid);
     }
 }
