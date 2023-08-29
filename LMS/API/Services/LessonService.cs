@@ -16,6 +16,39 @@ public class LessonService
         _taskRepository = taskRepository;
     }
 
+    public UpdateLessonTaskDto? GetLessonTaskByGuid(Guid guid)
+    {
+        var lesson = _lessonRepository.GetByGuid(guid);
+
+        if (lesson is null)
+        {
+            return null;
+        }
+
+        var toUpdate = new UpdateLessonTaskDto
+        {
+            LessonGuid = lesson.Guid,
+            Name = lesson.Name,
+            Description = lesson.Description,
+            SubjectAttachment = lesson.SubjectAttachment
+        };
+
+        if (lesson.IsTask) // cek apakah lesson berupa task
+        {
+            var task = (from u in _taskRepository.GetAll()
+                        where u.LessonGuid == guid
+                        select u).FirstOrDefault();
+
+            if (task is null)
+            {
+                return null; // task is null
+            }
+            toUpdate.DeadlineDate = task.DeadlineDate;
+        }
+
+        return toUpdate;
+    }
+
     public int UpdateLessonTask(UpdateLessonTaskDto updateLessonTaskDto)
     {
         var lesson = _lessonRepository.GetByGuid(updateLessonTaskDto.LessonGuid);
