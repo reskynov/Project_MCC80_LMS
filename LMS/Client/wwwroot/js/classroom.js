@@ -3,49 +3,6 @@
 
 // Write your JavaScript code.
 
-//--------CLASSROOM--------
-//$(document).ready(function () {
-//    GetClassroom();
-//})
-//function GetClassroom() {
-//$(document).ready(function () {
-//    let table = new DataTable('#myTableClassroom1', {
-        //    ajax: {
-        //        url: "https://localhost:7026/api/classrooms",
-        //        dataSrc: "data",
-        //        dataType: "JSON"
-        //    },
-
-        //    columns: [
-        //        {
-        //            data: null,
-        //            render: function (data, type, row, no) {
-        //                return no.row + 1;
-        //            }
-        //        },
-        //        { data: "name" },
-        //        {
-        //            data: '',
-        //            render: function (data, type, row) {
-        //                return `<button onclick="ShowUpdateClassroom('${row.url}')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button>
-        //            <button onclick="DeleteClassroom('${row.guid}')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>`;
-        //            }
-        //        }
-        //    ],
-    //    dom: 'Blfrtip',
-    //    buttons: [
-    //        'copy', 'csv', 'excel', 'pdf', 'print',
-    //        {
-    //            extend: 'colvis',
-    //            title: 'Colvis',
-    //            text: 'Column Visibility'
-    //        }
-    //    ]
-    //});
-    //    });
-    //}
-
-  
 
     function InsertClassroom() {
         var classroom = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
