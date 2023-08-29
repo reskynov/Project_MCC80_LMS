@@ -7,7 +7,7 @@ namespace Client.Models
     {
         [Column("attachment", TypeName = "nvarchar(max)")]
         public string Attachment { get; set; }
-        [Column("value")]
+        [Column("grade")]
         public int Grade { get; set; }
         [Column("user_guid")]
         public Guid UserGuid { get; set; }

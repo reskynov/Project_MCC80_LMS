@@ -71,5 +71,16 @@ namespace Client.Repositories
             }
             return entityVM;
         }
+
+        public async Task<ResponseHandler<IEnumerable<StudentTaskVM>>> GetStudentTask(Guid guid)
+        {
+            ResponseHandler<IEnumerable<StudentTaskVM>> studentTask = null;
+            using (var response = await httpClient.GetAsync(request + "student-task?guid=" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                studentTask = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<StudentTaskVM>>>(apiResponse);
+            }
+            return studentTask;
+        }
     }
 }
