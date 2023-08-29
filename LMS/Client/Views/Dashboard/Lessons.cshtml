@@ -6,14 +6,23 @@
 }
 
 <div class="card">
-    <div class="d-flex align-items-end flex-column refresh-container">
-        <p id="codeLesson"class="mb-0 me-4" style="color:black;">
-            Class Code :
-            @Model.ClassroomModel.Code
-            <button onclick="RefreshCodeLesson('@Model.ClassroomModel.Guid')" class="refresh-button" id="refreshCode"><i class="fas fa-sync-alt"></i></button>
-            @*<input type="hidden" class="form-control" id="guidClassroomCode" name="nameLesson">*@
-        </p>
-    </div>
+    @if (User.IsInRole("Teacher"))
+    {
+        <div class="d-flex align-items-start flex-column refresh-container">
+            <div id="codeLesson" class="mb-0 ms-4" style="color:black;">
+                <div class="row row-cols-auto mt-2">
+                    <div class="col"><button onclick="RefreshCodeLesson('@Model.ClassroomModel.Guid')" class="refresh-button" id="refreshCode"><i class="fas fa-sync-alt"></i></button></div>
+                    <div class="col mx-auto px-0 mb-0 mt-2 fw-bolder">Class Code = @Model.ClassroomModel.Code</div>
+                    <div class="col mx-auto my-0 mt-2">
+                        @if (Model.ClassroomModel.ExpiredDate < DateTime.Now)
+                        {
+                            <p class="text-danger">Code already expired</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <div class="card my-3 mx-3 h-100" style="min-height:250px; background-image:url(https://gstatic.com/classroom/themes/img_backtoschool.jpg); background-size:cover;">
         @if (User.IsInRole("Teacher"))
         {
@@ -59,6 +68,11 @@
                                         @item.CreatedDate.ToString("d MMMM")
                                     </small>
                                 </p>
+                                <p class="card-text" style="margin-top: -29px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        Deadline : @item.DeadlineDate
+                                    </small>
+                                </p>
                             </div>
                         </div>
                         <div class="col">
@@ -66,10 +80,6 @@
                                 <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
                                     <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                     <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
-                                @*<form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
-                    <input type="hidden" value="@item.ClassroomGuid" name="guid" />
-                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
-                    </form>*@
                             </div>
                         </div>
                     </div>
@@ -99,10 +109,6 @@
                                 <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
                                 <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                 <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
-                                @*<form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
-                    <input type="hidden" value="@item.ClassroomGuid" name="guid" />
-                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
-                    </form>*@
                             </div>
                         </div>
                     </div>
@@ -189,21 +195,6 @@
                             <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
                             <input type="url" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
                         </div>
-                       @* <div class="mb-3">
-                            <label for="isTask" class="form-label">Is there any task?</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="isTaskLesson" id="trueLesson">
-                                <label class="form-check-label" for="trueLesson">
-                                    Yes
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="isTaskLesson" id="falseLesson" checked>
-                                <label class="form-check-label" for="falseLesson">
-                                    No
-                                </label>
-                            </div>
-                        </div>*@
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>
                             <select class="form-select" id="isTask" aria-label="Floating label select example">
@@ -215,9 +206,10 @@
                         <div class="mb-3">
                             <input type="hidden" class="form-control" id="classroomGuidLesson" name="classroomGuidLesson" value="@Model.ClassroomModel.Guid">
                         </div>
+                        
                         <div class="mb-3" id="deadlineContainer" style="display: none;">
                             <label for="deadlineDateLesson" class="form-label">Deadline</label>
-                            <input type="date" class="form-control" id="deadlineDateLesson" name="deadlineDateLesson" required>
+                            <input type="datetime-local" class="form-control" id="deadlineDateLesson" name="deadlineDateLesson" required>
                         </div>
                     </form>
                 </div>
@@ -240,10 +232,6 @@
             <div class="modal-body row">
                 <div class="col">
                     <form id="addLessonForm">
-
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" id="guidUpdateLesson" name="guidUpdateLesson" readonly>
-                        </div>
                         <div class="mb-3">
                             <label for="nameUpdateLesson" class="form-label">Name</label>
                             <input type="text" class="form-control" id="nameUpdateLesson" name="nameUpdateLesson" required>
@@ -254,16 +242,17 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="url" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
                         </div>
                         <div class="mb-3">
-                            <label for="isTaskUpdateLesson" class="form-label">Is there any task?</label>
-                            <input type="text" class="form-control" id="isTaskUpdateLesson" name="isTaskUpdateLesson" required>
+                            <input type="hidden" class="form-control" id="classroomGuidLesson" name="classroomGuidUpdateLesson" value="@Model.ClassroomModel.Guid">
                         </div>
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" id="classroomGuidUpdateLesson" name="classroomGuidUpdateLesson">
-                        </div>
-                        <!-- Add other input fields as needed -->
+                        @*@if (item.isTask is true)*@
+                            <div class="mb-3" id="deadlineContainer" style="display: none;">
+                                <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
+                                <input type="datetime-local" class="form-control" id="deadlineDateUpdateLesson" name="deadlineDateUpdateLesson" required>
+                            </div>
+                        @*}*@
                     </form>
                 </div>
             </div>

@@ -31,23 +31,24 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var userGuidClaim = User.FindFirst("Guid");
-        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
-        {
-            var result = await _userRepository.DashboardStudent(guid);
-            if (result != null && result.Data != null)
-            {
-                var dataDashboard = result.Data;
-                return View(dataDashboard); // Mengembalikan ListClass ke tampilan
-            }
-            else
-            {
-                return View(null);
-            }
-        } else
-        {
-            return RedirectToAction("Index", "Home");
-        }
+        //var userGuidClaim = User.FindFirst("Guid");
+        //if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+        //{
+        //    var result = await _userRepository.DashboardStudent(guid);
+        //    if (result != null && result.Data != null)
+        //    {
+        //        var dataDashboard = result.Data;
+        //        return View(dataDashboard); // Mengembalikan ListClass ke tampilan
+        //    }
+        //    else
+        //    {
+        //        return View(null);
+        //    }
+        //} else
+        //{
+        //    return RedirectToAction("Index", "Home");
+        //}
+        return View();
     }
 
     public async Task<IActionResult> Classroom()
