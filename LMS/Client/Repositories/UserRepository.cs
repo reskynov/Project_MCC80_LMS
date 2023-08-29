@@ -16,6 +16,17 @@ namespace Client.Repositories
         {
         }
 
+        public async Task<ResponseHandler<DashboardTeacherVM>> DashboardTeacher(Guid guid)
+        {
+            ResponseHandler<DashboardTeacherVM> dashboardTeacher = null;
+            using (var response = await httpClient.GetAsync(request + "teacher-dashboard?guid=" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                dashboardTeacher = JsonConvert.DeserializeObject<ResponseHandler<DashboardTeacherVM>>(apiResponse);
+            }
+            return dashboardTeacher;
+        }
+
         public async Task<ResponseHandler<DashboardStudentVM>> DashboardStudent(Guid guid)
         {
             ResponseHandler<DashboardStudentVM> dashboardStudent = null;

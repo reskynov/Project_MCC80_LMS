@@ -43,7 +43,37 @@ namespace API.Services
             _lessonRepository = lessonRepository;
         }
 
-        public DashboardStudentDto? GetDashboardStudentDto(Guid guid)
+        public DashboardTeacherDto? GetDashboardTeacher(Guid guid)
+        {
+            var totalClassroom = _userClassroomRepository.GetAll().Where(uc => uc.UserGuid == guid).Count();
+
+            var detailAssignment = (from u in _userRepository.GetAll()
+                                    join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                    join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                    join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                    join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid 
+                                    where u.Guid == guid
+                                    select new { uc, t, ut });
+
+            if (detailAssignment is null)
+            {
+                return null;
+            }
+
+            var dashboard = new DashboardTeacherDto
+            {
+                TotalClassroom = totalClassroom,
+                TotalAssignment = detailAssignment.Count(),
+                TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
+                TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count()
+            };
+
+            return dashboard;
+
+        }
+
+        public DashboardStudentDto? GetDashboardStudent(Guid guid)
         {
             var totalClassroom = _userClassroomRepository.GetAll().Where(uc => uc.UserGuid == guid).Count();
 
@@ -92,7 +122,7 @@ namespace API.Services
                                          TaskGuid = t.Guid,
                                          Deadline = t.DeadlineDate,
                                          Grade = ut?.Grade,
-                                         IsSubmitted = ut?.Attachment is null
+                                         IsSubmitted = ut?.Attachment is not null
                                      };
 
             if (!getStudentTask.Any())
