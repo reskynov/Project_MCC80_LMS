@@ -1,11 +1,13 @@
-﻿using API.DTOs.Lessons;
-
-namespace API.DTOs.Users
+﻿namespace API.DTOs.Users
 {
-    public class TeacherTaskDto
+    public class StudentTaskDto
     {
         public string ClassroomName { get; set; }
-
-        public IEnumerable<TeacherTaskInClassDto> TaskInClassroom { get; set; }
+        public Guid LessonGuid { get; set; }
+        public string LessonName { get; set; }
+        public DateTime? Deadline { get; set; }
+        public bool? IsSubmitted { get; set; }
+        public int? Grade { get; set; }
+        public Guid TaskGuid { get; set; }
     }
 }
