@@ -14,5 +14,6 @@ namespace Client.Contracts
         public Task<ResponseHandler<IEnumerable<StudentTaskVM>>> GetStudentTask(Guid guid);
         public Task<ResponseHandler<DashboardStudentVM>> DashboardStudent(Guid guid);
         public Task<ResponseHandler<DashboardTeacherVM>> DashboardTeacher(Guid guid);
+        public Task<ResponseHandler<IEnumerable<TeacherTaskVM>>> GetTeacherTask(Guid guid);
     }
 }
