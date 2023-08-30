@@ -56,17 +56,24 @@
             else if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Grade != null)
             {
                 <div class="col-md-4">
-                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                        <div class="mx-3 mt-2 mb-3">
-                            <div class="row gx-5">
-                                <div class="col-6">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
                                     <label class="h6 form-label">Your Work</label>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <h6>Score : @Model.GetSubmittedTaskVM.Grade</h6>
+                                    <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
+                                    <label class="h6 form-label" style="font-size:20pt;">Score</label>
+                                    <p class="m-0" style="font-family:Poppins; font-size:42pt; color:#2563eb; max-height:80px;">@Model.GetSubmittedTaskVM.Grade</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
