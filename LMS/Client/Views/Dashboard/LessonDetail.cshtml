@@ -102,13 +102,54 @@
             </div>
             }
         }
+        else if (Model.LessonModel.IsTask is true && User.IsInRole("Teacher")){
+            <div class="col-md-4">
+                <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                    <div class="mx-3 mt-2">
+                        <label class="h6 form-label text-center">Grade</label>
+                    </div>
+                    <div class="my-2 mx-3">
+                        <a href="/Grade/Index" type="" class="btn btn-primary mx-auto" id="">Grade</a>
+                    </div>
+                </div>
+            </div>
+        }
         else
         {
             <div class="col-4" style="display: none;"></div>
         }
     </div>
-    @if (Model.LessonModel.IsTask is true && User.IsInRole("Teacher"))
+    @*@if (Model.LessonModel.IsTask is true && User.IsInRole("Teacher"))
     {
+        <div class="col-md-4">
+            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="mb-3" id="user-guid" style="display: none;">
+                    <label for="userGuidSubmitTask" class="form-label"></label>
+                    <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
+                </div>
+                <div class="mb-3" id="lesson-guid" style="display: none;">
+                    <label for="lessonGuidSubmitTask" class="form-label"></label>
+                    <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonModel.Guid" readonly>
+                </div>
+                <div class="mx-3 mt-2">
+                    <label class="h6 form-label">Your Work</label>
+                    <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask">
+                </div>
+                <div class="my-2 mx-3">
+                    <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-end flex-column" style="position:absolute; top:15px; right:20px;">
+            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                <div class="mx-3 mt-2">
+                    <label class="h6 form-label text-center">Grade</label>
+                </div>
+                <div class="my-2 mx-3">
+                    <button type="submit" class="btn btn-primary mx-auto" id="">Grade</button>
+                </div>
+            </div>
+        </div>
         <div class="d-flex align-items-end flex-column" style="position:absolute; top:15px; right:20px;">
             <div class="row">
                 <div class="col">
@@ -116,7 +157,7 @@
                 </div>
             </div>
         </div>
-    }
+        }    *@
 </div>
 
 

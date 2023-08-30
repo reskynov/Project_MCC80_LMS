@@ -88,9 +88,9 @@ function RefreshCodeLesson(guid) {
     });
 }
 
-+function ShowUpdateLesson(guid) {
+function ShowUpdateLesson(guid) {
     $.ajax({
-        url: "https://localhost:7026/api/lessons/" + guid,
+        url: "https://localhost:7026/api/lessons/task?guid=" + guid,
         type: "GET",
         dataType: "json"
     }).done((result) => {
@@ -99,27 +99,52 @@ function RefreshCodeLesson(guid) {
         $("#nameUpdateLesson").val(result.data.name);
         $("#descriptionUpdateLesson").val(result.data.description);
         $("#subjectAttachmentUpdateLesson").val(result.data.subjectAttachment);
-        $("#deadlineDateUpdateLesson").val(result.data.deadlineDate);
+        //if (result.data.deadlineDate != null) {
+        //    $("#deadlineDateContainer").css("display", "block");
+        //    $("#deadlineDateUpdateLesson").val(result.data.deadlineDate);
+        //}
+        
+        if (result.data.deadlineDate != null) {
+            var success = document.getElementById("deadlineDateContainer");
+            success.style.display = "block";
+            checkDeadline = `<label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
+                         <input type="datetime-local" class="form-control" id="deadlineDateUpdateLesson" name="deadlineDateUpdateLesson" value="${result.data.deadlineDate}" required>`;
+            $("#deadlineDateContainer").html(checkDeadline);
+            $("modalUpdateLesson").on("hidden.bs.modal", function () {
+                $("#deadlineDateUpdateLesson").val(null);
+                
+            })
+        } else {
+            $("#deadlineDateUpdateLesson").val(null);
+            var success = document.getElementById("deadlineDateContainer");
+            success.style.display = "none";
+        }
+       
+
     }).fail((error) => {
         alert("Failed to fetch lesson data. Please try again.");
         console.log(error)
     });
 }
 
+
 function UpdateLesson() {
     let data = {
         lessonGuid: $("#guidUpdateLesson").val(),
         name: $("#nameUpdateLesson").val(),
         description: $("#descriptionUpdateLesson").val(),
-        subjectAttachment: $("#subjectAttachmentUpdateLesson").val(),
-        deadlineDate: $("#deadlineDateUpdateLesson").val(),
+        subjectAttachment: $("#subjectAttachmentUpdateLesson").val()
     };
+    if ($("#deadlineDateUpdateLesson").val() != null) {
+        data.deadlineDate = $("#deadlineDateUpdateLesson").val()
+    }
     $.ajax({
         url: "https://localhost:7026/api/lessons/task",
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(data)
     }).done((result) => {
+        $("#deadlineDateContainer").css("display", "none");
         Swal.fire(
             'Data has been successfully updated!',
             'success'
@@ -134,4 +159,5 @@ function UpdateLesson() {
         })
         console.log(error)
     })
+
 }
