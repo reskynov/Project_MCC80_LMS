@@ -1,5 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Accounts;
+using API.DTOs.Classrooms;
+using API.DTOs.Lessons;
 using API.DTOs.Users;
 using API.Models;
 using API.Utilities.Handlers;
@@ -85,7 +87,7 @@ namespace API.Services
                                     join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
                                     from ut in utj.DefaultIfEmpty()
                                     where u.Guid == guid
-                                    select new { uc, t, ut});
+                                    select new {l, uc, t, ut});
 
             if(detailAssignment is null)
             {
@@ -98,11 +100,53 @@ namespace API.Services
                 TotalAssignment = detailAssignment.Count(),
                 TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
                 TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
-                LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5),
-        };
+                LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
+                LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList()
+            };
 
             return dashboard;
 
+        }
+
+        public IEnumerable<TeacherTaskInClassDto> GetClassroomTask(Guid guid)
+        {
+            var getClassroomLesson = from c in _classroomRepository.GetAll()
+                                     join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                     where c.Guid == guid
+                                     select new TeacherTaskInClassDto
+                                     {
+                                         LessonGuid = l.Guid,
+                                         LessonName = l.Name,
+                                         DeadlineDate = t?.DeadlineDate
+                                     };
+
+            if (getClassroomLesson is null)
+            {
+                return Enumerable.Empty<TeacherTaskInClassDto>(); //classroom lesson not found
+            }
+
+            return getClassroomLesson; // classroom lesson is found;
+        }
+
+        public IEnumerable<TeacherTaskDto> GetTeacherTasks(Guid guid)
+        {
+            var getStudentTask = from u in _userRepository.GetAll()
+                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 where u.Guid == guid
+                                 select new TeacherTaskDto
+                                 {
+                                     ClassroomName = c.Name,
+                                     TaskInClassroom = GetClassroomTask(c.Guid)
+                                 };
+
+            if (!getStudentTask.Any())
+            {
+                return Enumerable.Empty<TeacherTaskDto>();
+            }
+
+            return getStudentTask;
         }
 
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
