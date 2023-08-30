@@ -6,61 +6,71 @@
 }
 <h1 style="color:white;">Task List</h1>
 
-<div class="card">
-    <div class="card-body px-0 pt-0 pb-2 text-center">
-        <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0" id="studentTaskTable">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">No</th>
-                        <th scope="col" class="text-center">Classroom</th>
-                        <th scope="col" class="text-center">Task</th>
-                        <th scope="col" class="text-center">Deadline</th>
-                        <th scope="col" class="text-center">Submitted</th>
-                        <th scope="col" class="text-center">Grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int i = 1;
-                    }
-                    @foreach (var item in Model)
-                    {
-                        <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = item.LessonGuid })'">
-                            <td>@(i++)</td>
-                            <td>@item.ClassroomName</td>
-                            <td>@item.LessonName</td>
-                            <td>@item.Deadline</td>
-                            <td>
-                                @if (item.IsSubmitted is true)
-                                {
-                                    <i class="fa-solid fa-check" style="color: #A2FF86;"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa-solid fa-x" style="color: #900C3F;"></i>
-                                }
-                            </td>
-                            <td>
-                                @if (item.Grade != null)
-                                {
-                                    @item.Grade
-                                }
-                                else
-                                {
-                                    <i class="fa-solid fa-minus"></i>
-                                }
-                            </td>
+@if (User.IsInRole("Student"))
+{
+    <div class="card">
+        <div class="card-body px-0 pt-0 pb-2 text-center">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" id="studentTaskTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">No</th>
+                            <th scope="col" class="text-center">Classroom</th>
+                            <th scope="col" class="text-center">Task</th>
+                            <th scope="col" class="text-center">Deadline</th>
+                            <th scope="col" class="text-center">Submitted</th>
+                            <th scope="col" class="text-center">Grade</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = item.LessonGuid })'">
+                                <td>@(i++)</td>
+                                <td>@item.ClassroomName</td>
+                                <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@item.LessonName</td>
+                                <td>@item.Deadline</td>
+                                <td>
+                                    @if (item.IsSubmitted is true)
+                                    {
+                                        <p style="display:none;">Yes</p>
+                                        <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
+                                    }
+                                    else
+                                    {
+                                        <p style="display:none;">No</p>
+                                        <a class="fa-solid fa-x" style="color: #900C3F;"></a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Grade != null)
+                                    {
+                                        @item.Grade
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-minus"></i>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-@section Scripts { 
-<script src="~/js/task.js" asp-append-version="true"></script>
+    @section Scripts {
+    <script src="~/js/task.js" asp-append-version="true"></script>
+    }
+
+}
+else
+{
+    <p>Data belum ada</p>
 }
 
 

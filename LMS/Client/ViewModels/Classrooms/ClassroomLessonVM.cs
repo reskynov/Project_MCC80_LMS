@@ -8,5 +8,6 @@ public class ClassroomLessonVM
     public string? SubjectAttachment { get; set; }
     public bool isTask { get; set; }    
     public DateTime CreatedDate { get; set; }
+    public DateTime? DeadlineDate { get; set; }
     public Guid LessonGuid { get; set; }
 }
