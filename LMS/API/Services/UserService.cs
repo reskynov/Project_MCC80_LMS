@@ -154,12 +154,12 @@ namespace API.Services
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
         {
             var getStudentTask = from u in _userRepository.GetAll()
+                                 join ut in _userTaskRepository.GetAll() on u.Guid equals ut.UserGuid into utj
+                                 from ut in utj.DefaultIfEmpty()
                                  join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
                                  join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
                                  join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                  join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                                 join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
-                                 from ut in utj.DefaultIfEmpty()
                                  where u.Guid == guid
                                  select new StudentTaskDto
                                      {
