@@ -226,6 +226,7 @@
                             <h3>No recent grade</h3>
                         }
                     </div>
+
                 </div>
             </div>
         </div>
@@ -265,7 +266,7 @@
                 data: {
                     labels: taskGradedLabel,
                     datasets: [{
-                        label: 'Task',
+                        label: 'Grade',
                         data: taskGraded,
                         fill: false,
                         borderColor: 'rgb(75, 192, 192)',
@@ -291,14 +292,14 @@
                     ],
                     datasets: [{
                         label: 'Count',
-                        data: [2, 1],
+                        data: [@Model.Student.GradePassed, @Model.Student.GradeNotPassed],
                         backgroundColor: [
-                            'rgb(54, 162, 235)',
+                            'rgb(25, 135, 84)',
                             'rgb(255, 99, 132)'
-                        ],
-                        hoverOffset: 4
+                        ]
                     }]
-                }
+                },
+                options: {}
             });
         </script>
 
