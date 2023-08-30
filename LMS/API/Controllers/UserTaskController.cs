@@ -49,6 +49,29 @@ public class UserTaskController : ControllerBase
         });
     }
 
+    [HttpGet("student-to-grade")]
+    public IActionResult GetGradeTaskStudent(Guid guidUserTask)
+    {
+        var result = _userTaskService.GetGradeTaskStudent(guidUserTask);
+        if (result is null)
+        {
+            return NotFound(new ResponseHandler<GetTaskStudentDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
+
+        return Ok(new ResponseHandler<GetTaskStudentDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data has been updated successfully.",
+            Data = result
+        });
+    }
+
     [HttpGet("to-grade")]
     public IActionResult GetTaskToGrade(Guid guidLesson)
     {

@@ -37,6 +37,25 @@ public class UserTaskService
         return result ? 1 : 0;
     }
 
+    public GetTaskStudentDto? GetGradeTaskStudent(Guid guid)
+    {
+        var getTaskStudent = (from ut in _userTaskRepository.GetAll()
+                             where ut.Guid == guid
+                             select new GetTaskStudentDto
+                             {
+                                 UserTaskGuid = ut.Guid,
+                                 Attachment = ut?.Attachment,
+                                 Grade = ut?.Grade
+                             }).FirstOrDefault();
+
+        if (getTaskStudent is null)
+        {
+            return null;
+        }
+
+        return getTaskStudent;
+    }
+
     public IEnumerable<GetTaskToGradeDto> GetTaskToGrade(Guid guid)
     {
         var getTaskToGrade = from l in _lessonRepository.GetAll()

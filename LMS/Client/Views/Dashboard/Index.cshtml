@@ -216,8 +216,27 @@
                     <h6 class="text-capitalize">Recently graded</h6>
                 </div>
                 <div class="card-body p-3">
-                    <div class="chart chart-container" style="position: relative;" height="300">
-                        <canvas id="chart-task-grade" class="chart-canvas"></canvas>
+                    <div class="chart chart-container" style="position: relative;">
+                        @if (Model.Student.LatestGraded.Any())
+                        {
+                            <canvas id="chart-recent-grade" class="chart-canvas"></canvas>
+                        }
+                        else
+                        {
+                            <h3>No recent grade</h3>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card z-index-2 h-100">
+                <div class="card-header pb-0 pt-3 bg-transparent">
+                    <h6 class="text-capitalize">Grade</h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="chart chart-container" style="position: relative;">
+                        <canvas id="chart-recent-grade" class="chart-canvas"></canvas>
                     </div>
                 </div>
             </div>
@@ -226,35 +245,23 @@
 }
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @if (User.IsInRole("Student"))
+    @if (User.IsInRole("Student") && Model.Student.LatestGraded.Any())
     {
         //student chart
         <script>
             var taskGradedLabel = JSON.parse('@Html.Raw(Json.Serialize(Model.Student.LatestTaskName))');
             var taskGraded = JSON.parse('@Html.Raw(Json.Serialize(Model.Student.LatestGraded))');
-            const majorChart = $('#chart-task-grade');
-            new Chart(majorChart, {
-                type: 'bar',
+            const recentGradeChart = $('#chart-recent-grade');
+            new Chart(recentGradeChart, {
+                type: 'line',
                 data: {
                     labels: taskGradedLabel,
                     datasets: [{
                         label: 'Task',
                         data: taskGraded,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 205, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(54, 162, 235, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(54, 162, 235)',
-                        ],
-                        borderWidth: 1
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
                     }]
                 },
                 options: {
