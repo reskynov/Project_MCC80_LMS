@@ -85,7 +85,7 @@ namespace API.Services
                                     join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
                                     from ut in utj.DefaultIfEmpty()
                                     where u.Guid == guid
-                                    select new { uc, t, ut});
+                                    select new {l, uc, t, ut});
 
             if(detailAssignment is null)
             {
@@ -98,11 +98,42 @@ namespace API.Services
                 TotalAssignment = detailAssignment.Count(),
                 TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
                 TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
-                LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5),
-        };
+                LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
+                LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList()
+            };
 
             return dashboard;
 
+        }
+
+        public IEnumerable<StudentTaskDto> GetTeacherTasks(Guid guid)
+        {
+            var getStudentTask = from u in _userRepository.GetAll()
+                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                 join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
+                                 from ut in utj.DefaultIfEmpty()
+                                 where u.Guid == guid
+                                 select new StudentTaskDto
+                                 {
+                                     ClassroomName = c.Name,
+
+                                     LessonGuid = l.Guid,
+                                     LessonName = l.Name,
+                                     TaskGuid = t.Guid,
+                                     Deadline = t.DeadlineDate,
+                                     Grade = ut?.Grade,
+                                     IsSubmitted = ut?.Attachment is not null
+                                 };
+
+            if (!getStudentTask.Any())
+            {
+                return Enumerable.Empty<StudentTaskDto>();
+            }
+
+            return getStudentTask;
         }
 
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
