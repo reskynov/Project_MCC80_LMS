@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Client.ViewModels.Users.StudentTaskVM>
+﻿@model Client.ViewModels.CombinedViews.TaskDetailsVM
 
 @{
     ViewData["Title"] = "Index";
     Layout = "_DashboardLayout";
 }
 <h1 style="color:white;">Task List</h1>
+
 @if (User.IsInRole("Student"))
 {
     <div class="card">
@@ -25,15 +26,15 @@
                         @{
                             int i = 1;
                         }
-                        @foreach (var item in Model)
+                        @foreach (var studentTask in Model.StudentTaskVMs)
                         {
-                            <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = item.LessonGuid })'">
+                            <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = studentTask.LessonGuid })'">
                                 <td>@(i++)</td>
-                                <td>@item.ClassroomName</td>
-                                <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@item.LessonName</td>
-                                <td>@item.Deadline</td>
+                                <td>@studentTask.ClassroomName</td>
+                                <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@studentTask.LessonName</td>
+                                <td>@studentTask.Deadline</td>
                                 <td>
-                                    @if (item.IsSubmitted is true)
+                                    @if (studentTask.IsSubmitted is true)
                                     {
                                         <p style="display:none;">Yes</p>
                                         <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
@@ -45,9 +46,9 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (item.Grade != null)
+                                    @if (studentTask.Grade != null)
                                     {
-                                        @item.Grade
+                                        @studentTask.Grade
                                     }
                                     else
                                     {
@@ -65,7 +66,58 @@
 
 else if (User.IsInRole("Teacher"))
 {
-
+    <div class="card">
+        <div class="card-body px-0 pt-0 pb-2 text-center">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" id="teacherTaskTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">No</th>
+                            <th scope="col" class="text-center">Classroom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var teacherTask in Model.TeacherTaskVMs)
+                        {
+                            <tr class="parent-row">
+                                <td>@(i++)</td>
+                                <td>@teacherTask.ClassroomName</td>
+                            </tr>
+                            @if(teacherTask.TaskInClassroom != null)
+                            {
+                                <tr class="child-row">
+                                    <td colspan="2">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Lesson</th>
+                                                    <th>Deadline Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var taskInClass in teacherTask.TaskInClassroom)
+                                                {
+                                                    <tr>
+                                                        <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
+                                                        <td>@taskInClass.DeadlineDate</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                           
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 }
 else{
     <p>check your account</p>

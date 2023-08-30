@@ -9,5 +9,6 @@
         public bool? IsSubmitted { get; set; }
         public int? Grade { get; set; }
         public Guid TaskGuid { get; set; }
+        public Guid? UserTaskGuid { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Client.ViewModels.CombinedViews;
 using Client.ViewModels.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,20 +19,26 @@ public class TaskController : Controller
 
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var result = await _userRepository.GetStudentTask(guid);
-            if (result != null)
+            var resultStudent = await _userRepository.GetStudentTask(guid);
+            var resultTeacher = await _userRepository.GetTeacherTask(guid);
+
+            if (resultStudent.Data == null && resultTeacher.Data == null)
             {
-                var listTask = result.Data;
-                return View(listTask);
+                return View("No Data");
             }
-            else
+
+            var taskDetailView = new TaskDetailsVM
             {
-                return View(new List<StudentTaskVM>());
-            }
+                StudentTaskVMs = resultStudent.Data ?? new List<StudentTaskVM>(),
+                TeacherTaskVMs = resultTeacher.Data ?? new List<TeacherTaskVM>()
+            };
+
+            return View(taskDetailView);
         }
         else
         {
             return RedirectToAction("Index", "Dashboard");
         }
     }
+
 }
