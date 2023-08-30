@@ -101,7 +101,9 @@ namespace API.Services
                 TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
                 TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
                 LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
-                LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList()
+                LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList(),
+                GradePassed = detailAssignment.Where(assign => assign.ut?.Grade is not null).Where(grade => grade.ut.Grade >= 70).Count(),
+                GradeNotPassed = detailAssignment.Where(assign => assign.ut?.Grade is not null).Where(grade => grade.ut.Grade < 70).Count()
             };
 
             return dashboard;

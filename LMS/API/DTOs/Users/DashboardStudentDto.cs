@@ -8,6 +8,8 @@
         public int TotalNotSubmitted { get; set; }
         public List<int?> LatestGraded { get; set; }
         public List<string?> LatestTaskName { get; set; }
+        public int GradePassed { get; set; }
+        public int GradeNotPassed { get; set; }
 
     }
 }
