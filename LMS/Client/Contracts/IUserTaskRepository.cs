@@ -7,5 +7,6 @@ namespace Client.Contracts
     public interface IUserTaskRepository : IGeneralRepository<UserTask, Guid>
     {
         public Task<ResponseHandler<GetSubmittedTaskVM>> GetSubmittedTask(Guid userGuid, Guid lessonGuid);
+        public Task<ResponseHandler<IEnumerable<GetTaskToGradeVM>>> GetTaskToGrade(Guid guid);
     }
 }
