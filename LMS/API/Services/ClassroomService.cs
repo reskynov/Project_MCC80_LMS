@@ -21,6 +21,7 @@ namespace API.Services
         private readonly IRoleRepository _roleRepository;
         private readonly ILessonRepository _lessonRepository;
         private readonly ITaskRepository _taskRepository;
+        private readonly IUserTaskRepository _userTaskRepository;
 
         public ClassroomService(IClassroomRepository classroomRepository, 
             IUserClassroomRepository userClassroomRepository, 
@@ -28,7 +29,8 @@ namespace API.Services
             IAccountRoleRepository accountRoleRepository,
             IRoleRepository roleRepository,
             ILessonRepository lessonRepository,
-            ITaskRepository taskRepository)
+            ITaskRepository taskRepository,
+            IUserTaskRepository userTaskRepository)
         {
             _classroomRepository = classroomRepository;
             _userClassroomRepository = userClassroomRepository;
@@ -37,6 +39,7 @@ namespace API.Services
             _roleRepository = roleRepository;
             _lessonRepository = lessonRepository;
             _taskRepository = taskRepository;
+            _userTaskRepository = userTaskRepository;
         }
 
         public int CreateNewClassCode(Guid guid)
@@ -62,6 +65,8 @@ namespace API.Services
                                      join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                      join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid into lt
                                      from t in lt.DefaultIfEmpty()
+                                     join ut in _userTaskRepository.GetAll() on t?.Guid equals ut.TaskGuid into utj
+                                     from ut in utj.DefaultIfEmpty()
                                      where c.Guid == guid
                                      select new ClassroomLessonDto
                                      {
@@ -72,7 +77,8 @@ namespace API.Services
                                          isTask = l.IsTask,
                                          CreatedDate = l.CreatedDate,
                                          SubjectAttachment = l.SubjectAttachment,
-                                         DeadlineDate = t?.DeadlineDate
+                                         DeadlineDate = t?.DeadlineDate,
+                                         StudentSubmittedDate = ut?.ModifiedDate
                                      };
 
             if (getClassroomLesson is null)

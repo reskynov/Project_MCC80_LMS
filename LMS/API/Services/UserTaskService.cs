@@ -32,6 +32,7 @@ public class UserTaskService
 
         UserTask toUpdate = userTask;
         toUpdate.Grade = gradeTaskDto.Grade;
+        toUpdate.ModifiedDate = DateTime.Now;
 
         var result = _userTaskRepository.Update(toUpdate);
         return result ? 1 : 0;
@@ -72,7 +73,9 @@ public class UserTaskService
                                  IsSubmitted = ut is not null,
                                  StudentName = u.FirstName + " " + u.LastName,
                                  Grade = ut?.Grade,
-                                 SubmittedTask = ut?.Attachment
+                                 SubmittedTask = ut?.Attachment,
+                                 DeadlineDate = t?.DeadlineDate,
+                                 SubmittedTaskDate = ut?.ModifiedDate
                              };
 
         if(!getTaskToGrade.Any()) 
