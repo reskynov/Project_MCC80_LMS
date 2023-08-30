@@ -116,7 +116,7 @@
         <div class="modal-dialog  modal-dialog-centered ms-auto">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Update Classroom</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit Classroom</h5>
                     <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row">
@@ -242,14 +242,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>*@
 
     <!-- tinymce-->
-    <script src="https://cdn.tiny.cloud/1/58id1g5egyl2gf98nbldh7q3zub3ci964t4ezaniurgnx5rh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
+    @*<script src="https://cdn.tiny.cloud/1/58id1g5egyl2gf98nbldh7q3zub3ci964t4ezaniurgnx5rh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>*@
+   @* <script>
         tinymce.init({
             selector: 'textarea',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
-    </script>
+    </script>*@
 
 
     @await RenderSectionAsync("Scripts", required: false)
