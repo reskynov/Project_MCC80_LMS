@@ -1,9 +1,11 @@
-﻿@model IEnumerable<Client.ViewModels.Users.ClassroomByUserVM>
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Client.ViewModels.UserTasks.GetTaskToGradeVM>
+
 @{
+    ViewData["Title"] = "Grade Student";
+    Layout = "_DashboardLayout";
 }
+
+<h1 style="color:white;">Grade Students</h1>
 
 @if (User.IsInRole("Teacher"))
 {
@@ -17,8 +19,10 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
-                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom Name</th>
-                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Student Count</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Lesson Name</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Student Name</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Submitted</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Attachment</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
@@ -33,15 +37,19 @@
                                                 @(i++)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ClassroomName)
+                                                @Html.DisplayFor(modelItem => item.LessonName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.StudentCount)
+                                                @Html.DisplayFor(modelItem => item.StudentName)
                                             </td>
                                             <td>
-                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
-                                                <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
-                                                <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                                                @Html.DisplayFor(modelItem => item.IsSubmitted)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SubmittedTask)
+                                            </td>
+                                            <td>
+                                                <button onclick="ShowUserTask('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-primary"> Grading</button>
                                             </td>
                                         </tr>
                                     }
@@ -53,4 +61,104 @@
             </div>
         </div>
     </div>
+}
+
+@*----------------------------MODAL UPDATE GRADE----------------------------*@
+<div class="modal" tabindex="-1" id="modalGrade">
+    <div class="modal-dialog  modal-dialog-centered ms-auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Grading</h5>
+                <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <div class="col">
+                    <form id="addGradeForm">
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="guidLessonUserTask" name="guidLessonUserTask">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gradeUserTask" class="form-label">Attachment</label>
+                            <textarea class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gradeusertask" class="form-label">grade</label>
+                            <input type="number" class="form-control" id="gradeusertask" name="gradeusertask" required>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-header">
+                <button onclick="UpdateGrade()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserTaskGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmittedTask)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSubmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserTaskGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubmittedTask)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grade)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
+
+@section Scripts {
+    <script src="~/js/grade.js" asp-append-version="true"></script>
 }
