@@ -1,6 +1,6 @@
-﻿namespace API.DTOs.UserTasks
+﻿namespace Client.ViewModels.UserTasks
 {
-    public class GetTaskToGradeDto
+    public class GetTaskToGradeVM
     {
         public Guid LessonGuid { get; set; }
         public string LessonName { get; set; }
@@ -8,8 +8,6 @@
         public bool IsSubmitted { get; set; }
         public Guid? UserTaskGuid { get; set; }
         public string? SubmittedTask { get; set; }
-        public DateTime? SubmittedTaskDate { get; set; }
         public int? Grade { get; set; }
-        public DateTime? DeadlineDate { get; set; }
     }
 }

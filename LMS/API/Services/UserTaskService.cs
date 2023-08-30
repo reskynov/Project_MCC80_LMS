@@ -32,9 +32,29 @@ public class UserTaskService
 
         UserTask toUpdate = userTask;
         toUpdate.Grade = gradeTaskDto.Grade;
+        toUpdate.ModifiedDate = DateTime.Now;
 
         var result = _userTaskRepository.Update(toUpdate);
         return result ? 1 : 0;
+    }
+
+    public GetTaskStudentDto? GetGradeTaskStudent(Guid guid)
+    {
+        var getTaskStudent = (from ut in _userTaskRepository.GetAll()
+                             where ut.Guid == guid
+                             select new GetTaskStudentDto
+                             {
+                                 UserTaskGuid = ut.Guid,
+                                 Attachment = ut?.Attachment,
+                                 Grade = ut?.Grade
+                             }).FirstOrDefault();
+
+        if (getTaskStudent is null)
+        {
+            return null;
+        }
+
+        return getTaskStudent;
     }
 
     public IEnumerable<GetTaskToGradeDto> GetTaskToGrade(Guid guid)
@@ -53,7 +73,9 @@ public class UserTaskService
                                  IsSubmitted = ut is not null,
                                  StudentName = u.FirstName + " " + u.LastName,
                                  Grade = ut?.Grade,
-                                 SubmittedTask = ut?.Attachment
+                                 SubmittedTask = ut?.Attachment,
+                                 DeadlineDate = t?.DeadlineDate,
+                                 SubmittedTaskDate = ut?.ModifiedDate
                              };
 
         if(!getTaskToGrade.Any()) 

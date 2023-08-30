@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.Models;
 using Client.Utilities.Handlers;
+using Client.ViewModels.Users;
 using Client.ViewModels.UserTasks;
 using Newtonsoft.Json;
 
@@ -21,6 +22,17 @@ namespace Client.Repositories
                 getSubmittedTask = JsonConvert.DeserializeObject<ResponseHandler<GetSubmittedTaskVM>>(apiResponse);
             }
             return getSubmittedTask;
+        }
+
+        public async Task<ResponseHandler<IEnumerable<GetTaskToGradeVM>>> GetTaskToGrade(Guid guid)
+        {
+            ResponseHandler<IEnumerable<GetTaskToGradeVM>> getTaskToGrade = null;
+            using (var response = await httpClient.GetAsync(request + "to-grade?guidLesson=" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                getTaskToGrade = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<GetTaskToGradeVM>>>(apiResponse);
+            }
+            return getTaskToGrade;
         }
     }
 }

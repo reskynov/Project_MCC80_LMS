@@ -8,6 +8,8 @@
         public int TotalNotSubmitted { get; set; }
         public IEnumerable<int?> LatestGraded { get; set; }
         public IEnumerable<string?> LatestTaskName { get; set; }
+        public int GradePassed { get; set; }
+        public int GradeNotPassed { get; set; }
 
     }
 }
