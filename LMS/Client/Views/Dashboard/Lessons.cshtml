@@ -121,21 +121,42 @@
         @if (item.isTask is true)
         {
                 <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
-                    <div class="row row-cols-auto">
-                        <div class="col d-flex justify-content-center align-items-center">
+                    <div class="row">
+                        <div class="col-md-auto d-flex justify-content-center align-items-center">
                             <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
                                 <i class="fa-solid fa-clipboard"></i>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
-                                <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
+                        <div class="col-8 justify-content-center align-items-center">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align:start;">
+                                <h6 class="card-text m-0" style="margin-top:10px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </h6>
                                 <p class="card-text" style="margin-top: -10px;">
                                     <small class="text-muted" style="font-size: 0.75em">
                                         @item.CreatedDate.ToString("d MMMM")
                                     </small>
                                 </p>
                             </div>
+                        </div>
+           @*             <div class="col d-flex justify-content-center align-items-center">
+                        </div>*@
+                        <div class="col d-flex text-end justify-content-end">
+                            @if(item.DeadlineDate < DateTime.Now)
+                            {
+                                <div class="d-flex flex-column">
+                                <p class="m-0" style="color: #d92020;">
+                                    <small>
+                                        <i class="fa-solid fa-triangle-exclamation me-2" style=""></i>Overdue
+                                    </small>
+                                </p>
+                                <p class="m-0" style="color: #d92020;">Deadline : @item.DeadlineDate</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="m-0 d-flex align-items-center" style="align-self:center;">Deadline : @item.DeadlineDate</p>
+                            }
                         </div>
                     </div>
                 </a>
@@ -150,7 +171,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify;">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align: justify; text-overflow: ellipsis; overflow: hidden;">
                                 <h6 class="card-text m-0" style="margin-top:10px;">@Html.DisplayFor(modelItem => item.Name)</h6>
                                 <p class="card-text" style="margin-top: -10px;">
                                     <small class="text-muted" style="font-size: 0.75em">
