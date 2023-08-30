@@ -6,6 +6,6 @@ namespace API.DTOs.Users
     {
         public string ClassroomName { get; set; }
 
-        public TeacherTaskInClassDto Classroom { get; set; }
+        public IEnumerable<TeacherTaskInClassDto> TaskInClassroom { get; set; }
     }
 }
