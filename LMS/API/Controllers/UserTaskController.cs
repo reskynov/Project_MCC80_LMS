@@ -53,7 +53,7 @@ public class UserTaskController : ControllerBase
     public IActionResult GetTaskToGrade(Guid guidLesson)
     {
         var result = _userTaskService.GetTaskToGrade(guidLesson);
-        if (result is null)
+        if (!result.Any())
         {
             return NotFound(new ResponseHandler<GetTaskToGradeDto>
             {

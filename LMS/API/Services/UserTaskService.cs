@@ -37,7 +37,7 @@ public class UserTaskService
         return result ? 1 : 0;
     }
 
-    public IEnumerable<GetTaskToGradeDto>? GetTaskToGrade(Guid guid)
+    public IEnumerable<GetTaskToGradeDto> GetTaskToGrade(Guid guid)
     {
         var getTaskToGrade = from l in _lessonRepository.GetAll()
                              join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
@@ -58,7 +58,7 @@ public class UserTaskService
 
         if(!getTaskToGrade.Any()) 
         {
-            return null;
+            return Enumerable.Empty<GetTaskToGradeDto>();
         }
 
         return getTaskToGrade;

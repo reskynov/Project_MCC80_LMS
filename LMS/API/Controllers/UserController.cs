@@ -267,6 +267,30 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("teacher-task")]
+        public IActionResult GetTeacherTasks(Guid guid)
+        {
+            var result = _userService.GetTeacherTasks(guid);
+            if (!result.Any())
+            {
+                return NotFound(new ResponseHandler<IEnumerable<TeacherTaskDto>>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "No task found",
+                    Data = result
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<TeacherTaskDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
+        }
+
         [HttpGet("student-dashboard")]
         public IActionResult DashboardStudent(Guid guid)
         {

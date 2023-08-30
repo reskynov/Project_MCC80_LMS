@@ -56,23 +56,22 @@
             else if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Grade != null)
             {
                 <div class="col-md-4">
-                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                        @*<div class="mb-3" id="user-guid" style="display: none;">
-                            <label for="userGuidSubmitTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
-                        </div>
-                        <div class="mb-3" id="lesson-guid" style="display: none;">
-                            <label for="lessonGuidSubmitTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonModel.Guid" readonly>
-                        </div>*@
-                        <div class="mx-3 mt-2">
-                            <div class="row">
-                                <div class="col">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
                                     <label class="h6 form-label">Your Work</label>
-                                    <p style="position:absolute; right:0; top:0;">Score : @Model.GetSubmittedTaskVM.Grade</p>
+                                    <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
                                 </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" id="attacmentSubmitTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
+                                    <label class="h6 form-label" style="font-size:20pt;">Score</label>
+                                    <p class="m-0" style="font-family:Poppins; font-size:42pt; color:#2563eb; max-height:80px;">@Model.GetSubmittedTaskVM.Grade</p>
                                 </div>
                             </div>
                         </div>

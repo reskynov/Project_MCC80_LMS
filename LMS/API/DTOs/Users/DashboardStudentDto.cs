@@ -6,7 +6,8 @@
         public int TotalAssignment { get; set; }
         public int TotalSubmitted { get; set; }
         public int TotalNotSubmitted { get; set; }
-        public IEnumerable<int?> LatestGraded { get; set; }
+        public List<int?> LatestGraded { get; set; }
+        public List<string?> LatestTaskName { get; set; }
 
     }
 }

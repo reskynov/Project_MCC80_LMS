@@ -28,20 +28,20 @@
                         @foreach (var item in Model)
                         {
                             <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = item.LessonGuid })'">
-                                <td>@(
-                                    i++
-                                    )</td>
+                                <td>@(i++)</td>
                                 <td>@item.ClassroomName</td>
-                                <td>@item.LessonName</td>
+                                <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@item.LessonName</td>
                                 <td>@item.Deadline</td>
                                 <td>
                                     @if (item.IsSubmitted is true)
                                     {
-                                        <i class="fa-solid fa-check" style="color: #A2FF86;"></i>
+                                        <p style="display:none;">Yes</p>
+                                        <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
                                     }
                                     else
                                     {
-                                        <i class="fa-solid fa-x" style="color: #900C3F;"></i>
+                                        <p style="display:none;">No</p>
+                                        <a class="fa-solid fa-x" style="color: #900C3F;"></a>
                                     }
                                 </td>
                                 <td>
@@ -63,9 +63,12 @@
     </div>
 }
 
-@if (User.IsInRole("Teacher"))
+else if (User.IsInRole("Teacher"))
 {
 
+}
+else{
+    <p>check your account</p>
 }
 @section Scripts { 
 <script src="~/js/task.js" asp-append-version="true"></script>
