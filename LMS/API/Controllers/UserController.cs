@@ -270,7 +270,7 @@ namespace API.Controllers
         [HttpGet("student-dashboard")]
         public IActionResult DashboardStudent(Guid guid)
         {
-            var result = _userService.GetDashboardStudentDto(guid);
+            var result = _userService.GetDashboardStudent(guid);
             if (result is null)
             {
                 return NotFound(new ResponseHandler<DashboardStudentDto>
@@ -283,6 +283,30 @@ namespace API.Controllers
             }
 
             return Ok(new ResponseHandler<DashboardStudentDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
+        }
+
+        [HttpGet("teacher-dashboard")]
+        public IActionResult DashboardTeacher(Guid guid)
+        {
+            var result = _userService.GetDashboardTeacher(guid);
+            if (result is null)
+            {
+                return NotFound(new ResponseHandler<DashboardTeacherDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Guid is not found",
+                    Data = result
+                });
+            }
+
+            return Ok(new ResponseHandler<DashboardTeacherDto>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),

@@ -5,7 +5,6 @@
     Layout = "_DashboardLayout";
 }
 <h1 style="color:white;">Task List</h1>
-
 @if (User.IsInRole("Student"))
 {
     <div class="card">
@@ -62,19 +61,18 @@
             </div>
         </div>
     </div>
-
-    @section Scripts {
-    <script src="~/js/task.js" asp-append-version="true"></script>
-    }
-
 }
-else
+
+else if (User.IsInRole("Teacher"))
 {
-    <p>Data belum ada</p>
+
 }
-
-
-
+else{
+    <p>check your account</p>
+}
+@section Scripts { 
+<script src="~/js/task.js" asp-append-version="true"></script>
+}
 
 @*<table class="table">
     <thead>

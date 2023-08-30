@@ -1,5 +1,6 @@
 ﻿using Client.Contracts;
 using Client.Models;
+using Client.Utilities.Handlers;
 using Client.ViewModels.Accounts;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
@@ -31,24 +32,40 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
+        DashboardUserVM dashboardUser = new DashboardUserVM();
         var userGuidClaim = User.FindFirst("Guid");
         if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
-        {
-            var result = await _userRepository.DashboardStudent(guid);
-            if (result != null && result.Data != null)
+
+            if (User.IsInRole("Student"))
             {
-                var dataDashboard = result.Data;
-                return View(dataDashboard); // Mengembalikan ListClass ke tampilan
-            }
-            else
+                var resultStudent = await _userRepository.DashboardStudent(guid);
+                if (resultStudent != null && resultStudent.Data != null)
+                {
+                    var dataDashboard = resultStudent.Data;
+                    dashboardUser.Student = dataDashboard;
+                    return View(dashboardUser); // Mengembalikan ListClass ke tampilan
+                }
+                else
+                {
+                    return View(null);
+                }
+            } else
             {
-                return View(null);
+                var resultTeacher = await _userRepository.DashboardTeacher(guid);
+                if (resultTeacher != null && resultTeacher.Data != null)
+                {
+                    var dataDashboard = resultTeacher.Data;
+                    dashboardUser.Teacher = dataDashboard;
+                    return View(dashboardUser); // Mengembalikan ListClass ke tampilan
+                }
+                else
+                {
+                    return View(null);
+                }
+
             }
-        } else
-        {
-            return RedirectToAction("Index", "Home");
-        }
-    }
+        return RedirectToAction("Index", "Home");
+    } 
 
     public async Task<IActionResult> Classroom()
     {

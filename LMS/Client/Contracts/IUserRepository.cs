@@ -13,5 +13,6 @@ namespace Client.Contracts
         public Task<ResponseHandler<ProfileChangePasswordVM>> ProfileChangePassword(ProfileChangePasswordVM entity);
         public Task<ResponseHandler<IEnumerable<StudentTaskVM>>> GetStudentTask(Guid guid);
         public Task<ResponseHandler<DashboardStudentVM>> DashboardStudent(Guid guid);
+        public Task<ResponseHandler<DashboardTeacherVM>> DashboardTeacher(Guid guid);
     }
 }

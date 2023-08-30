@@ -199,3 +199,21 @@
     </div>
 }
 
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#myTableClassroom').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    //'copy', 'csv',
+                    'excel', 'pdf', 'print',
+                    {
+                        extend: 'colvis',
+                        title: 'Colvis',
+                        text: 'Column Visibility'
+                    }
+                ]
+            });
+        });
+    </script>
+}

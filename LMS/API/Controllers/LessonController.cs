@@ -149,6 +149,29 @@ public class LessonController : ControllerBase
         });
     }
 
+    [HttpGet("task")]
+    public IActionResult GetLessonTaskByGuid(Guid guid)
+    {
+        var result = _lessonService.GetLessonTaskByGuid(guid);
+        if (result is null)
+        {
+            return NotFound(new ResponseHandler<UpdateLessonTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
+
+        return Ok(new ResponseHandler<UpdateLessonTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data retrieved successfully.",
+            Data = result
+        });
+    }
+
     [HttpPost("task")]
     public IActionResult CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
     {
@@ -222,5 +245,7 @@ public class LessonController : ControllerBase
             Status = HttpStatusCode.OK.ToString(),
             Message = "Success! Data has been updated successfully."
         });
+
+
     }
 }
