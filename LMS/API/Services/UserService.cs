@@ -92,16 +92,14 @@ namespace API.Services
                 return null;
             }
 
-            detailAssignment.Where(assign => assign.ut.Grade is null).OrderBy(assign => assign.ut.ModifiedDate);
-
             var dashboard = new DashboardStudentDto
             {
                 TotalClassroom = totalClassroom,
                 TotalAssignment = detailAssignment.Count(),
                 TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
                 TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
-                
-            };
+                LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5),
+        };
 
             return dashboard;
 
