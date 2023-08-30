@@ -23,6 +23,7 @@
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Student Name</th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Submitted</th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Attachment</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Grade</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
@@ -38,20 +39,33 @@
                                             i++
                                             )
                                             </td>
-                                            <td>
+                                            <td class="justify-content-center" style="max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                                                 @Html.DisplayFor(modelItem => item.LessonName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.StudentName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.IsSubmitted)
+                                                @if (item.IsSubmitted is true)
+                                                {
+                                                    <p style="display:none;">Yes</p>
+                                                    <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
+                                                }
+                                                else
+                                                {
+                                                    <p style="display:none;">No</p>
+                                                    <a class="fa-solid fa-x" style="color: #900C3F;"></a>
+                                                }
+                                                @*@Html.DisplayFor(modelItem => item.IsSubmitted)*@
+                                            </td>
+                                            <td class="justify-content-center" style="max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                                <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Link Attachment</a>
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.SubmittedTask)
+                                                @Html.DisplayFor(modelItem => item.Grade)
                                             </td>
                                             <td>
-                                                <button onclick="ShowUserTask('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-primary"> Grading</button>
+                                                <button onclick="ShowUserTask('@item.UserTaskGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-primary"><i class="fa-solid fa-pen "></i>  Grading</button>
                                             </td>
                                         </tr>
                                     }

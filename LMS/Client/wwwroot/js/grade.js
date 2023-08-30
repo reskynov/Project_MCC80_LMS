@@ -5,14 +5,13 @@
 
 function ShowUserTask(guid) {
     $.ajax({
-        url: "https://localhost:7026/api/user-tasks/to-grade?guidLesson=" + guid,
+        url: "https://localhost:7026/api/user-tasks/student-to-grade?guidUserTask=" + guid,
         type: "GET",
         dataType: "json"
     }).done((result) => {
         console.log(result)
-        console.log(result.data.submittedTask)
-        $("#guidLessonUserTask").val(result.data.lessonGuid);
-        $("#submittedTaskUserTask").val(result.data.submittedTask);
+        $("#guidLessonUserTask").val(result.data.userTaskGuid);
+        $("#submittedTaskUserTask").val(result.data.attachment);
         $("#gradeusertask").val(result.data.grade);
     }).fail((error) => {
         alert("Failed to fetch data. Please try again.");
@@ -22,9 +21,8 @@ function ShowUserTask(guid) {
 
     function UpdateGrade() {
         let data = {
-            lessonGuid: $("#guidLessonUserTask").val(),
-            submittedTask: $("#submittedTaskUserTask").val(),
-            grade: $("#gradeUserTask").val(),
+            userTaskGuid: $("#guidLessonUserTask").val(),
+            grade: $("#gradeusertask").val(),
         };
         $.ajax({
             url: "https://localhost:7026/api/user-tasks/grade-task",
