@@ -21,6 +21,49 @@ public class UserTaskService
         _userRepository = userRepository;
     }
 
+    public int GradeTask(GradeTaskDto gradeTaskDto)
+    {
+        var userTask = _userTaskRepository.GetByGuid(gradeTaskDto.UserTaskGuid);
+
+        if (userTask is null)
+        {
+            return -1;
+        }
+
+        UserTask toUpdate = userTask;
+        toUpdate.Grade = gradeTaskDto.Grade;
+
+        var result = _userTaskRepository.Update(toUpdate);
+        return result ? 1 : 0;
+    }
+
+    public IEnumerable<GetTaskToGradeDto>? GetTaskToGrade(Guid guid)
+    {
+        var getTaskToGrade = from l in _lessonRepository.GetAll()
+                             join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                             join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
+                             from ut in utj.DefaultIfEmpty()
+                             join u in _userRepository.GetAll() on ut?.UserGuid equals u.Guid
+                             where l.Guid == guid
+                             select new GetTaskToGradeDto
+                             {
+                                 LessonGuid = l.Guid,
+                                 UserTaskGuid = ut?.Guid,
+                                 LessonName = l.Name,
+                                 IsSubmitted = ut is not null,
+                                 StudentName = u.FirstName + " " + u.LastName,
+                                 Grade = ut?.Grade,
+                                 SubmittedTask = ut?.Attachment
+                             };
+
+        if(!getTaskToGrade.Any()) 
+        {
+            return null;
+        }
+
+        return getTaskToGrade;
+    }
+
     public int EditSubmittedTask(SubmitTaskDto submitTaskDto)
     {
         var getSubmittedTask = (from l in _lessonRepository.GetAll()
@@ -120,13 +163,13 @@ public class UserTaskService
 
     public UserTaskDto? GetByGuid(Guid guid)
     {
-        var UserTask = _userTaskRepository.GetByGuid(guid);
-        if (UserTask is null)
+        var userTask = _userTaskRepository.GetByGuid(guid);
+        if (userTask is null)
         {
             return null;
         }
 
-        return(UserTaskDto)UserTask;
+        return(UserTaskDto)userTask;
     }
 
     public UserTaskDto? Create(NewUserTaskDto newUserTaskDto)

@@ -17,6 +17,61 @@ public class UserTaskController : ControllerBase
         _userTaskService = userTaskService;
     }
 
+    [HttpPut("grade-task")]
+    public IActionResult GradeTask(GradeTaskDto gradeTaskDto)
+    {
+        var result = _userTaskService.GradeTask(gradeTaskDto);
+        if (result is -1)
+        {
+            return NotFound(new ResponseHandler<UserTaskDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
+
+        if (result is 0)
+        {
+            return StatusCode(500, new ResponseHandler<UserTaskDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Internal Server Error: Unable to update from the database."
+            });
+        }
+
+        return Ok(new ResponseHandler<UserTaskDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data has been updated successfully."
+        });
+    }
+
+    [HttpGet("to-grade")]
+    public IActionResult GetTaskToGrade(Guid guidLesson)
+    {
+        var result = _userTaskService.GetTaskToGrade(guidLesson);
+        if (result is null)
+        {
+            return NotFound(new ResponseHandler<GetTaskToGradeDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data not found."
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<GetTaskToGradeDto>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data retrieved successfully.",
+            Data = result
+        });
+    }
+
     [HttpGet("submit-task")]
     public IActionResult GetSubmittedTask([FromQuery] FindSubmittedTaskDto findSubmittedTaskDto)
     {
@@ -92,7 +147,7 @@ public class UserTaskController : ControllerBase
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Internal Server Error: Unable to retrieve data from the database."
+                Message = "Internal Server Error: Unable to update from the database."
             });
         }
 
