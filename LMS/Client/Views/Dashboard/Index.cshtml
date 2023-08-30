@@ -232,11 +232,18 @@
         <div class="col-lg-5">
             <div class="card z-index-2 h-100">
                 <div class="card-header pb-0 pt-3 bg-transparent">
-                    <h6 class="text-capitalize">Grade</h6>
+                    <h6 class="text-capitalize">Passed Grade (Score 70 to passed)</h6>
                 </div>
                 <div class="card-body p-3">
                     <div class="chart chart-container" style="position: relative;">
-                        <canvas id="chart-recent-grade" class="chart-canvas"></canvas>
+                        @if (Model.Student.LatestGraded.Any())
+                        {
+                            <canvas id="chart-passed-grade" class="chart-canvas"></canvas>
+                        }
+                        else
+                        {
+                            <h3>No recent grade</h3>
+                        }
                     </div>
                 </div>
             </div>
@@ -249,6 +256,7 @@
     {
         //student chart
         <script>
+            @*chart recent grade*@
             var taskGradedLabel = JSON.parse('@Html.Raw(Json.Serialize(Model.Student.LatestTaskName))');
             var taskGraded = JSON.parse('@Html.Raw(Json.Serialize(Model.Student.LatestGraded))');
             const recentGradeChart = $('#chart-recent-grade');
@@ -272,6 +280,27 @@
                     }
                 },
             });
+
+            const gradePassedChart = $('#chart-passed-grade');
+            new Chart(gradePassedChart, {
+                type: 'pie',
+                data : {
+                    labels: [
+                        'Passed',
+                        'Not Passed',
+                    ],
+                    datasets: [{
+                        label: 'Count',
+                        data: [2, 1],
+                        backgroundColor: [
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+            });
         </script>
+
     }
 }

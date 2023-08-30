@@ -8,6 +8,8 @@
         public bool IsSubmitted { get; set; }
         public Guid? UserTaskGuid { get; set; }
         public string? SubmittedTask { get; set; }
+        public DateTime? SubmittedTaskDate { get; set; }
         public int? Grade { get; set; }
+        public DateTime? DeadlineDate { get; set; }
     }
 }

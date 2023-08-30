@@ -10,4 +10,5 @@ public class ClassroomLessonDto
     public DateTime CreatedDate { get; set; }
     public DateTime? DeadlineDate { get; set; }
     public Guid LessonGuid { get; set; }
+    public DateTime? StudentSubmittedDate { get; set; }
 }
