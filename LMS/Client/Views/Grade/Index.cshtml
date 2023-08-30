@@ -34,7 +34,9 @@
                                     {
                                         <tr>
                                             <td>
-                                                @(i++)
+                                                @(
+                                            i++
+                                            )
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.LessonName)
@@ -61,40 +63,40 @@
             </div>
         </div>
     </div>
-}
 
-@*----------------------------MODAL UPDATE GRADE----------------------------*@
-<div class="modal" tabindex="-1" id="modalGrade">
-    <div class="modal-dialog  modal-dialog-centered ms-auto">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Grading</h5>
-                <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body row">
-                <div class="col">
-                    <form id="addGradeForm">
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" id="guidLessonUserTask" name="guidLessonUserTask">
-                        </div>
-                        <div class="mb-3">
-                            <label for="gradeUserTask" class="form-label">Attachment</label>
-                            <textarea class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="gradeusertask" class="form-label">grade</label>
-                            <input type="number" class="form-control" id="gradeusertask" name="gradeusertask" required>
-                        </div>
-                    </form>
+    @*----------------------------MODAL UPDATE GRADE----------------------------*@
+    <div class="modal" tabindex="-1" id="modalGrade">
+        <div class="modal-dialog  modal-dialog-centered ms-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Grading</h5>
+                    <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="modal-header">
-                <button onclick="UpdateGrade()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                <div class="modal-body row">
+                    <div class="col">
+                        <form id="addGradeForm">
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="guidLessonUserTask" name="guidLessonUserTask">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gradeUserTask" class="form-label">Attachment</label>
+                                <textarea class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gradeusertask" class="form-label">grade</label>
+                                <input type="number" class="form-control" id="gradeusertask" name="gradeusertask" required>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <button onclick="UpdateGrade()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+    
+}
 @*<p>
     <a asp-action="Create">Create New</a>
 </p>

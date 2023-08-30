@@ -10,9 +10,10 @@ function ShowUserTask(guid) {
         dataType: "json"
     }).done((result) => {
         console.log(result)
+        console.log(result.data.submittedTask)
         $("#guidLessonUserTask").val(result.data.lessonGuid);
         $("#submittedTaskUserTask").val(result.data.submittedTask);
-        $("#gradeUserTask").val(result.data.grade);
+        $("#gradeusertask").val(result.data.grade);
     }).fail((error) => {
         alert("Failed to fetch data. Please try again.");
         console.log(error)
