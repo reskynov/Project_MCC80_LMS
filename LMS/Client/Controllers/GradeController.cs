@@ -18,10 +18,14 @@ namespace Client.Controllers
         public async Task<IActionResult> Index(Guid guid)
         {
             var result = await _userTaskRepository.GetTaskToGrade(guid);
-            if (result != null)
+            if (result.Data != null)
             {
                 var listTask = result.Data;
                 return View(listTask);
+            }
+            else if (result.Data is null)
+            {
+                return View(new List<GetTaskToGradeVM>());
             }
             else
             {
