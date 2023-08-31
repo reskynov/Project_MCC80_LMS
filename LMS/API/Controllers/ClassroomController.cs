@@ -255,9 +255,9 @@ namespace API.Controllers
         }
 
         [HttpGet("lesson")]
-        public IActionResult GetClassroomLesson(Guid guid)
+        public IActionResult GetClassroomLesson(Guid guidClassroom, Guid guidUser)
         {
-            var result = _classroomService.GetClassroomLessons(guid);
+            var result = _classroomService.GetClassroomLessons(guidClassroom, guidUser);
             if (!result.Any())
             {
                 return NotFound(new ResponseHandler<ClassroomLessonDto>

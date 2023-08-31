@@ -154,12 +154,10 @@ namespace API.Services
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
         {
             var getStudentTask = from u in _userRepository.GetAll()
-                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
-                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
-                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
-                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                                 join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
-                                 from ut in utj.DefaultIfEmpty()
+                                 join ut in _userTaskRepository.GetAll() on u.Guid equals ut.UserGuid
+                                 join t in _taskRepository.GetAll() on ut.TaskGuid equals t.Guid
+                                 join l in _lessonRepository.GetAll() on t.LessonGuid equals l.Guid
+                                 join c in _classroomRepository.GetAll() on l.ClassroomGuid equals c.Guid
                                  where u.Guid == guid
                                  select new StudentTaskDto
                                      {
@@ -168,8 +166,7 @@ namespace API.Services
                                          LessonName = l.Name,
                                          TaskGuid = t.Guid,
                                          Deadline = t.DeadlineDate,
-                                         Grade = ut?.Grade,
-                                         IsSubmitted = ut?.Attachment is not null
+                                         Grade = ut.Grade,
                                      };
 
             if (!getStudentTask.Any())
