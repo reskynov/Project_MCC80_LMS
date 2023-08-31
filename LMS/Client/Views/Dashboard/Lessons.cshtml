@@ -44,7 +44,7 @@
     @if (User.IsInRole("Teacher"))
     {
         <div style="position:relative; left:15px;">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
         </div>
     }
     @foreach (var item in Model.ClassroomLessonViewModels)
@@ -100,7 +100,7 @@
                         </div>
                         <div class="col">
                             <div class="col justify-content-center" style="position:absolute; right:24px;">
-                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-info mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
                                 <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                 <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
                             </div>
@@ -154,7 +154,7 @@
                         </div>
                         <div class="col">
                             <div class="col justify-content-center" style="position:absolute; right:24px;">
-                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-info mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                <a asp-controller="Dashboard" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
                                 <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                 <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
                             </div>

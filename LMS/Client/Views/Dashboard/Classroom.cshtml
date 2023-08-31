@@ -116,7 +116,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -146,7 +146,7 @@
                                                 @Html.DisplayFor(modelItem => item.StudentCount)
                                             </td>
                                             <td>
-                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
+                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-primary"><i class="fa-solid fa-eye"></i> Lesson</a> |
                                                 <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
                                                 <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
                                                 @* <form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
