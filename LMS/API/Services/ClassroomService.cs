@@ -67,7 +67,7 @@ namespace API.Services
                                      join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                      join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid into lt
                                      from t in lt.DefaultIfEmpty()
-                                     where u.Guid == guidUser
+                                     where u.Guid == guidUser && c.Guid == guidClass
                                      select new ClassroomLessonDto
                                      {
                                          ClassroomGuid = c.Guid,
