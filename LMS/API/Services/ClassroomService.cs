@@ -59,15 +59,15 @@ namespace API.Services
                 : 0; // classroom failed to update;
         }
 
-        public IEnumerable<ClassroomLessonDto> GetClassroomLessons(Guid guid)
+        public IEnumerable<ClassroomLessonDto> GetClassroomLessons(Guid guidClass, Guid guidUser)
         {
             var getClassroomLesson = from c in _classroomRepository.GetAll()
+                                     join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
+                                     join u in _userRepository.GetAll() on uc.UserGuid equals u.Guid
                                      join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                      join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid into lt
                                      from t in lt.DefaultIfEmpty()
-                                     join ut in _userTaskRepository.GetAll() on t?.Guid equals ut.TaskGuid into utj
-                                     from ut in utj.DefaultIfEmpty()
-                                     where c.Guid == guid
+                                     where u.Guid == guidUser && c.Guid == guidClass
                                      select new ClassroomLessonDto
                                      {
                                          ClassroomGuid = c.Guid,
@@ -78,7 +78,6 @@ namespace API.Services
                                          CreatedDate = l.CreatedDate,
                                          SubjectAttachment = l.SubjectAttachment,
                                          DeadlineDate = t?.DeadlineDate,
-                                         StudentSubmittedDate = ut?.ModifiedDate
                                      };
 
             if (getClassroomLesson is null)

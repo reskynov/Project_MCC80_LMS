@@ -39,8 +39,8 @@ function ShowUserTask(guid) {
         }).fail((error) => {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'Failed to update data! Please try again.'
+                title: 'Failed to update data!',
+                text: 'Grade value must be between 0-100. Please try again.'
             })
             console.log(error)
         })

@@ -61,8 +61,7 @@ public class UserTaskService
     {
         var getTaskToGrade = from l in _lessonRepository.GetAll()
                              join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                             join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
-                             from ut in utj.DefaultIfEmpty()
+                             join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
                              join u in _userRepository.GetAll() on ut?.UserGuid equals u.Guid
                              where l.Guid == guid
                              select new GetTaskToGradeDto
@@ -70,7 +69,6 @@ public class UserTaskService
                                  LessonGuid = l.Guid,
                                  UserTaskGuid = ut?.Guid,
                                  LessonName = l.Name,
-                                 IsSubmitted = ut is not null,
                                  StudentName = u.FirstName + " " + u.LastName,
                                  Grade = ut?.Grade,
                                  SubmittedTask = ut?.Attachment,
@@ -130,7 +128,8 @@ public class UserTaskService
                            Attachment = ut.Attachment,
                            Grade = ut.Grade,
                            UserGuid = ut.UserGuid,
-                           TaskGuid = ut.TaskGuid
+                           TaskGuid = ut.TaskGuid,
+                           SubmittedDate = ut.ModifiedDate
                        }).FirstOrDefault();
 
         if (getSubmittedTask is null)

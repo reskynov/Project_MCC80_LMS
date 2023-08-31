@@ -12,10 +12,10 @@ public class ClassroomRepository : GeneralRepository<Classroom, Guid>, IClassroo
     {
     }
 
-    public async Task<ResponseHandler<IEnumerable<ClassroomLessonVM>>> GetLessonByClassroom(Guid guid)
+    public async Task<ResponseHandler<IEnumerable<ClassroomLessonVM>>> GetLessonByClassroom(Guid guidClass, Guid guidUser)
     {
         ResponseHandler<IEnumerable<ClassroomLessonVM>> lessonByClassroom = null;
-        using (var response = await httpClient.GetAsync(request + "lesson?guid=" + guid))
+        using (var response = await httpClient.GetAsync(request + "lesson?guidClassroom=" + guidClass + "&guidUser=" + guidUser))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             lessonByClassroom = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<ClassroomLessonVM>>>(apiResponse);
