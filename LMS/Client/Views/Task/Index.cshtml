@@ -27,7 +27,7 @@
                         }
                         @foreach (var studentTask in Model.StudentTaskVMs)
                         {
-                            <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = studentTask.LessonGuid })'">
+                            <tr id="studentTaskList" onclick="window.location.href='@Url.Action("LessonDetail", "Classroom", new { lessonGuid = studentTask.LessonGuid })'">
                                 <td>@(i++)</td>
                                 <td>@studentTask.ClassroomName</td>
                                 <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@studentTask.LessonName</td>
@@ -96,7 +96,7 @@ else if (User.IsInRole("Teacher"))
                                             {
                                                 @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
                                                 {
-                                                        <tr onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = @taskInClass.LessonGuid })'">
+                                                        <tr onclick="window.location.href='@Url.Action("LessonDetail", "Classroom", new { lessonGuid = @taskInClass.LessonGuid })'">
                                                             <td class="text-sm fw-bold" style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
                                                             <td class="text-sm fw-bold">@taskInClass.DeadlineDate</td>
                                                         </tr>                                                    

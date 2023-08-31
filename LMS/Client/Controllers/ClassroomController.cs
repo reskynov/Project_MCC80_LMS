@@ -1,6 +1,8 @@
 ﻿using Client.Contracts;
 using Client.Models;
 using Client.ViewModels.Classrooms;
+using Client.ViewModels.CombinedViews;
+using Client.ViewModels.Lessons;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -8,10 +10,14 @@ namespace Client.Controllers
     public class ClassroomController : Controller
     {
         private readonly IClassroomRepository classroomRepository;
+        private readonly IUserTaskRepository userTaskRepository;
+        private readonly ILessonRepository lessonRepository;
 
-        public ClassroomController(IClassroomRepository classroomRepository)
+        public ClassroomController(IClassroomRepository classroomRepository, IUserTaskRepository userTaskRepository, ILessonRepository lessonRepository)
         {
             this.classroomRepository = classroomRepository;
+            this.userTaskRepository = userTaskRepository;
+            this.lessonRepository = lessonRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -90,6 +96,49 @@ namespace Client.Controllers
                 return RedirectToAction("Index", "Classroom");
             }
             return RedirectToAction(nameof(Edit));
+        }
+
+        public async Task<IActionResult> LessonDetail(Guid lessonGuid)
+        {
+            var userGuidClaim = User.FindFirst("Guid");
+
+            if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
+            {
+                var resultSubmittedTask = await userTaskRepository.GetSubmittedTask(guid, lessonGuid);
+                if (resultSubmittedTask is null)
+                {
+                    return View("LessonDetail", "Classroom");
+                }
+                var dataSubmittedTask = resultSubmittedTask.Data;
+
+                var resultLessonDetail = await lessonRepository.GetLessonDetailByGuid(lessonGuid);
+                if (resultLessonDetail != null && resultLessonDetail.Data != null)
+                {
+                    var lessonDetail = resultLessonDetail.Data;
+
+                    var lessonDetailView = new LessonWithTaskVM
+                    {
+                        LessonDetailVM = lessonDetail,
+                        GetSubmittedTaskVM = dataSubmittedTask
+                    };
+
+                    return View(lessonDetailView);
+                }
+                else
+                {
+                    var lessonDetailView = new LessonWithTaskVM
+                    {
+                        LessonDetailVM = new LessonDetailVM(),
+                        GetSubmittedTaskVM = dataSubmittedTask
+                    };
+
+                    return View(lessonDetailView);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
