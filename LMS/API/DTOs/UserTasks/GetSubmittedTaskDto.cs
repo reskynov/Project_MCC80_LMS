@@ -10,5 +10,6 @@ public class GetSubmittedTaskDto
     public int? Grade { get; set; }
     public Guid UserGuid { get; set; }
     public Guid TaskGuid { get; set; }
+    public DateTime SubmittedDate { get; set; }
 
 }

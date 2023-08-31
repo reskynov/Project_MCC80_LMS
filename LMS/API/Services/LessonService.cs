@@ -2,6 +2,7 @@
 using API.DTOs.Lessons;
 using API.DTOs.Tasks;
 using API.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace API.Services;
 
@@ -14,6 +15,42 @@ public class LessonService
     {
         _lessonRepository = lessonRepository;
         _taskRepository = taskRepository;
+    }
+
+    public LessonDetailDto? GetLessonDetailByGuid(Guid guid)
+    {
+        var lesson = _lessonRepository.GetByGuid(guid);
+        if (lesson is null)
+        {
+            return null;
+        }
+
+        var lessonToGet = new LessonDetailDto
+        {
+            ClassroomGuid = lesson.ClassroomGuid,
+            Name = lesson.Name,
+            Description = lesson.Description,
+            CreatedDate = lesson.CreatedDate,
+            Guid = lesson.Guid,
+            IsTask = lesson.IsTask,
+            SubjectAttachment = lesson.SubjectAttachment,
+            DeadlineDate = null
+        };
+
+        if(lesson.IsTask)
+        {
+            var task = (from u in _taskRepository.GetAll()
+                        where u.LessonGuid == guid
+                        select u).FirstOrDefault();
+
+            if (task is null)
+            {
+                return null; // task is null
+            }
+            lessonToGet.DeadlineDate = task.DeadlineDate;
+        }
+
+        return lessonToGet;
     }
 
     public UpdateLessonTaskDto? GetLessonTaskByGuid(Guid guid)

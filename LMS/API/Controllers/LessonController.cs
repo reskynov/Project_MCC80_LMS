@@ -16,6 +16,30 @@ public class LessonController : ControllerBase
         _lessonService = lessonService;
     }
 
+    [HttpGet("detail")]
+    public IActionResult GetLessonDetailByGuid(Guid guid)
+    {
+        var result = _lessonService.GetLessonDetailByGuid(guid);
+        if (result is null)
+        {
+            return NotFound(new ResponseHandler<LessonDetailDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Guid is not found."
+            });
+        }
+
+        return Ok(new ResponseHandler<LessonDetailDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Success! Data retrieved successfully.",
+            Data = result
+        });
+    }
+
+
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -245,7 +269,5 @@ public class LessonController : ControllerBase
             Status = HttpStatusCode.OK.ToString(),
             Message = "Success! Data has been updated successfully."
         });
-
-
     }
 }
