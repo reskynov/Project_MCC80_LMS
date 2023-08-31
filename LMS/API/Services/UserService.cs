@@ -56,19 +56,30 @@ namespace API.Services
                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                     join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid 
                                     where u.Guid == guid
-                                    select new { uc, t, ut });
+                                    select new {c, uc, t, ut });
 
             if (detailAssignment is null)
             {
                 return null;
             }
 
+            var classroomAvg = detailAssignment.Where(assign => assign.ut.Grade is not null)
+                                               .GroupBy(group => new { group.c?.Name })
+                                               .Select(g => new {
+                                                   AverageGrade = g.Average(g => g.ut.Grade),
+                                                   ClassroomName = g.Key.Name
+                                               });
+
             var dashboard = new DashboardTeacherDto
             {
                 TotalClassroom = totalClassroom,
-                TotalAssignment = detailAssignment.Count(),
+                TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
                 TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
-                TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count()
+                TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count(),
+                AverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.AverageGrade).ToList(),
+                ClassNameAverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.ClassroomName).ToList(),
+                AverageGradePassed = classroomAvg.Where(c => c.AverageGrade >= 70).Count(),
+                AverageGradeNotPassed = classroomAvg.Where(c => c.AverageGrade < 70).Count()
             };
 
             return dashboard;
@@ -84,8 +95,7 @@ namespace API.Services
                                     join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
                                     join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
-                                    from ut in utj.DefaultIfEmpty()
+                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
                                     where u.Guid == guid
                                     select new {l, uc, t, ut});
 
@@ -97,9 +107,9 @@ namespace API.Services
             var dashboard = new DashboardStudentDto
             {
                 TotalClassroom = totalClassroom,
-                TotalAssignment = detailAssignment.Count(),
-                TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
-                TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
+                TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
+                TotalSubmitted = detailAssignment.Where(assign => assign.ut.Attachment is not null).Count(),
+                TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
                 LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
                 LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList(),
                 GradePassed = detailAssignment.Where(assign => assign.ut?.Grade is not null).Where(grade => grade.ut.Grade >= 70).Count(),
