@@ -128,7 +128,8 @@ public class UserTaskService
                            Attachment = ut.Attachment,
                            Grade = ut.Grade,
                            UserGuid = ut.UserGuid,
-                           TaskGuid = ut.TaskGuid
+                           TaskGuid = ut.TaskGuid,
+                           SubmittedDate = ut.ModifiedDate
                        }).FirstOrDefault();
 
         if (getSubmittedTask is null)
