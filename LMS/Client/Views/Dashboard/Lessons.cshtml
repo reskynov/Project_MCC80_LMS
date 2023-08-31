@@ -47,6 +47,8 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
         </div>
     }
+    @if (Model.ClassroomLessonViewModels != null && Model.ClassroomLessonViewModels.Any())
+    {
     @foreach (var item in Model.ClassroomLessonViewModels)
     {
         @if (User.IsInRole("Teacher"))
@@ -277,8 +279,7 @@
                                 </p>
                             </div>
                         </div>
-                        @*             <div class="col d-flex justify-content-center align-items-center">
-            </div>*@
+                        
                         <div class="col d-flex text-end justify-content-end" style="">
                             @*@if(item.DeadlineDate < DateTime.Now)
                 {
@@ -321,13 +322,16 @@
                     </div>
                 </a>
             }
-
         }
-
         else
         {
             <h3>Check your account!</h3>
         }
+        }
+    }
+    else
+    {
+        <p class="ms-3 fw-bold">Content not available</p>
     }
 </div>
 
