@@ -19,9 +19,13 @@ namespace Client.Controllers
             var result = await _userTaskRepository.GetAll();
             var ListUserTask = new List<UserTask>();
 
-            if (result.Data != null)
+            if (result.Data != null && result.Data.Any())
             {
                 ListUserTask = result.Data.ToList();
+            }
+            else
+            {
+                ListUserTask = new List<UserTask>();
             }
             return View(ListUserTask);
         }

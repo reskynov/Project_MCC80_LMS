@@ -5,8 +5,7 @@
     Layout = "_DashboardLayout";
 }
 
-@foreach (var item in Model)
-{
+@foreach (var item in Model){
     <h1 style="color:white;">@Html.DisplayFor(modelItem => item.LessonName)</h1>
     <h6 style="color:white;">Deadline : @Html.DisplayFor(modelItem => item.DeadlineDate)</h6>
     break;
@@ -32,16 +31,16 @@
                                 </thead>
                                 <tbody>
                                     @*@{
-                                int i = 1;
-                                }*@
+                                        int i = 1;
+                                    }*@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
                                             @*<td>
-                                    @(
-                                    i++
-                                    )
-                                    </td>*@
+                                                @(
+                                            i++
+                                            )
+                                            </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.StudentName)
                                             </td>
@@ -52,18 +51,16 @@
                                                 @if (item.SubmittedTaskDate < item.DeadlineDate)
                                                 {
                                                     <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
-                                                }
-                                                else if (item.SubmittedTaskDate > item.DeadlineDate)
+                                                }else if(item.SubmittedTaskDate > item.DeadlineDate)
                                                 {
                                                     <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.Grade == null)
+                                                @if(item.Grade == null)
                                                 {
                                                     <p>-</p>
-                                                }
-                                                else if (item.Grade != null)
+                                                }else if(item.Grade != null)
                                                 {
                                                     @Html.DisplayFor(modelItem => item.Grade)
                                                 }
@@ -114,7 +111,7 @@
             </div>
         </div>
     </div>
-
+    
 }
 @*<p>
     <a asp-action="Create">Create New</a>
