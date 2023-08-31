@@ -131,31 +131,39 @@ public class DashboardController : Controller
         }
         var classroomDescription = resultClassroomDetails.Data;
 
-        var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid);
-
-        // Memeriksa apakah ada data lesson atau tidak
-        if (resultLesson != null && resultLesson.Data != null && resultLesson.Data.Any())
+        var userGuidClaim = User.FindFirst("Guid");
+        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
         {
-            var listLesson = resultLesson.Data;
+            var resultLesson = await _classroomRepository.GetLessonByClassroom(lessonByClassroomGuid, guid);
 
-            var classroomDetailView = new ClassroomDetailsVM
+            // Memeriksa apakah ada data lesson atau tidak
+            if (resultLesson != null && resultLesson.Data != null && resultLesson.Data.Any())
             {
-                ClassroomModel = classroomDescription,
-                ClassroomLessonViewModels = listLesson
-            };
+                var listLesson = resultLesson.Data;
 
-            return View(classroomDetailView);
+                var classroomDetailView = new ClassroomDetailsVM
+                {
+                    ClassroomModel = classroomDescription,
+                    ClassroomLessonViewModels = listLesson
+                };
+
+                return View(classroomDetailView);
+            }
+            else
+            {
+                // Kasus ketika tidak ada data lesson
+                var classroomDetailView = new ClassroomDetailsVM
+                {
+                    ClassroomModel = classroomDescription,
+                    ClassroomLessonViewModels = new List<ClassroomLessonVM>() // Koleksi kosong
+                };
+
+                return View(classroomDetailView);
+            }
         }
         else
         {
-            // Kasus ketika tidak ada data lesson
-            var classroomDetailView = new ClassroomDetailsVM
-            {
-                ClassroomModel = classroomDescription,
-                ClassroomLessonViewModels = new List<ClassroomLessonVM>() // Koleksi kosong
-            };
-
-            return View(classroomDetailView);
+            return View("No Data");
         }
     }
 

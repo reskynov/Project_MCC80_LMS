@@ -280,7 +280,7 @@
            @*             <div class="col d-flex justify-content-center align-items-center">
                         </div>*@
                         <div class="col d-flex text-end justify-content-end" style="">
-                            @if(item.DeadlineDate < DateTime.Now)
+                            @*@if(item.DeadlineDate < DateTime.Now)
                             {
                                 <div class="d-flex flex-column">
                                 <p class="m-0" style="color: #d92020;">
@@ -293,8 +293,8 @@
                             }
                             else
                             {
+                            }*@
                                 <p class="m-0 d-flex align-items-center" style="align-self:center;">Deadline : @item.DeadlineDate</p>
-                            }
                         </div>
                     </div>
                 </a>

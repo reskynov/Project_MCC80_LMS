@@ -49,8 +49,8 @@ namespace Client.Controllers
             var result = await repository.Register(registerVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"{result.Message}";
-                return View();
+                TempData["Success"] = "Register Success";
+                return RedirectToAction("login", "account");
             }
             else
             {

@@ -1,10 +1,7 @@
-﻿using API.DTOs.Lessons;
-
-namespace API.DTOs.Users
+﻿namespace API.DTOs.Lessons
 {
-    public class StudentTaskDto
+    public class StudentTaskInClassDto
     {
-        public string ClassroomName { get; set; }
         public Guid LessonGuid { get; set; }
         public string LessonName { get; set; }
         public DateTime? Deadline { get; set; }
