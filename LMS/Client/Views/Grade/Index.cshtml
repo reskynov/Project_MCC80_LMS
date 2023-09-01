@@ -43,25 +43,35 @@
                                             )
                                             </td>
                                                     <td>
-                                                @Html.DisplayFor(modelItem => item.StudentName)
+                                                         @Html.DisplayFor(modelItem => item.StudentName)
                                                     </td>
                                                     <td class="justify-content-center" style="max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                                        <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Link Attachment</a>
-                                                    </td>
+                                                @if (item.SubmittedTask == null)
+                                                {
+                                                    <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-secondary my-auto disabled my-auto" aria-disabled="true">Link Attachment</a>
+                                                }
+                                                else if(item.SubmittedTask != null){
+                                                    <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Link Attachment</a>
+                                                }
+                                            </td>
                                                     <td>
-                                                @if (item.SubmittedTaskDate < item.DeadlineDate)
-                                                {
-                                                                <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
+                                                        @if (item.SubmittedTaskDate < item.DeadlineDate)
+                                                        {
+                                                                        <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
+                                                        }
+                                                        else if (item.SubmittedTaskDate > item.DeadlineDate)
+                                                        {
+                                                    <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
                                                 }
-                                                else if (item.SubmittedTaskDate > item.DeadlineDate)
+                                                else if (item.SubmittedTask is null)
                                                 {
-                                                                <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
+                                                    <h6 style="color: #900C3F;">X</h6>
                                                 }
-                                                    </td>
+                                            </td>
                                                     <td>
                                                 @if (item.Grade == null)
                                                 {
-                                                                <p>-</p>
+                                                    <h6>—</h6>
                                                 }
                                                 else if (item.Grade != null)
                                                 {
@@ -69,7 +79,13 @@
                                                 }
                                                     </td>
                                                     <td>
-                                                        <button onclick="ShowUserTask('@item.UserTaskGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-primary my-auto"><i class="fa-solid fa-pen "></i>  Grading</button>
+                                                        @if (item.SubmittedTask == null){
+                                                    <button onclick="ShowUserTask('@item.UserTaskGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-secondary my-auto disabled" style="color:white;" aria-disabled="true"><i class="fa-solid fa-pen "></i>  Grading</button>
+                                                }
+                                                else if (item.SubmittedTask != null)
+                                                {
+                                                    <button onclick="ShowUserTask('@item.UserTaskGuid')" data-bs-toggle="modal" data-bs-target="#modalGrade" class="btn btn-primary my-auto"><i class="fa-solid fa-pen "></i>  Grading</button>
+                                                }
                                                     </td>
                                                 </tr>
                                     }

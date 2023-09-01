@@ -29,13 +29,14 @@ div#myTable_filter.dataTables_filter{
 div#myTableClassroom_filter.dataTables_filter {
     margin-right: 50px;
     margin-top: 30px;
+    /*margin-bottom: 100px;*/
 }
 
 td{
     font-size:14px;
     text-align:center;
 }
-
+ 
 #listCardLessonStudent:hover {
     background-color: rgba(0, 0, 255, 0.1);  /*Warna hitam dengan opacity 0.1*/ 
     cursor:pointer;
