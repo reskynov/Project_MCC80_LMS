@@ -90,9 +90,8 @@ else if (User.IsInRole("Teacher"))
                             @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
                             {
                             <tr class="parent-row">
-                                <!-- Tambahkan class "parent-row" di sini -->
-                                    <td class="text-sm fw-bold">@(i++)</td>
-                                    <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
+                                <td class="text-sm fw-bold">@(i++)</td>
+                                <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
                             </tr>
                             <!-- child row -->
                             <tr class="child-row">
