@@ -25,7 +25,7 @@
             </div>
             <div id="contentLesson" class="mx-5 pt-2" style="text-align:justify;">
                 <p>
-                    @Model.LessonDetailVM.Description.Replace("\n", "<br>")
+                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))
                 </p>
                 <div class="my-2">
                     <p class="m-0">Referensi :</p>
