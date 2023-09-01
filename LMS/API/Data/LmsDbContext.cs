@@ -55,13 +55,15 @@ namespace API.Data
             modelBuilder.Entity<User>()
                         .HasMany(u => u.UserClassrooms)
                         .WithOne(uClass => uClass.User)
-                        .HasForeignKey(uClas => uClas.UserGuid);
+                        .HasForeignKey(uClas => uClas.UserGuid)
+                        .OnDelete(DeleteBehavior.Cascade);
 
             //One User to one Account (1:1)
             modelBuilder.Entity<User>()
                         .HasOne(user => user.Account)
                         .WithOne(acc => acc.User)
-                        .HasForeignKey<Account>(acc => acc.Guid);
+                        .HasForeignKey<Account>(acc => acc.Guid)
+                        .OnDelete(DeleteBehavior.Cascade); ;
 
             //ACCOUNT
             //One Account to many Account Role (1:N)
@@ -82,20 +84,23 @@ namespace API.Data
             modelBuilder.Entity<Classroom>()
                         .HasMany(c => c.UserClassrooms)
                         .WithOne(uClass => uClass.Classroom)
-                        .HasForeignKey(uClass => uClass.ClassroomGuid);
+                        .HasForeignKey(uClass => uClass.ClassroomGuid)
+                        .OnDelete(DeleteBehavior.Cascade); ;
 
             //One Classroom to many Lesson (1:N)
             modelBuilder.Entity<Classroom>()
                         .HasMany(c => c.Lessons)
                         .WithOne(lesson => lesson.Classroom)
-                        .HasForeignKey(lesson => lesson.ClassroomGuid);
+                        .HasForeignKey(lesson => lesson.ClassroomGuid)
+                        .OnDelete(DeleteBehavior.Cascade); ;
 
             //LESSON
             //One Lesson to many Task (1:N)
             modelBuilder.Entity<Lesson>()
                         .HasMany(lesson => lesson.Tasks)
                         .WithOne(task => task.Lesson)
-                        .HasForeignKey(task => task.LessonGuid);
+                        .HasForeignKey(task => task.LessonGuid)
+                        .OnDelete(DeleteBehavior.Cascade); ;
 
             //TASK
 
@@ -104,14 +109,14 @@ namespace API.Data
                         .HasMany(task => task.Grades)
                         .WithOne(grade => grade.Task)
                         .HasForeignKey(grade => grade.TaskGuid)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
             //One User to many Grade (1:N)
             modelBuilder.Entity<User>()
                         .HasMany(u => u.Grades)
                         .WithOne(grade => grade.User)
                         .HasForeignKey(grade => grade.UserGuid)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
         }
     }
