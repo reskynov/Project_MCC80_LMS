@@ -3,11 +3,13 @@ using API.DTOs.Accounts;
 using API.DTOs.Classrooms;
 using API.DTOs.Lessons;
 using API.DTOs.Users;
+using API.DTOs.UserTasks;
 using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Net;
 
 namespace API.Services
@@ -164,20 +166,21 @@ namespace API.Services
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
         {
             var getStudentTask = from u in _userRepository.GetAll()
-                                 join ut in _userTaskRepository.GetAll() on u.Guid equals ut.UserGuid
-                                 join t in _taskRepository.GetAll() on ut.TaskGuid equals t.Guid
-                                 join l in _lessonRepository.GetAll() on t.LessonGuid equals l.Guid
-                                 join c in _classroomRepository.GetAll() on l.ClassroomGuid equals c.Guid
+                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                  where u.Guid == guid
                                  select new StudentTaskDto
-                                     {
-                                         ClassroomName = c.Name,
-                                         LessonGuid = l.Guid,
-                                         LessonName = l.Name,
-                                         TaskGuid = t.Guid,
-                                         Deadline = t.DeadlineDate,
-                                         Grade = ut.Grade,
-                                     };
+                                 {
+                                     ClassroomName = c.Name,
+                                     LessonGuid = l.Guid,
+                                     LessonName = l.Name,
+                                     TaskGuid = t.Guid,
+                                     Deadline = t.DeadlineDate,
+                                     Grade = GetSubmittedTask(guid, t.Guid)?.Grade,
+                                     IsSubmitted = GetSubmittedTask(guid, t.Guid) is not null
+                                 };
 
             if (!getStudentTask.Any())
             {
@@ -338,6 +341,19 @@ namespace API.Services
 
             var result = _userRepository.Delete(user);
             return result ? 1 : 0;
+        }
+
+        public UserTaskDto? GetSubmittedTask(Guid guidUser, Guid guidTask)
+        {
+            var result = _userTaskRepository.GetAll()
+                        .SingleOrDefault(user => user.TaskGuid == guidTask && user.UserGuid == guidUser);
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            return (UserTaskDto) result;
         }
     }
 }

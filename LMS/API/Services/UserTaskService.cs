@@ -12,13 +12,22 @@ public class UserTaskService
     private readonly ITaskRepository _taskRepository;
     private readonly ILessonRepository _lessonRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IClassroomRepository _classroomRepository;
+    private readonly IUserClassroomRepository _userClassroomRepository;
 
-    public UserTaskService(IUserTaskRepository UserTaskRepository, ITaskRepository taskRepository, ILessonRepository lessonRepository, IUserRepository userRepository)
+    public UserTaskService(IUserTaskRepository UserTaskRepository,
+        ITaskRepository taskRepository, 
+        ILessonRepository lessonRepository, 
+        IUserRepository userRepository, 
+        IClassroomRepository classroomRepository, 
+        IUserClassroomRepository userClassroomRepository)
     {
         _userTaskRepository = UserTaskRepository;
         _taskRepository = taskRepository;
         _lessonRepository = lessonRepository;
         _userRepository = userRepository;
+        _classroomRepository = classroomRepository;
+        _userClassroomRepository = userClassroomRepository;
     }
 
     public int GradeTask(GradeTaskDto gradeTaskDto)
@@ -59,21 +68,23 @@ public class UserTaskService
 
     public IEnumerable<GetTaskToGradeDto> GetTaskToGrade(Guid guid)
     {
-        var getTaskToGrade = from l in _lessonRepository.GetAll()
+        var getTaskToGrade = from u in _userRepository.GetAll()
+                             join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                             join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                             join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                              join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                             join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
-                             join u in _userRepository.GetAll() on ut?.UserGuid equals u.Guid
-                             where l.Guid == guid
+                             where l.Guid == guid && u.Guid != c.TeacherGuid
                              select new GetTaskToGradeDto
                              {
                                  LessonGuid = l.Guid,
-                                 UserTaskGuid = ut?.Guid,
+                                 UserTaskGuid = GetSubmittedTask(u.Guid, t.Guid)?.Guid,
                                  LessonName = l.Name,
                                  StudentName = u.FirstName + " " + u.LastName,
-                                 Grade = ut?.Grade,
-                                 SubmittedTask = ut?.Attachment,
+                                 Grade = GetSubmittedTask(u.Guid, t.Guid)?.Grade,
+                                 SubmittedTask = GetSubmittedTask(u.Guid, t.Guid)?.Attachment,
                                  DeadlineDate = t?.DeadlineDate,
-                                 SubmittedTaskDate = ut?.ModifiedDate
+                                 SubmittedTaskDate = GetSubmittedTask(u.Guid, t.Guid)?.ModifiedDate,
+                                 IsSubmitted = GetSubmittedTask(u.Guid, t.Guid) is not null
                              };
 
         if(!getTaskToGrade.Any()) 
@@ -231,5 +242,18 @@ public class UserTaskService
 
         var result = _userTaskRepository.Delete(UserTask);
         return result ? 1 : 0;
+    }
+
+    public UserTask? GetSubmittedTask(Guid guidUser, Guid guidTask)
+    {
+        var result = _userTaskRepository.GetAll()
+                    .SingleOrDefault(user => user.TaskGuid == guidTask && user.UserGuid == guidUser);
+
+        if (result is null)
+        {
+            return null;
+        }
+
+        return result;
     }
 }
