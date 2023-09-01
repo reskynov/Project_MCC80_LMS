@@ -205,13 +205,34 @@
             $('#myTableClassroom').DataTable({
                 dom: 'Blfrtip',
                 buttons: [
-                    //'copy', 'csv',
-                    'excel', 'pdf', 'print',
                     {
-                        extend: 'colvis',
-                        title: 'Colvis',
-                        text: 'Column Visibility'
+                        extend: 'csv',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Save to CSV',
+                    },
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Save to Excel',
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Print Table',
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Save to PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                    },
+                    {
+                        extend: 'copy',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Copy to clipboard',
                     }
+
                 ]
             });
         });

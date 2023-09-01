@@ -29,7 +29,6 @@
     <link id="pagestyle" href="~/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
     <!-- Add any additional head elements or scripts -->
 
-
     @*<!-- Data Table CSS-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
@@ -39,6 +38,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" />*@
 
+    @*DateTime Picker*@
+@*    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.css" />*@
     @await RenderSectionAsync("CSS", required: false)
 </head>
 <body class="g-sidenav-show   bg-gray-100">
@@ -253,7 +255,10 @@
         });
     </script>*@
 
-
+    @*DateTime Picker*@
+@*    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

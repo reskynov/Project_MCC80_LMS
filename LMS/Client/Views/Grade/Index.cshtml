@@ -117,5 +117,22 @@
 
 }
 @section Scripts {
-        <script src="~/js/grade.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTableClassroom').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    //'copy', 'csv',
+                    'excel', 'pdf', 'print',
+                    {
+                        extend: 'colvis',
+                        title: 'Colvis',
+                        text: 'Column Visibility'
+                    }
+                ]
+            });
+        });
+    </script>
+
+    <script src="~/js/grade.js" asp-append-version="true"></script>
 }

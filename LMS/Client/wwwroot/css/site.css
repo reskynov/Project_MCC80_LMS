@@ -28,6 +28,7 @@ div#myTable_filter.dataTables_filter{
 
 div#myTableClassroom_filter.dataTables_filter {
     margin-right: 50px;
+    margin-top: 30px;
 }
 
 td{
