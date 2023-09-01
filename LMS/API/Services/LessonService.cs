@@ -115,7 +115,7 @@ public class LessonService
             }
         }
 
-        var toUpdate = new LessonDto
+        var toUpdate = new Lesson
         {
             Guid = lesson.Guid,
             ClassroomGuid = lesson.ClassroomGuid,
@@ -123,7 +123,8 @@ public class LessonService
             IsTask = lesson.IsTask,
             Name = updateLessonTaskDto.Name,
             Description = updateLessonTaskDto.Description,  
-            SubjectAttachment = updateLessonTaskDto.SubjectAttachment
+            SubjectAttachment = updateLessonTaskDto.SubjectAttachment,
+            ModifiedDate = lesson.ModifiedDate,
         };
 
         var result = _lessonRepository.Update(toUpdate);
