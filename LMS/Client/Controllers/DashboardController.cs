@@ -204,8 +204,9 @@ public class DashboardController : Controller
             var result = await _userRepository.Put(user.Guid, user);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"{result.Message}!";
-                return RedirectToAction("Profile","Dashboard");
+                TempData["Success"] = $"{result.Message}! Please login again";
+                HttpContext.Session.Clear();
+                return RedirectToAction("login", "account");
             }
             else
             {
@@ -227,8 +228,9 @@ public class DashboardController : Controller
             var result = await _userRepository.ProfileChangePassword(profileChangePasswordVM);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"{result.Message}!";
-                return RedirectToAction("Profile", "Dashboard");
+                TempData["Success"] = $"{result.Message}! Please login again";
+                HttpContext.Session.Clear();
+                return RedirectToAction("login", "account");
             }
             else
             {
