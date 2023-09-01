@@ -8,9 +8,9 @@
 
 @if (User.IsInRole("Student"))
 {
-    <div class="card">
+    <div class="card w-100 wm-100">
         <div class="card-body px-0 pt-0 pb-2 text-center">
-            <div class="table-responsive p-0">
+            <div class="table p-0">
                 <table class="table align-items-center mb-0" id="studentTaskTable">
                     <thead>
                         <tr>
@@ -18,7 +18,6 @@
                             <th scope="col" class="text-center">Classroom</th>
                             <th scope="col" class="text-center">Task</th>
                             <th scope="col" class="text-center">Deadline</th>
-                            <th scope="col" class="text-center">Submitted</th>
                             <th scope="col" class="text-center">Grade</th>
                         </tr>
                     </thead>
@@ -33,18 +32,6 @@
                                 <td>@studentTask.ClassroomName</td>
                                 <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@studentTask.LessonName</td>
                                 <td>@studentTask.Deadline</td>
-                                <td>
-                                    @if (studentTask.IsSubmitted is true)
-                                    {
-                                        <p style="display:none;">Yes</p>
-                                        <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
-                                    }
-                                    else
-                                    {
-                                        <p style="display:none;">No</p>
-                                        <a class="fa-solid fa-x" style="color: #900C3F;"></a>
-                                    }
-                                </td>
                                 <td>
                                     @if (studentTask.Grade != null)
                                     {
@@ -62,16 +49,74 @@
             </div>
         </div>
     </div>
+
+    @section Scripts {
+    <script src="~/js/taskStudent.js" asp-append-version="true"></script>
+    }
 }
 
 else if (User.IsInRole("Teacher"))
 {
-    <div class="card">
+    <div class="card p-3">
         <div class="card-body px-0 pt-0 pb-2 text-center">
             <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0" id="teacherTaskTable">
+                <table class="table table-hover align-items-center mb-0 display nowrap" id="teacherTaskTable" cellspacing="0" width="100%">
                     <thead>
                         <tr>
+                            <th scope="col" class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
+                            <th scope="col" class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        <!-- parent row -->
+                        @foreach (var teacherTask in Model.TeacherTaskVMs)
+                        {
+                            @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
+                            {
+                            <tr class="parent-row">
+                                <!-- Tambahkan class "parent-row" di sini -->
+                                    <td class="text-sm fw-bold">@(i++)</td>
+                                    <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
+                            </tr>
+                            <!-- child row -->
+                            <tr class="child-row">
+                                <td colspan="2" class="p-0">
+                                        <table class="table table-hover">
+                                            <thead class="table-primary">
+                                            <tr>
+                                                <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Lesson</th>
+                                                <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Deadline Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var taskInClass in teacherTask.TaskInClassroom)
+                                            {
+                                                @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
+                                                {
+                                                        <tr onclick="window.location.href='@Url.Action("LessonDetail", "Dashboard", new { lessonGuid = @taskInClass.LessonGuid })'">
+                                                            <td class="text-sm fw-bold" style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
+                                                            <td class="text-sm fw-bold">@taskInClass.DeadlineDate</td>
+                                                        </tr>                                                    
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+
+                @*<table class="table align-items-center mb-0 display nowrap" id="teacherTaskTable" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
                             <th scope="col" class="text-center">No</th>
                             <th scope="col" class="text-center">Classroom</th>
                         </tr>
@@ -83,47 +128,73 @@ else if (User.IsInRole("Teacher"))
                         @foreach (var teacherTask in Model.TeacherTaskVMs)
                         {
                             <tr class="parent-row">
+                                <td class="details-control"></td>
                                 <td>@(i++)</td>
                                 <td>@teacherTask.ClassroomName</td>
                             </tr>
-                            @if(teacherTask.TaskInClassroom != null)
-                            {
-                                <tr class="child-row">
-                                    <td colspan="2">
-                                        <table class="table">
-                                            <thead>
+                            <tr class="child-row">
+                                <td colspan="3">
+                                    <table class="table" id="childRowTeacher">
+                                        <thead>
+                                            <tr>
+                                                <th>Lesson</th>
+                                                <th>Deadline Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var taskInClass in teacherTask.TaskInClassroom)
+                                            {
                                                 <tr>
-                                                    <th>Lesson</th>
-                                                    <th>Deadline Date</th>
-                                                    <th></th>
+                                                    <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
+                                                    <td>@taskInClass.DeadlineDate</td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var taskInClass in teacherTask.TaskInClassroom)
-                                                {
-                                                    <tr>
-                                                        <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
-                                                        <td>@taskInClass.DeadlineDate</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            }
-                           
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                         }
                     </tbody>
-                </table>
+                </table>*@
             </div>
         </div>
     </div>
+
+   @* <table id="example" class="display nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Item 1</th>
+                <th>Item 2</th>
+                <th>Item 3</th>
+                <th>Item 4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-child-value="hidden 1">
+                <td class="details-control"></td>
+                <td>data 1a</td>
+                <td>data 1b</td>
+                <td>data 1c</td>
+                <td>data 1d</td>
+            </tr>
+            <tr data-child-value="hidden 2">
+                <td class="details-control"></td>
+                <td>data 2a</td>
+                <td>data 2b</td>
+                <td>data 2c</td>
+                <td>data 2d</td>
+            </tr>
+        </tbody>
+    </table>*@
+
+    @section Scripts {
+    <script src="~/js/taskTeacher.js" asp-append-version="true"></script>
+    }
+
 }
 else{
     <p>check your account</p>
-}
-@section Scripts { 
-<script src="~/js/task.js" asp-append-version="true"></script>
 }
 
 @*<table class="table">

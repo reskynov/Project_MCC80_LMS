@@ -24,21 +24,4 @@ $(document).ready(function () {
 });
 
 
-$(document).ready(function () {
-    $('#teacherTaskTable').DataTable({
-        "paging": false,
-        "searching": false,
-        "info": false,
-        "order": [],
-        "columnDefs": [
-            { "orderable": false, "targets": 0 } // Disable sorting for the first column
-        ]
-    });
 
-    // Show/hide child rows
-    $('#teacherTaskTable tbody').on('click', 'tr.parent-row', function () {
-        var currentRow = $(this).closest('tr');
-        var nextRow = currentRow.next('tr.child-row');
-        nextRow.toggle();
-    });
-});
