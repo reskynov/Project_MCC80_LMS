@@ -18,6 +18,7 @@
                             <th scope="col" class="text-center">Classroom</th>
                             <th scope="col" class="text-center">Task</th>
                             <th scope="col" class="text-center">Deadline</th>
+                            <th scope="col" class="text-center">Submitted</th>
                             <th scope="col" class="text-center">Grade</th>
                         </tr>
                     </thead>
@@ -32,6 +33,18 @@
                                 <td>@studentTask.ClassroomName</td>
                                 <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@studentTask.LessonName</td>
                                 <td>@studentTask.Deadline</td>
+                                <td>
+                                    @if (studentTask.IsSubmitted is true)
+                                    {
+                                        <p style="display:none;">Yes</p>
+                                        <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
+                                    }
+                                    else
+                                    {
+                                        <p style="display:none;">No</p>
+                                        <a class="fa-solid fa-x" style="color: #900C3F;"></a>
+                                    }
+                                </td>
                                 <td>
                                     @if (studentTask.Grade != null)
                                     {
