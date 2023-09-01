@@ -3,11 +3,13 @@ using API.DTOs.Accounts;
 using API.DTOs.Classrooms;
 using API.DTOs.Lessons;
 using API.DTOs.Users;
+using API.DTOs.UserTasks;
 using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Net;
 
 namespace API.Services
@@ -56,19 +58,30 @@ namespace API.Services
                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                     join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid 
                                     where u.Guid == guid
-                                    select new { uc, t, ut });
+                                    select new {c, uc, t, ut });
 
             if (detailAssignment is null)
             {
                 return null;
             }
 
+            var classroomAvg = detailAssignment.Where(assign => assign.ut.Grade is not null)
+                                               .GroupBy(group => new { group.c?.Name })
+                                               .Select(g => new {
+                                                   AverageGrade = g.Average(g => g.ut.Grade),
+                                                   ClassroomName = g.Key.Name
+                                               });
+
             var dashboard = new DashboardTeacherDto
             {
                 TotalClassroom = totalClassroom,
-                TotalAssignment = detailAssignment.Count(),
+                TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
                 TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
-                TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count()
+                TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count(),
+                AverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.AverageGrade).ToList(),
+                ClassNameAverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.ClassroomName).ToList(),
+                AverageGradePassed = classroomAvg.Where(c => c.AverageGrade >= 70).Count(),
+                AverageGradeNotPassed = classroomAvg.Where(c => c.AverageGrade < 70).Count()
             };
 
             return dashboard;
@@ -84,8 +97,7 @@ namespace API.Services
                                     join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
                                     join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
-                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid into utj
-                                    from ut in utj.DefaultIfEmpty()
+                                    join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
                                     where u.Guid == guid
                                     select new {l, uc, t, ut});
 
@@ -97,9 +109,9 @@ namespace API.Services
             var dashboard = new DashboardStudentDto
             {
                 TotalClassroom = totalClassroom,
-                TotalAssignment = detailAssignment.Count(),
-                TotalSubmitted = detailAssignment.Where(assign => assign.ut is not null).Count(),
-                TotalNotSubmitted = detailAssignment.Where(assign => assign.ut is null).Count(),
+                TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
+                TotalSubmitted = detailAssignment.Where(assign => assign.ut.Attachment is not null).Count(),
+                TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
                 LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
                 LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList(),
                 GradePassed = detailAssignment.Where(assign => assign.ut?.Grade is not null).Where(grade => grade.ut.Grade >= 70).Count(),
@@ -154,20 +166,21 @@ namespace API.Services
         public IEnumerable<StudentTaskDto> GetStudentTasks(Guid guid)
         {
             var getStudentTask = from u in _userRepository.GetAll()
-                                 join ut in _userTaskRepository.GetAll() on u.Guid equals ut.UserGuid
-                                 join t in _taskRepository.GetAll() on ut.TaskGuid equals t.Guid
-                                 join l in _lessonRepository.GetAll() on t.LessonGuid equals l.Guid
-                                 join c in _classroomRepository.GetAll() on l.ClassroomGuid equals c.Guid
+                                 join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                 join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                  where u.Guid == guid
                                  select new StudentTaskDto
-                                     {
-                                         ClassroomName = c.Name,
-                                         LessonGuid = l.Guid,
-                                         LessonName = l.Name,
-                                         TaskGuid = t.Guid,
-                                         Deadline = t.DeadlineDate,
-                                         Grade = ut.Grade,
-                                     };
+                                 {
+                                     ClassroomName = c.Name,
+                                     LessonGuid = l.Guid,
+                                     LessonName = l.Name,
+                                     TaskGuid = t.Guid,
+                                     Deadline = t.DeadlineDate,
+                                     Grade = GetSubmittedTask(guid, t.Guid)?.Grade,
+                                     IsSubmitted = GetSubmittedTask(guid, t.Guid) is not null
+                                 };
 
             if (!getStudentTask.Any())
             {
@@ -328,6 +341,19 @@ namespace API.Services
 
             var result = _userRepository.Delete(user);
             return result ? 1 : 0;
+        }
+
+        public UserTaskDto? GetSubmittedTask(Guid guidUser, Guid guidTask)
+        {
+            var result = _userTaskRepository.GetAll()
+                        .SingleOrDefault(user => user.TaskGuid == guidTask && user.UserGuid == guidUser);
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            return (UserTaskDto) result;
         }
     }
 }

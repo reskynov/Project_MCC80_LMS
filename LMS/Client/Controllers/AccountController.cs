@@ -104,7 +104,7 @@ namespace Client.Controllers
             if (result.Code == 200)
             {
                 TempData["Success"] = $"{result.Message}";
-                return View();
+                return RedirectToAction("login", "account");
             }
             else
             {
