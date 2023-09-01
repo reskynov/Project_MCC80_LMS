@@ -13,12 +13,14 @@ $(document).ready(function () {
             [10, 25, 50, -1],
             ['10 rows', '25 rows', '50 rows', 'Show all']
         ],
-        buttons: ['colvis',
-            //{ extend: 'copy', exportOptions: { columns: ':visible' } },
-            //{ extend: 'csv', exportOptions: { columns: ':visible' } },
-            //{ extend: 'excel', exportOptions: { columns: ':visible' } },
-            { extend: 'pdf', exportOptions: { columns: ':visible' } },
-            { extend: 'print', exportOptions: { columns: ':visible' } }
+        buttons: [
+            {
+                extend: 'pdf',
+                text: 'Download',
+                style: 'background-color: #5e72e4; color:#fff',
+                className: 'btn btn-primary',
+                exportOptions: { columns: ':visible' }
+            }
         ]
     });
 });

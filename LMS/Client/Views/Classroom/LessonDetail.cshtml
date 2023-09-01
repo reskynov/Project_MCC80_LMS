@@ -6,24 +6,30 @@
 }
 <div class="card">
     <div class="row">
-        <div class="col">
-            <div id="titleLesson" class="mx-4 my-3" style="border-bottom: 1px solid #5e72e4;">
-                <h3>
+        <div class="col p-0">
+            <div id="titleLesson" class="mx-5 my-3" style="border-bottom: 1px solid #5e72e4;">
+                <h3 class="mb-2">
                     @Model.LessonDetailVM.Name
                 </h3>
-                <p style="margin-top:-10px">
-                    <small class="text-muted">
-                        @Model.LessonDetailVM.CreatedDate.ToString("d MMMM")
-                    </small>
-                </p>
+                <div class="row" style="margin-top:-10px">
+                    <div class="col-6">
+                        <p class="text-muted mb-1">@Model.LessonDetailVM.CreatedDate.ToString("d MMMM")</p>
+                    </div>
+                    @if (Model.LessonDetailVM.DeadlineDate != null)
+                    {
+                        <div class="col-6 d-felx flex-row-reverse">
+                            <p class="float-end mb-1">Due : @Model.LessonDetailVM.DeadlineDate</p>
+                        </div>
+                    }
+                </div>
             </div>
-            <div id="contentLesson" class="mx-4" style="text-align:justify;">
+            <div id="contentLesson" class="mx-5 pt-2" style="text-align:justify;">
                 <p>
-                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))
+                    @Model.LessonDetailVM.Description.Replace("\n", "<br>")
                 </p>
-                <div>
+                <div class="my-2">
                     <p class="m-0">Referensi :</p>
-                    <p>
+                    <p class="m-0">
                         @Model.LessonDetailVM.SubjectAttachment
                     </p>
                 </div>
@@ -31,9 +37,9 @@
         </div>
         @if (Model.LessonDetailVM.IsTask is true && User.IsInRole("Student"))
         {
-            @if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Attachment != null && Model.GetSubmittedTaskVM.Grade is null)
+            if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Attachment != null && Model.GetSubmittedTaskVM.Grade is null)
             {
-                <div class="col-md-4">
+                <div class="col-md-4 p-0">
                     <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
                         <div class="mb-3" id="user-guid-edit" style="display: none;">
                             <label for="userGuidEditTask" class="form-label"></label>
@@ -45,7 +51,16 @@
                         </div>
                         <div class="mx-3 mt-2">
                             <label class="h6 form-label">Your Work<span style="position:absolute; top:8px; right:16px; background-color:none;" id="editButtonAttachment"><i class="fa-solid fa-pen-to-square"></i></span></label>
-                            <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
+                            @if(Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
+                            {
+                                <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+
+                            }
+                            else
+                            {
+                                <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
+                            }
+                            <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly required>
                         </div>
                         <div class="my-2 mx-3">
                             <button type="submit" class="btn btn-primary" id="buttonEditTask" style="display: none;">Submit</button>
@@ -55,22 +70,28 @@
             }
             else if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Grade != null)
             {
-                <div class="col-md-4">
+                <div class="col-md-4 p-0">
                     <div class="row justify-content-center align-items-center">
-                        <div class="col">
+                        <div class="col-12">
                             <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
                                 <div class="mx-3 mt-2 mb-3">
                                     <label class="h6 form-label">Your Work</label>
+                                    @if (Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
+                                    {
+                                        <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
+                                    }
+                                    else if (Model.GetSubmittedTaskVM.SubmittedDate < Model.LessonDetailVM.DeadlineDate)
+                                    {
+                                        <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+                                    }
                                     <input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col text-center">
+                        <div class="col-12 text-center">
                             <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
                                 <div class="mx-3 mt-2 mb-3">
-                                    <label class="h6 form-label" style="font-size:20pt;">Score</label>
+                                    <p class="h6 form-label" style="font-size:20pt; border-bottom: 1px solid #5e72e4;">Score</p>
                                     <p class="m-0" style="font-family:Poppins; font-size:42pt; color:#2563eb; max-height:80px;">@Model.GetSubmittedTaskVM.Grade</p>
                                 </div>
                             </div>
@@ -80,7 +101,7 @@
             }
             else
             {
-                <div class="col-md-4">
+                <div class="col-md-4 p-0">
                     <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
                         <div class="mb-3" id="user-guid" style="display: none;">
                             <label for="userGuidSubmitTask" class="form-label"></label>
@@ -91,8 +112,13 @@
                             <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonDetailVM.Guid" readonly>
                         </div>
                         <div class="mx-3 mt-2">
-                            <label class="h6 form-label">Your Work</label>
-                            <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask">
+                            <label class="h6 form-label">
+                                Your Work @if (Model.LessonDetailVM.DeadlineDate < DateTime.Now)
+                                {
+                                    <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
+                                }
+                            </label>
+                            <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask" required>
                         </div>
                         <div class="my-2 mx-3">
                             <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>

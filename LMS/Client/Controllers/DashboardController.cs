@@ -119,7 +119,7 @@ public class DashboardController : Controller
         {
             TempData["Failed"] = "Failed to unenroll from the class. Please try again later.";
         }
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Classroom));
     }
 
     public async Task<IActionResult> Lessons(Guid lessonByClassroomGuid)
@@ -165,59 +165,6 @@ public class DashboardController : Controller
         {
             return View("No Data");
         }
-    }
-
-    public async Task<IActionResult> LessonDetail(Guid lessonGuid)
-    {
-        var userGuidClaim = User.FindFirst("Guid");
-
-        if (userGuidClaim != null && Guid.TryParse(userGuidClaim.Value, out Guid guid))
-        {
-
-           var resultSubmittedTask = await _userTaskRepository.GetSubmittedTask(guid, lessonGuid);
-           if (resultSubmittedTask is null)
-           {
-               return View("LessonDetail","Dashboard");
-           }
-           var dataSubmittedTask = resultSubmittedTask.Data;
-         
-           var resultLessonDetail = await _lessonRepository.Get(lessonGuid);
-         
-           if (resultLessonDetail != null && resultLessonDetail.Data != null)
-           {
-               var lessonDetail = resultLessonDetail.Data;
-         
-               var lessonDetailView = new LessonDetailsVM
-               {
-                   LessonModel = lessonDetail,
-                   GetSubmittedTaskVM = dataSubmittedTask
-               };
-         
-               return View(lessonDetailView);
-           }
-           else
-           {
-               var lessonDetailView = new LessonDetailsVM
-               {
-                   LessonModel = new Lesson(),
-                   GetSubmittedTaskVM = dataSubmittedTask
-               };
-               return View(lessonDetailView);
-           }
-        }
-        else
-        {
-            return RedirectToAction("Index", "Home");
-        }
-
-
-        //if (result != null)
-        //{
-        //    var lessonDetail = result.Data;
-        //    return View(lessonDetail);
-        //}
-
-        //return View(null);
     }
 
     public async Task<IActionResult> GetPeople(Guid classroomGuid)

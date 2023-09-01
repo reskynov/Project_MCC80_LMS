@@ -126,17 +126,37 @@ function GetEnroll(enrollCode) {
 //}
 
 
-function Unenroll(className) {
+function Unenroll(className, data) {
+    var obj = {
+        userClassroomGuid: data
+    }
+    console.log(obj);
+
     Swal.fire({
         title: 'Are you sure you want to unenroll from ' + className +"?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Unenroll'
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById("UnenrollForm").submit(); // Submit the form
+            $.ajax({
+                url: '/Dashboard/Unenroll',
+                type: 'POST',
+                data: obj
+            }).done(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Unenroll',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    location.reload();
+                });
+
+            })
+/*            document.getElementById("UnenrollForm").submit();*/ // Submit the form
         }
     })
 }

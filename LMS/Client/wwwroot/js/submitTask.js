@@ -7,16 +7,44 @@
 //    window.location.href = "Dashboard/LessonDetail?lessonGuid=@item.LessonGuid";
 //})
 $(document).ready(function () {
+    //$("#buttonSubmitTask").click(function () {
+    //    submitTask();
+    //})
     $("#buttonSubmitTask").click(function () {
-        submitTask();
-    })
+        // Memeriksa apakah input memiliki nilai
+        var attachmentValue = $("#attacmentSubmitTask").val();
+        if (attachmentValue.trim() !== "") {
+            // Jika input memiliki nilai, maka jalankan submitTask()
+            submitTask();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Attachment field is required.'
+            })
+        }
+    });
+
     $("#editButtonAttachment").click(function () {
+        
         var success = document.getElementById('buttonEditTask');
         success.style.display = 'block';
         var inputAttacment = document.getElementById('attacmentEditTask');
         inputAttacment.readOnly = false;
+
         $("#buttonEditTask").click(function () {
-            EditSubmitTask();
+            // Memeriksa apakah input memiliki nilai
+            var attachmentValue = $("#attacmentEditTask").val();
+            if (attachmentValue.trim() !== "") {
+                // Jika input memiliki nilai, maka jalankan submitTask()
+                EditSubmitTask();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Attachment field is required.'
+                })
+            }
         })
     })
 })
