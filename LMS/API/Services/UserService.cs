@@ -92,13 +92,21 @@ namespace API.Services
         {
             var totalClassroom = _userClassroomRepository.GetAll().Where(uc => uc.UserGuid == guid).Count();
 
+            var totalTask = from u in _userRepository.GetAll()
+                                  join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                                  join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                  join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                  join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                                  where u.Guid == guid
+                                  select new { t };
+
             var detailAssignment = (from u in _userRepository.GetAll()
                                     join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
                                     join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
                                     join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
                                     join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                     join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
-                                    where u.Guid == guid
+                                    where u.Guid == guid && ut.UserGuid == guid
                                     select new {l, uc, t, ut});
 
             if(detailAssignment is null)
@@ -109,9 +117,9 @@ namespace API.Services
             var dashboard = new DashboardStudentDto
             {
                 TotalClassroom = totalClassroom,
-                TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
+                TotalAssignment = totalTask.Count(),
                 TotalSubmitted = detailAssignment.Where(assign => assign.ut.Attachment is not null).Count(),
-                TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
+                TotalGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).Count(),
                 LatestGraded = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.ut?.Grade).Take(5).ToList(),
                 LatestTaskName = detailAssignment.Where(assign => assign.ut?.Grade is not null).OrderByDescending(assign => assign.ut?.ModifiedDate).Select(assign => assign.l.Name).Take(5).ToList(),
                 GradePassed = detailAssignment.Where(assign => assign.ut?.Grade is not null).Where(grade => grade.ut.Grade >= 70).Count(),
