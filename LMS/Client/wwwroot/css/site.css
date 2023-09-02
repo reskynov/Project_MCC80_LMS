@@ -109,7 +109,12 @@ div.dataTables_paginate paging_simple_numbers#studentTaskTable_paginate{
     display: none;
 }
 
-@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+#studentTaskTable_wrapper .dt-buttons .dt-button{
+    margin-top:10px;
+}
+
+
+/*@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
 
 td.details-control {
     background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -118,5 +123,5 @@ td.details-control {
 
 tr.shown td.details-control {
     background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
-}
+}*/
 

@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Client.ViewModels.UserTasks;
 
-public class GetSubmittedTaskVM
+public class SubmitTaskVM
 {
-    public Guid UserTaskGuid { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Attachment is required")]
+    public IFormFile AttachmentFile { get; set; }
     public string Attachment { get; set; }
-    public int? Grade { get; set; }
     public Guid UserGuid { get; set; }
-    public Guid TaskGuid { get; set; }
-    public DateTime SubmittedDate { get; set; }
+    public Guid LessonGuid { get; set; }
 
 }

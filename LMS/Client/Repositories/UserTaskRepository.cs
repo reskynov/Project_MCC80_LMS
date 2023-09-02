@@ -4,6 +4,7 @@ using Client.Utilities.Handlers;
 using Client.ViewModels.Users;
 using Client.ViewModels.UserTasks;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Client.Repositories
 {
@@ -33,6 +34,24 @@ namespace Client.Repositories
                 getTaskToGrade = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<GetTaskToGradeVM>>>(apiResponse);
             }
             return getTaskToGrade;
+        }
+
+        public async Task<ResponseHandler<SubmitTaskVM>> SubmitTask(SubmitTaskVM submitTaskVM)
+        {
+            ResponseHandler<SubmitTaskVM> submitTask = null;
+            string relativeUrl = "submit-task";
+            StringContent content = new StringContent(JsonConvert.SerializeObject(submitTaskVM), Encoding.UTF8, "application/json");
+            using (var response = httpClient.PostAsync(request + relativeUrl, content).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                submitTask = JsonConvert.DeserializeObject<ResponseHandler<SubmitTaskVM>>(apiResponse);
+            }
+            return submitTask;
+        }
+
+        public Task<ResponseHandler<SubmitTaskVM>> EditTask(SubmitTaskVM editTaskVM)
+        {
+            throw new NotImplementedException();
         }
     }
 }
