@@ -182,10 +182,11 @@
                                         <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
                                     }
                                 </label>
-                                <input asp-for="SubmitTaskVM.AttachmentFile" type="file" class="form-control" required>
+                                <input asp-for="SubmitTaskVM.AttachmentFile" type="file" class="form-control" required id="uploadAttachmentFile">
+                                <span asp-validation-for="SubmitTaskVM.AttachmentFile" class="text-danger"></span>
                             </div>
                             <div class="my-2 mx-3">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -223,7 +224,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/detailLesson.js" asp-append-version="true"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

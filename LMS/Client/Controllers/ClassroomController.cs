@@ -149,11 +149,11 @@ namespace Client.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadTask([FromForm] SubmitTaskVM submitTaskVM)
         {
+            var fullNameClaim = User.FindFirst("FullName").Value;
             string externalUrl = "/Classroom/LessonDetail?lessonGuid=" + submitTaskVM.LessonGuid;
             if (submitTaskVM.AttachmentFile != null)
             {
-               
-                var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(submitTaskVM.AttachmentFile.FileName);
+                var fileName = fullNameClaim + "_" + DateTime.Now.ToString("MM_dd_yyyy HH_mm_ss") + "_" + Path.GetFileName(submitTaskVM.AttachmentFile.FileName);
                 var filePath = Path.Combine(webHostEnvironment.WebRootPath, "files", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
