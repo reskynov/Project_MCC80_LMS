@@ -9,4 +9,5 @@ public class LessonWithTaskVM
 {
     public LessonDetailVM LessonDetailVM { get; set; }
     public GetSubmittedTaskVM GetSubmittedTaskVM { get; set; }
+    public SubmitTaskVM SubmitTaskVM { get; set; }
 }

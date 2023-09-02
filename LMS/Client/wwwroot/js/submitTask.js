@@ -6,6 +6,22 @@
 //document.getElementById("listCardLesson").addEventListener("click", function{
 //    window.location.href = "Dashboard/LessonDetail?lessonGuid=@item.LessonGuid";
 //})
+
+function deleteTaskConfirmation() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This File will be deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("deleteFormTask").submit(); // Submit the form
+        }
+    });
+}
 $(document).ready(function () {
     //$("#buttonSubmitTask").click(function () {
     //    submitTask();
