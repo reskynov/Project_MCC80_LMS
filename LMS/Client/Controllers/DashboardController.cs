@@ -4,8 +4,11 @@ using Client.Utilities.Handlers;
 using Client.ViewModels.Accounts;
 using Client.ViewModels.Classrooms;
 using Client.ViewModels.CombinedViews;
+using Client.ViewModels.Lessons;
 using Client.ViewModels.Users;
+using Client.ViewModels.UserTasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Differencing;
 using NuGet.Protocol.Core.Types;
@@ -21,13 +24,15 @@ public class DashboardController : Controller
     private readonly IClassroomRepository _classroomRepository;
     private readonly ILessonRepository _lessonRepository;
     private readonly IUserTaskRepository _userTaskRepository;
-    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository, IUserTaskRepository userTaskRepository)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public DashboardController(IUserRepository userRepository, IUserClassroomRepository userClassroomRepository, IClassroomRepository classroomRepository, ILessonRepository lessonRepository, IUserTaskRepository userTaskRepository, IWebHostEnvironment webHostEnvironment)
     {
         _userRepository = userRepository;
         _userClassroomRepository = userClassroomRepository;
         _classroomRepository = classroomRepository;
         _lessonRepository = lessonRepository;
         _userTaskRepository = userTaskRepository;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<IActionResult> Index()
@@ -240,5 +245,77 @@ public class DashboardController : Controller
             }
         }
         return RedirectToAction("Profile", "Dashboard");
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> CreateLesson(NewLessonTaskVM newLessonTaskVM)
+    {
+        string externalUrl = "dashboard/lessons?lessonByClassroomGuid=" + newLessonTaskVM.ClassroomGuid;
+        if (newLessonTaskVM.SubjectAttachmentFile != null)
+        {
+            var fileName = DateTime.Now.ToString("MMddyyyyHHmmss") + Path.GetFileName(newLessonTaskVM.SubjectAttachmentFile.FileName);
+            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await newLessonTaskVM.SubjectAttachmentFile.CopyToAsync(stream);
+            }
+            newLessonTaskVM.SubjectAttachment = fileName;
+        }
+
+        var result = await _lessonRepository.CreateLessonWithTask(newLessonTaskVM);
+        if (result.Code == 200)
+        {
+            TempData["Success"] = "Success to create Lesson";
+            return Redirect(externalUrl);
+        }
+        else
+        {
+            TempData["Failed"] = $"{result.Message}";
+            ModelState.AddModelError(string.Empty, result.Message);
+            return Redirect(externalUrl);
+        }
+    }
+
+    public IActionResult DownloadLesson(string fileName)
+    {
+        if (fileName is null)
+        {
+            return Content("File name's is not valid");
+        }
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
+
+
+        if (System.IO.File.Exists(filePath))
+        {
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            //Jika ingin menggunakan ekstensi khusus
+            //var fileExtension = Path.GetExtension(filePath);
+            //var contentType = GetContentType(fileExtension);
+            //return File(fileBytes, contentType, fileName);
+            return File(fileBytes, "application/octet-stream", fileName);
+        }
+        else
+        {
+            return Content("file is not found");
+        }
+    }
+
+    public async Task<IActionResult> EditLesson(UpdateLessonTaskVM updateLessonTaskVM)
+    {
+        string externalUrl = "Classroom/LessonDetail?lessonGuid=" + updateLessonTaskVM.LessonGuid;
+
+        var result = await _lessonRepository.EditLessonWithTask(updateLessonTaskVM.LessonGuid, updateLessonTaskVM);
+        if (result.Code == 200)
+        {
+            TempData["Success"] = $"Lesson has been Successfully Registered! - {result.Message}!";
+            return Redirect(externalUrl);
+        }
+        else
+        {
+            TempData["Failed"] = $"{result.Message}";
+            ModelState.AddModelError(string.Empty, result.Message);
+            return Redirect(externalUrl);
+        }
     }
 }
