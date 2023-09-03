@@ -76,41 +76,43 @@ else if (User.IsInRole("Teacher"))
                 <table class="table table-hover align-items-center mb-0 display nowrap" id="teacherTaskTable" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
                             <th scope="col" class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            int i = 1;
-                        }
                         <!-- parent row -->
                         @foreach (var teacherTask in Model.TeacherTaskVMs)
                         {
                             @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
                             {
-                            <tr class="parent-row">
-                                <td class="text-sm fw-bold">@(i++)</td>
-                                <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
+                            <tr style="cursor:pointer;" class="parent-row">
+                                <!-- Tambahkan class "parent-row" di sini -->
+                                    <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
                             </tr>
                             <!-- child row -->
                             <tr class="child-row">
-                                <td colspan="2" class="p-0">
+                                <td class="p-0">
                                         <table class="table table-hover">
                                             <thead class="table-primary">
                                             <tr>
                                                 <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Lesson</th>
                                                 <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Deadline Date</th>
+                                                <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Not Submitted</th>
+                                                <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Graded</th>
+                                                <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Not Graded</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="table-primary">
                                             @foreach (var taskInClass in teacherTask.TaskInClassroom)
                                             {
                                                 @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
                                                 {
-                                                        <tr onclick="window.location.href='@Url.Action("LessonDetail", "Classroom", new { lessonGuid = @taskInClass.LessonGuid })'">
+                                                        <tr style="cursor:pointer;" onclick="window.location.href='@Url.Action("LessonDetail", "Classroom", new { lessonGuid = @taskInClass.LessonGuid })'">
                                                             <td class="text-sm fw-bold" style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@taskInClass.LessonName</td>
                                                             <td class="text-sm fw-bold">@taskInClass.DeadlineDate</td>
+                                                            <td class="text-sm fw-bold">@taskInClass.TotalNotSubmitted</td>
+                                                            <td class="text-sm fw-bold">@taskInClass.TotalGraded</td>
+                                                            <td class="text-sm fw-bold">@taskInClass.TotalNotGraded</td>
                                                         </tr>                                                    
                                                 }
                                             }
