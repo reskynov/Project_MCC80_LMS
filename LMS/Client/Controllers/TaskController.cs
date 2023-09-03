@@ -12,7 +12,7 @@ public class TaskController : Controller
     {
         _userRepository = userRepository;
     }
-
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var userGuidClaim = User.FindFirst("Guid");

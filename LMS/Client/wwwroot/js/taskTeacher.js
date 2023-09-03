@@ -54,26 +54,43 @@ $(document).ready(function () {
 //    return childTable;
 //}
 
+/*let table = new DataTable('#teacherTaskTable');*/
 
 function format(value) {
     return '<div>Hidden Value: ' + value + '</div>';
 }
 $(document).ready(function () {
-    var table = $('#example').DataTable({});
+    //let dataSet = $('#teacherTaskTable td').map(function () {
+    //    return $(this).text();
+    //}).get();
 
-    // Add event listener for opening and closing details
-    $('#example').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
+    //var table = $('#teacherTaskTable').DataTable({
+    //    columns: [
+    //        { title: 'Name' },
+    //        { title: 'Position' },
+    //        { title: 'Office' },
+    //        { title: 'Extn.' },
+    //        { title: 'Start date' },
+    //        { title: 'Salary' }
+    //    ],
+    //    data: dataSet
+    //});
 
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            // Open this row
-            row.child(format(tr.data('.child-value'))).show();
-            tr.addClass('shown');
-        }
-    });
+    //var table = $('#example').DataTable({});
+
+    //// Add event listener for opening and closing details
+    //$('#example').on('click', 'td.details-control', function () {
+    //    var tr = $(this).closest('tr');
+    //    var row = table.row(tr);
+
+    //    if (row.child.isShown()) {
+    //        // This row is already open - close it
+    //        row.child.hide();
+    //        tr.removeClass('shown');
+    //    } else {
+    //        // Open this row
+    //        row.child(format(tr.data('.child-value'))).show();
+    //        tr.addClass('shown');
+    //    }
+    //});
 });
