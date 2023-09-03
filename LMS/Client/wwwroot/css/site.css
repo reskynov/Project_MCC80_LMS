@@ -15,11 +15,13 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color:blue;
 }
 
 
 div.dt-buttons{
     margin-left: 25px;
+    margin-top:10px;
 }
 
 div#myTable_filter.dataTables_filter{
@@ -28,13 +30,30 @@ div#myTable_filter.dataTables_filter{
 
 div#myTableClassroom_filter.dataTables_filter {
     margin-right: 50px;
+    margin-top: 30px;
+    /*margin-bottom: 100px;*/
+}
+
+div#myTableClassroom_length.dataTables_length {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+div#myTableClassroom_info.dataTables_info {
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+div#myTableClassroom_paginate.dataTables_paginate.paging_simple_numbers {
+    margin-right: 25px;
+    margin-top: 10px;
 }
 
 td{
     font-size:14px;
     text-align:center;
 }
-
+ 
 #listCardLessonStudent:hover {
     background-color: rgba(0, 0, 255, 0.1);  /*Warna hitam dengan opacity 0.1*/ 
     cursor:pointer;
@@ -109,7 +128,12 @@ div.dataTables_paginate paging_simple_numbers#studentTaskTable_paginate{
     display: none;
 }
 
-@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+#studentTaskTable_wrapper .dt-buttons .dt-button{
+    margin-top:10px;
+}
+
+
+/*@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
 
 td.details-control {
     background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -119,4 +143,5 @@ td.details-control {
 tr.shown td.details-control {
     background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
 }
+
 

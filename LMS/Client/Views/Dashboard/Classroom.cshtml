@@ -31,8 +31,8 @@
                             <p class="card-text">@Html.DisplayFor(modelItem => item.TeacherName)</p>
                             <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-primary">View Class </a>
                             <form asp-action="Unenroll" id="UnenrollForm">
-                                <input type="hidden" name="userClassroomGuid" value="@item.UserClassroomGuid" />
-                                <button class="btn-danger" type="button" style="position: absolute; top: 10px; right: 15px; border-radius: 5px; border-width: 0;" onclick="Unenroll('@item.ClassroomName')">
+                                <input type="hidden" name="userClassroomGuid" value="@Html.DisplayFor(modelItem => item.UserClassroomGuid)" />
+                                <button class="btn-danger" type="button" style="position: absolute; top: 10px; right: 15px; border-radius: 5px; border-width: 0;" onclick="Unenroll('@item.ClassroomName','@item.UserClassroomGuid')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-person-fill-dash" viewBox="0 0 16 16">
                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
@@ -116,7 +116,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalClassroom"><i class="fas fa-plus"></i> Add Classroom</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -140,15 +140,15 @@
                                                 @(i++)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ClassroomName)
+                                                <p class="my-auto" style="font-weight: bold; font-size:14px;"> @Html.DisplayFor(modelItem => item.ClassroomName) </p>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.StudentCount)
                                             </td>
                                             <td>
-                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-info"><i class="fa-solid fa-eye"></i>Lesson</a> |
-                                                <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning"><i class="fas fa-edit"></i> </button> |
-                                                <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+                                                <a href="/dashboard/lessons?lessonByClassroomGuid=@item.ClassroomGuid" class="btn btn-primary my-auto"><i class="fa-solid fa-eye"></i> Lesson</a>
+                                                <button onclick="ShowUpdateClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-warning my-auto"><i class="fas fa-edit"></i> </button>
+                                                <button onclick="DeleteClassroom('@item.ClassroomGuid')" data-bs-toggle="modal" data-bs-target="" class="btn btn-danger my-auto"><i class="fas fa-trash"></i> </button>
                                                 @* <form action="/Dashboard/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
                                         <input type="hidden" value="@item.ClassroomGuid" name="guid" />
                                         <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
@@ -205,13 +205,31 @@
             $('#myTableClassroom').DataTable({
                 dom: 'Blfrtip',
                 buttons: [
-                    //'copy', 'csv',
-                    'excel', 'pdf', 'print',
                     {
-                        extend: 'colvis',
-                        title: 'Colvis',
-                        text: 'Column Visibility'
+                        extend: 'csv',
+                        text: '<i class="fa fa-file-text-o"></i>',
+                        className: "btn btn-primary"
+
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel-o"></i>',
+                        className: "btn btn-primary"
+
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf-o"></i>',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        className: "btn btn-primary"
+                    },
+                    {
+                        extend: 'copy',
+                        text: '<i class="fa fa-files-o"></i>',
+                        className: "btn btn-primary"
                     }
+
                 ]
             });
         });

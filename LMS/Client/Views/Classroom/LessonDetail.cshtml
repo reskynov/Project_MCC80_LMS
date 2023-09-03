@@ -1,0 +1,243 @@
+﻿@model Client.ViewModels.CombinedViews.LessonWithTaskVM
+
+@{
+    ViewData["Title"] = "Lesson Detail";
+    Layout = "_DashboardLayout";
+}
+<div class="card">
+    <div class="row">
+        <div class="col p-0">
+            <div id="titleLesson" class="mx-5 my-3" style="border-bottom: 1px solid #5e72e4;">
+                <h3 class="mb-2">
+                    @Model.LessonDetailVM.Name
+                </h3>
+                <div class="row" style="margin-top:-10px">
+                    <div class="col-6">
+                        <p class="text-muted mb-1">@Model.LessonDetailVM.CreatedDate.ToString("d MMMM")</p>
+                    </div>
+                    @if (Model.LessonDetailVM.DeadlineDate != null)
+                    {
+                        <div class="col-6 d-felx flex-row-reverse">
+                            <p class="float-end mb-1">Due : @Model.LessonDetailVM.DeadlineDate</p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="contentLesson" class="mx-5 pt-2" style="text-align:justify;">
+                <p>
+@*                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))*@
+                    @if (Model.LessonDetailVM != null)
+                    {
+                        @Html.Raw(Model.LessonDetailVM.Description?.Replace("\n", "<br>"))
+                    }
+                </p>
+                <div class="my-2">
+                    <p class="m-0">Reference :</p>
+                    <a class="m-0" href="@Url.Action("DownloadLesson", "Dashboard", new { fileName = Model.LessonDetailVM.SubjectAttachment })">
+                        @Model.LessonDetailVM.SubjectAttachment
+                    </a>
+                </div>
+            </div>
+        </div>
+        @if (Model.LessonDetailVM.IsTask is true && User.IsInRole("Student"))
+        {
+            if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Attachment != null && Model.GetSubmittedTaskVM.Grade is null)
+            {
+                <div class="col-md-4 p-0">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        @*<div class="mb-3" id="user-guid-edit" style="display: none;">
+                            <label for="userGuidEditTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="userGuidEditTask" value="@User.FindFirst("Guid").Value" readonly>
+                        </div>
+                        <div class="mb-3" id="lesson-guid-edit" style="display: none;">
+                            <label for="lessonGuidEditTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="lessonGuidEditTask" value="@Model.LessonDetailVM.Guid" readonly>
+                        </div>*@
+                        <div class="mx-3 mt-2">
+                            <label class="h6 form-label">Your Work</label>
+@*                            <label class="h6 form-label">Your Work<span style="position:absolute; top:8px; right:16px; background-color:none;" id="editButtonAttachment"><i class="fa-solid fa-trash"></i></span></label>*@
+                            @if(Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
+                            {
+                                <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+
+                            }
+                            else
+                            {
+                                <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
+                            }
+                            <div class="container p-0 mb-2" style="height:56px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
+                                <div class="row g-0">
+                                    <div class="col-md-auto p-0">
+                                        <div>
+                                            <img class="img-fluid rounded-start" src="https://img.freepik.com/free-psd/3d-rendering-ui-icon_23-2149182288.jpg?w=740&t=st=1693620994~exp=1693621594~hmac=66ba411dab2fa56f0232cfb49c937f76399ba7fa67c0113556a4c660abdd3270" style="height:56px">
+                                        </div>
+                                    </div>
+                                    <div class="col p-3 m-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                        <a class="h6" href="@Url.Action("DownloadTask", "Classroom", new { fileName = Model.GetSubmittedTaskVM.Attachment })">@Model.GetSubmittedTaskVM.Attachment</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container p-0 mb-2">
+                                <form id="deleteFormTask" action="/Classroom/UnsubmitTask" method="post">
+                                    <input type="hidden" value="@Model.LessonDetailVM.Guid" name="lessonGuid" />
+                                    <input type="hidden" value="@Model.GetSubmittedTaskVM.Attachment" name="fileName"/>
+                                    <input type="hidden" value="@Model.GetSubmittedTaskVM.UserTaskGuid" name="userTaskGuid"/>
+                                    <button type="button" class="btn btn-outline-primary" onclick="deleteTaskConfirmation()">Unsubmit</button>
+                                </form>
+                            </div>
+                            @*<input type="text" class="form-control" id="attacmentEditTask" value="@Model.GetSubmittedTaskVM.Attachment" readonly required>*@
+                        </div>
+@*                        <div class="my-2 mx-3">
+                            <button type="submit" class="btn btn-primary" id="buttonEditTask" style="display: none;">Submit</button>
+                        </div>*@
+                    </div>
+                </div>
+            }
+            else if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Grade != null)
+            {
+                <div class="col-md-4 p-0">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
+                                    <label class="h6 form-label">Your Work</label>
+                                    @if (Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
+                                    {
+                                        <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
+                                    }
+                                    else if (Model.GetSubmittedTaskVM.SubmittedDate < Model.LessonDetailVM.DeadlineDate)
+                                    {
+                                        <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+                                    }
+                                    <div class="container p-0 mb-4" style="height:56px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
+                                        <div class="row g-0 d-flex align-items-center">
+                                            <div class="col-md-auto p-0">
+                                                <div>
+                                                    <img class="img-fluid rounded-start" src="https://img.freepik.com/free-psd/3d-rendering-ui-icon_23-2149182288.jpg?w=740&t=st=1693620994~exp=1693621594~hmac=66ba411dab2fa56f0232cfb49c937f76399ba7fa67c0113556a4c660abdd3270" style="height:56px">
+                                                </div>
+                                            </div>
+                                            <div class="col p-3 m-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                                <a class="h6" href="@Url.Action("DownloadTask", "Classroom", new { fileName = Model.GetSubmittedTaskVM.Attachment })">@Model.GetSubmittedTaskVM.Attachment</a>
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                                <div class="mx-3 mt-2 mb-3">
+                                    <p class="h6 form-label" style="font-size:20pt; border-bottom: 1px solid #5e72e4;">Score</p>
+                                    <p class="m-0" style="font-family:Poppins; font-size:42pt; color:#2563eb; max-height:80px;">@Model.GetSubmittedTaskVM.Grade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Kirim Task dengan tipe data string -->
+                @*<div class="col-md-4 p-0">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        <div class="mb-3" id="user-guid" style="display: none;">
+                            <label for="userGuidSubmitTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
+                        </div>
+                        <div class="mb-3" id="lesson-guid" style="display: none;">
+                            <label for="lessonGuidSubmitTask" class="form-label"></label>
+                            <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonDetailVM.Guid" readonly>
+                        </div>
+                        <div class="mx-3 mt-2">
+                            <label class="h6 form-label">
+                                Your Work @if (Model.LessonDetailVM.DeadlineDate < DateTime.Now)
+                                {
+                                    <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
+                                }
+                            </label>
+                            <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask" required>
+                        </div>
+                        <div class="my-2 mx-3">
+                            <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
+                        </div>
+                    </div>
+                </div>*@
+
+                <!-- Kirim Task dengan File -->
+                <div class="col-md-4 p-0">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                        <form action="/Classroom/UploadTask" method="post" enctype="multipart/form-data">
+                            <div class="mb-3" id="user-guid" style="display: none;">
+                                <label asp-for="SubmitTaskVM.UserGuid" class="form-label"></label>
+                                <input asp-for="SubmitTaskVM.UserGuid" type="hidden" class="form-control" value="@User.FindFirst("Guid").Value" readonly>
+                            </div>
+                            <div class="mb-3" id="lesson-guid" style="display: none;">
+                                <label asp-for="SubmitTaskVM.LessonGuid" class="form-label"></label>
+                                <input asp-for="SubmitTaskVM.LessonGuid" type="hidden" class="form-control" value="@Model.LessonDetailVM.Guid" readonly>
+                            </div>
+                            <div class="mx-3 mt-2">
+                                <label asp-for="SubmitTaskVM.AttachmentFile" class="h6 form-label">
+                                    Your Work @if (Model.LessonDetailVM.DeadlineDate < DateTime.Now)
+                                    {
+                                        <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
+                                    }
+                                </label>
+                                <input asp-for="SubmitTaskVM.AttachmentFile" type="file" class="form-control" required id="uploadAttachmentFile">
+                                <span asp-validation-for="SubmitTaskVM.AttachmentFile" class="text-danger"></span>
+                            </div>
+                            <div class="my-2 mx-3">
+                                <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+        else if (Model.LessonDetailVM.IsTask is true && User.IsInRole("Teacher"))
+        {
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="card my-3 me-4 h-75" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="mx-3 mt-2 mb-3 pt-4" style="border-bottom: 1px solid #5e72e4;">
+                                <label class="h6 form-label" style="font-size:18pt; font-weight: bold;">Grade Submitted Task</label>
+                            </div>
+                            <div class="mx-3 mt-2 mb-3 pb-5">
+                                <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonDetailVM.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*  <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="mx-3 mt-2">
+            <label class="h6 form-label text-center">Grade</label>
+            </div>
+            <div class="my-2 mx-3">
+            <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonModel.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade Students</a>
+            </div>
+            </div>*@
+            </div>
+
+        }
+        else
+        {
+            <div class="col-4" style="display: none;"></div>
+        }
+    </div>
+    @*  @if (Model.LessonModel.IsTask is true && User.IsInRole("Teacher"))
+    {
+    <div class="d-flex align-items-end flex-column" style="position:absolute; top:15px; right:20px;">
+    <div class="row">
+    <div class="col">
+    <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonModel.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade Students</a>
+    </div>
+    </div>
+    </div>
+    }    *@
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
