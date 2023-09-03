@@ -7,5 +7,6 @@
         public DateTime? DeadlineDate { get; set; }
         public int TotalGraded { get; set; }
         public int TotalNotGraded { get; set; }
+        public int TotalNotSubmitted { get; set; }
     }
 }

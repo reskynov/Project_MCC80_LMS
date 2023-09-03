@@ -355,7 +355,8 @@ namespace API.Services
                                          LessonName = l.Name,
                                          DeadlineDate = t?.DeadlineDate,
                                          TotalGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is not null).Count(),
-                                         TotalNotGraded = GetTotalPeopleClass(c.Guid) - GetTotalSubmitted(l.Guid).Where(t => t.Grade is not null).Count()
+                                         TotalNotGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is null).Count(),
+                                         TotalNotSubmitted = GetTotalPeopleClass(c.Guid) - GetTotalSubmitted(l.Guid).Count()
                                      };
 
             if (getClassroomLesson is null)
