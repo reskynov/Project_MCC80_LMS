@@ -32,8 +32,10 @@ function InsertLesson() {
                 title: 'Success',
                 text: 'Lesson added successfully',
                 icon: 'success'
+            }).then(() => {
+                location.reload();
+
             })
-            location.reload();
         },
         error: function (xhr, status, error) {
             Swal.fire({
