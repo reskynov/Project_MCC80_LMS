@@ -59,6 +59,7 @@ $(document).ready(function () {
 function format(value) {
     return '<div>Hidden Value: ' + value + '</div>';
 }
+
 $(document).ready(function () {
     //let dataSet = $('#teacherTaskTable td').map(function () {
     //    return $(this).text();

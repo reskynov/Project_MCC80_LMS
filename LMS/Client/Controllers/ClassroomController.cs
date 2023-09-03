@@ -164,7 +164,7 @@ namespace Client.Controllers
 
             var result = await userTaskRepository.SubmitTask(submitTaskVM);
 
-            if (result.Code == 200)
+            if (result.Code is 200)
             {
                 TempData["Success"] = "Data berhasil masuk";
                 return Redirect(externalUrl);
@@ -210,7 +210,7 @@ namespace Client.Controllers
             {
                 System.IO.File.Delete(filePath);
                 var result = await userTaskRepository.Delete(userTaskGuid);
-                if (result.Code == 200)
+                if (result.Code is 200)
                 {
                     TempData["Success"] = "Success to Unsubmit Your Task";
                 }

@@ -23,7 +23,7 @@
                     }
                 </div>
             </div>
-            <div id="contentLesson" class="mx-5 pt-2" style="text-align:justify;">
+            <div id="contentLesson" class="mx-5 pt-2 mb-3" style="text-align:justify;">
                 <p>
 @*                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))*@
                     @if (Model.LessonDetailVM != null)
@@ -31,12 +31,23 @@
                         @Html.Raw(Model.LessonDetailVM.Description?.Replace("\n", "<br>"))
                     }
                 </p>
-                <div class="my-2">
-                    <p class="m-0">Reference :</p>
-                    <a class="m-0" href="@Url.Action("DownloadLesson", "Dashboard", new { fileName = Model.LessonDetailVM.SubjectAttachment })">
-                        @Model.LessonDetailVM.SubjectAttachment
-                    </a>
-                </div>
+                @if(Model.LessonDetailVM.SubjectAttachment is null || Model.LessonDetailVM.SubjectAttachment is "")
+                {
+                    <div class="my-2">
+                        <p class="m-0">No Subject Attachment</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="my-2">
+                        <p class="my-2">Subject Attachment :</p>
+                        <div class="d-flex justify-content-start card btn" style="max-width:242px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px;">
+                            <a class="m-0 " href="@Url.Action("DownloadLesson", "Dashboard", new { fileName = Model.LessonDetailVM.SubjectAttachment })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                <i class="fa-solid fa-file"></i> @Model.LessonDetailVM.SubjectAttachment
+                            </a>
+                        </div>
+                    </div>
+                }                
             </div>
         </div>
         @if (Model.LessonDetailVM.IsTask is true && User.IsInRole("Student"))

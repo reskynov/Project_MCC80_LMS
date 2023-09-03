@@ -63,85 +63,74 @@
     @if (User.IsInRole("Teacher"))
     {
         <div style="position:relative; left:15px;">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalLesson"><i class="fas fa-plus"></i> Add Lesson</button>
         </div>
     }
     @if (Model.ClassroomLessonViewModels != null && Model.ClassroomLessonViewModels.Any())
     {
         @foreach (var item in Model.ClassroomLessonViewModels)
         {
+
             @if (User.IsInRole("Teacher"))
             {
-                @if (item.isTask is true)
-                {
-                    <div class="card mt-2 mx-3 p-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
-                        <div class="row">
-                            <div class="col-md-auto d-flex justify-content-center align-items-center">
+                <div class="card my-2 mx-3 p-3" style="outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            @if (item.isTask is true)
+                            {
                                 <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
                                     <i class="fa-solid fa-clipboard"></i>
                                 </div>
-                            </div>
-                            <div class="col-8 justify-content-center align-items-center">
-                                <div class="card-body p-0 m-0 justify-content-center" style="text-align:start;">
-                                    <h6 class="card-text m-0" style="margin-top:10px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </h6>
-                                    <p class="card-text" style="margin-top: -10px;">
-                                        <small class="text-muted" style="font-size: 0.75em">
-                                            @item.CreatedDate.ToString("d MMMM")
-                                        </small>
-                                    </p>
-                                    <p class="card-text" style="margin-top: -30px;">
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
+                                    <i class="fa-solid fa-book"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-6">
+                            <div class="card-body p-0 m-0 justify-content-center" style="text-align:start;">
+                                <h6 class="card-text m-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </h6>
+                                <p class="card-text" style="margin-top: -10px;">
+                                    <small class="text-muted" style="font-size: 0.75em">
+                                        @item.CreatedDate.ToString("d MMMM")
+                                    </small>
+                                </p>
+                                @if (item.isTask is true)
+                                {
+                                    <p class="card-text" style="margin-top: -29px;">
                                         <small class="text-muted" style="font-size: 0.75em">
                                             Deadline : @item.DeadlineDate
                                         </small>
                                     </p>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="col justify-content-center" style="position:absolute; right:24px;">
-                                    <a asp-controller="Classroom" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0 my-auto"><i class="fa-solid fa-eye"></i> Detail</a>
-                                    <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0 my-auto"><i class="fas fa-edit"></i> </button>
-                                    <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0 my-auto"><i class="fas fa-trash "></i> </button>
-                                </div>
+                                }
                             </div>
                         </div>
-                    </div>
-
-                }
-                else
-                {
-                    <div class="card mt-2 mx-3 p-3" style="max-height:80px;  outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLesson">
-                        <div class="row row-cols-auto">
-                            <div class="col d-flex justify-content-center align-items-center">
-                                <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center m-1" style="width: 40px; height: 40px;">
-                                    <i class="fa-solid fa-book"></i>
-                                </div>
-                            </div>
-                            <div class="col-8 justify-content-center align-items-center">
-                                <div class="card-body p-0 m-0 justify-content-center" style="text-align:start;">
-                                    <h6 class="card-text m-0" style="margin-top:10px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </h6>
-                                    <p class="card-text" style="margin-top: -10px;">
-                                        <small class="text-muted" style="font-size: 0.75em">
-                                            @item.CreatedDate.ToString("d MMMM")
-                                        </small>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="col justify-content-center" style="position:absolute; right:24px;">
+                        <div class="col mx-2">
+                            <div class="row row-cols-auto d-flex  justify-content-end">
+                                <div class="col px-1">
                                     <a asp-controller="Classroom" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn btn-primary mb-0"><i class="fa-solid fa-eye"></i> Detail</a>
+                                </div>
+                                <div class="col px-1">
                                     <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
-                                    <button onclick="DeleteLesson('@item.LessonGuid')" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                </div>
+                                <div class="col px-1">
+                                    <form action="/Dashboard/DeleteLessonOrTask" method="post">
+                                        <input type="hidden" value="@item.LessonGuid" name="lessonGuid">
+                                        <input type="hidden" value="@item.SubjectAttachment" name="fileName" />
+                                        <input type="hidden" value="@Model.ClassroomModel.Guid" name="classroomGuid" />
+                                        <button type="submit" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                    </form>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                }
+                </div>
             }
-        
             else if (User.IsInRole("Student"))
         {
                 <a asp-controller="Classroom" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">

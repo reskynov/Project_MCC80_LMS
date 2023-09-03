@@ -251,7 +251,7 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateLesson(NewLessonTaskVM newLessonTaskVM)
     {
-        string externalUrl = "dashboard/lessons?lessonByClassroomGuid=" + newLessonTaskVM.ClassroomGuid;
+        string externalUrl = "/dashboard/lessons?lessonByClassroomGuid=" + newLessonTaskVM.ClassroomGuid;
         if (newLessonTaskVM.SubjectAttachmentFile != null)
         {
             var fileName = DateTime.Now.ToString("MMddyyyyHHmmss") + Path.GetFileName(newLessonTaskVM.SubjectAttachmentFile.FileName);
@@ -301,9 +301,24 @@ public class DashboardController : Controller
         }
     }
 
+    [HttpPost]
+    public async Task<IActionResult> RemoveAttachment(UpdateLessonTaskVM updateLessonTaskVM,string fileName)
+    {
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
+        if (System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath);
+            updateLessonTaskVM.SubjectAttachment = null;
+        }
+        var result = await _lessonRepository.EditLessonWithTask(updateLessonTaskVM.LessonGuid, updateLessonTaskVM);
+        return Ok();
+
+    }
+
+    [HttpPost]
     public async Task<IActionResult> EditLesson(UpdateLessonTaskVM updateLessonTaskVM)
     {
-        string externalUrl = "Classroom/LessonDetail?lessonGuid=" + updateLessonTaskVM.LessonGuid;
+        string externalUrl = "/Classroom/LessonDetail?lessonGuid=" + updateLessonTaskVM.LessonGuid;
 
         var result = await _lessonRepository.EditLessonWithTask(updateLessonTaskVM.LessonGuid, updateLessonTaskVM);
         if (result.Code == 200)
@@ -315,6 +330,56 @@ public class DashboardController : Controller
         {
             TempData["Failed"] = $"{result.Message}";
             ModelState.AddModelError(string.Empty, result.Message);
+            return Redirect(externalUrl);
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteLessonOrTask(Guid lessonGuid, Guid classroomGuid, string fileName)
+    {
+        string externalUrl = "/Dashboard/lessons?lessonByClassroomGuid=" + classroomGuid;
+        if (fileName != null)
+        {
+            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                var result = await _lessonRepository.Delete(lessonGuid);
+                if (result.Code is 200)
+                {
+                    TempData["Success"] = "Success to delete lesson";
+                }
+                else
+                {
+                    TempData["Error"] = "Failed to delete lesson";
+                }
+                return Redirect(externalUrl);
+            }
+            else
+            {
+                var result = await _lessonRepository.Delete(lessonGuid);
+                if (result.Code is 200)
+                {
+                    TempData["Success"] = "Success to delete lesson";
+                }
+                else
+                {
+                    TempData["Error"] = "Failed to delete lesson";
+                }
+                return Redirect(externalUrl);
+            }
+        }
+        else
+        {
+            var result = await _lessonRepository.Delete(lessonGuid);
+            if (result.Code is 200)
+            {
+                TempData["Success"] = "Success to delete lesson";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to delete lesson";
+            }
             return Redirect(externalUrl);
         }
     }

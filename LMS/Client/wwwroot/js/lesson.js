@@ -32,8 +32,10 @@ function InsertLesson() {
                 title: 'Success',
                 text: 'Lesson added successfully',
                 icon: 'success'
+            }).then(() => {
+                location.reload();
+
             })
-            location.reload();
         },
         error: function (xhr, status, error) {
             Swal.fire({
@@ -90,34 +92,34 @@ function InsertLesson() {
 //    })
 //}
 
-function DeleteLesson(guid) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'Changes cannot be reverted!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Delete Data'
-    }).then(function (result) {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "https://localhost:7026/api/lessons?guid=" + guid,
-                type: "DELETE",
-            }).done(function (result) {
-                Swal.fire({
-                    title: 'Deleted',
-                    text: 'Data has been successfully deleted',
-                    icon: 'success'
-                }).then(function () {
-                    location.reload();
-                });
-            }).fail(function (error) {
-                alert("Failed to delete data. Please try again!");
-            });
-        }
-    });
-}
+//function DeleteLesson(guid) {
+//    Swal.fire({
+//        title: 'Are you sure?',
+//        text: 'Changes cannot be reverted!',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        confirmButtonColor: '#3085d6',
+//        cancelButtonColor: '#d33',
+//        confirmButtonText: 'Yes, Delete Data'
+//    }).then(function (result) {
+//        if (result.isConfirmed) {
+//            $.ajax({
+//                url: "https://localhost:7026/api/lessons?guid=" + guid,
+//                type: "DELETE",
+//            }).done(function (result) {
+//                Swal.fire({
+//                    title: 'Deleted',
+//                    text: 'Data has been successfully deleted',
+//                    icon: 'success'
+//                }).then(function () {
+//                    location.reload();
+//                });
+//            }).fail(function (error) {
+//                alert("Failed to delete data. Please try again!");
+//            });
+//        }
+//    });
+//}
 
 function RefreshCodeLesson(guid) {
     $.ajax({

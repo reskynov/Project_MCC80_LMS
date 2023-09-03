@@ -406,3 +406,4 @@ LMS/API/appsettings.Development.json
 LMS/API/migrations/*
 LMS/Client/appsettings.json
 LMS/Client/wwwroot/files/*
+LMS/Client/wwwroot/lessonfiles/*
