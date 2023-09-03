@@ -141,98 +141,8 @@
                     </div>
                 }
             }
-
-            @*-----------------MODAL INSERT LESSON-----------------*@
-            <div class="modal" tabindex="-1" id="modalLesson">
-                <div class="modal-dialog  modal-dialog-centered ms-auto">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Create Lesson</h5>
-                            <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body row">
-                            <div class="col">
-                                <form id="addLessonForm">
-                                    <div class="mb-3">
-                                        <label for="nameLesson" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="nameLesson" name="nameLesson" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="descriptionLesson" class="form-label">Description</label>
-                                        <textarea class="form-control" id="descriptionLesson" name="descriptionLesson"></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
-                                        <input type="file" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="istask" class="form-label">Is there any task?</label>
-                                        <select class="form-select" id="isTask" aria-label="Floating label select example">
-                                            <option>Choose an option for task</option>
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="hidden" class="form-control" id="classroomGuidLesson" name="classroomGuidLesson" value="@Model.ClassroomModel.Guid">
-                                    </div>
-
-                                    <div class="mb-3" id="deadlineContainer" style="display: none;">
-                                        <label for="deadlineDateLesson" class="form-label">Deadline</label>
-                                        <input type="datetime-local" class="form-control" id="deadlineDateLesson" name="deadlineDateLesson" required>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="modal-header">
-                            <button onclick="InsertLesson()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @*-----------------MODAL UPDATE LESSON-----------------*@
-            <div class="modal" tabindex="-1" id="modalUpdateLesson">
-                <div class="modal-dialog  modal-dialog-centered ms-auto">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Edit Lesson</h5>
-                            <button type="button" class="btn btn-danger btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body row">
-                            <div class="col">
-                                <form id="addLessonForm">
-                                    <div class="mb-3">
-                                        <input type="hidden" class="form-control" id="guidUpdateLesson" name="guidUpdateLesson">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="nameUpdateLesson" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="nameUpdateLesson" name="nameUpdateLesson" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="descriptionUpdateLesson" class="form-label">Description</label>
-                                        <textarea class="form-control" id="descriptionUpdateLesson" name="descriptionUpdateLesson"></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                                        <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" readonly required>
-                                    </div>
-                                    <div id="deadlineDateContainer" class="mb-3" style="display:none">
-@*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
-                                        <input type="datetime-local" class="form-control" id="deadlineDateUpdateLesson" name="deadlineDateUpdateLesson" required>*@
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="modal-header">
-                            <button onclick="UpdateLesson()" type="button" id="btnSave" class="btn btn-primary mx-auto">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
-        else if (User.IsInRole("Student"))
+        
+            else if (User.IsInRole("Student"))
         {
                 <a asp-controller="Classroom" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
                     <div class="container p-0">
@@ -293,10 +203,10 @@
             }
         }
     }
-    else
-    {
-        <p class="ms-3 fw-bold">Content not available</p>
-    }
+            else
+            {
+                <p class="ms-3 fw-bold">Content not available</p>
+            }
 </div>
 
 @*-----------------MODAL INSERT LESSON-----------------*@
@@ -320,7 +230,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
-                            <input type="url" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
+                            <input type="file" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
                         </div>
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>
