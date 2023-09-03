@@ -32,6 +32,21 @@ div#myTableClassroom_filter.dataTables_filter {
     /*margin-bottom: 100px;*/
 }
 
+div#myTableClassroom_length.dataTables_length {
+    margin-top: 5px;
+    margin-left:10px;
+}
+
+div#myTableClassroom_info.dataTables_info {
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+div#myTableClassroom_paginate.dataTables_paginate.paging_simple_numbers {
+    margin-right: 25px;
+    margin-top: 10px;
+}
+
 td{
     font-size:14px;
     text-align:center;
@@ -121,4 +136,3 @@ td.details-control {
 tr.shown td.details-control {
     background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
 }
-
