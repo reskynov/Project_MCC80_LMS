@@ -157,6 +157,12 @@ function ShowUpdateLesson(guid) {
                 $("#deadlineDateUpdateLesson").val(null);
                 
             })
+
+            var deadlineDate = document.getElementById("deadlineDateUpdateLesson");
+
+            var now = new Date();
+            var formattedNow = now.toISOString().substring(0, 16); // Format tanggal sesuai tipe datetime-local
+            deadlineDate.setAttribute("min", formattedNow);
         } else {
             $("#deadlineDateUpdateLesson").val(null);
             var success = document.getElementById("deadlineDateContainer");

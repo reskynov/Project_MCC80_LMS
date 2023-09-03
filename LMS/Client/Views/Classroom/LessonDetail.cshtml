@@ -207,15 +207,28 @@
         else if (Model.LessonDetailVM.IsTask is true && User.IsInRole("Teacher"))
         {
             <div class="col-md-4">
-                <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                    <div class="mx-3 mt-2">
-                        <label class="h6 form-label text-center">Grade</label>
-                    </div>
-                    <div class="my-2 mx-3">
-                        <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonDetailVM.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade Students</a>
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="card my-3 me-4 h-75" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="mx-3 mt-2 mb-3 pt-4" style="border-bottom: 1px solid #5e72e4;">
+                                <label class="h6 form-label" style="font-size:18pt; font-weight: bold;">Grade Submitted Task</label>
+                            </div>
+                            <div class="mx-3 mt-2 mb-3 pb-5">
+                                <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonDetailVM.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                @*  <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="mx-3 mt-2">
+            <label class="h6 form-label text-center">Grade</label>
             </div>
+            <div class="my-2 mx-3">
+            <a asp-controller="Grade" asp-action="Index" asp-route-guid="@Model.LessonModel.Guid" class="btn btn-primary mb-0"><i class="fa-solid fa-pen"></i>  Grade Students</a>
+            </div>
+            </div>*@
+            </div>
+
         }
         else
         {
