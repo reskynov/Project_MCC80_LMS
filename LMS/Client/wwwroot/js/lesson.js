@@ -3,49 +3,92 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
 function InsertLesson() {
-    var lesson = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
-    //ini ngambil value dari tiap inputan di form nya   
-    lesson.Name = $("#nameLesson").val();
-    lesson.Description = $("#descriptionLesson").val();
-    lesson.SubjectAttachment = $("#subjectAttachmentLesson").val();
+    event.preventDefault();
+    var lesson = new FormData(); // Gunakan FormData untuk mengirim berkas
+
+    lesson.append("Name", $("#nameLesson").val());
+    lesson.append("Description", $("#descriptionLesson").val());
+    lesson.append("IsTask", $("#isTask").val());
+    lesson.append("ClassroomGuid", $("#classroomGuidLesson").val());
 
     if ($("#isTask").val() == "true") {
-        lesson.IsTask = true;
-        lesson.DeadlineDate = $("#deadlineDateLesson").val();
-    } else {
-        lesson.IsTask = false;
-        lesson.DeadlineDate = null;
+        lesson.append("DeadlineDate", $("#deadlineDateLesson").val());
     }
-    lesson.ClassroomGuid = $("#classroomGuidLesson").val();
-    //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
-    $.ajax({
-        url: "https://localhost:7026/api/lessons/task",
-        type: "POST",
-        //jika terkena 415 unsupported media type (tambahkan headertype Json & JSON.Stringify();)
-        data: JSON.stringify(lesson),
-        contentType: "application/json",
-        dataType: "json"
-    }).done((result) => {
-        //buat alert pemberitahuan jika success
-        Swal.fire({
-            title: 'Success',
-            text: 'Lesson added successfully',
-            icon: 'success'
-        })
-        location.reload();
 
-    }).fail((error) => {
-        //alert pemberitahuan jika gagal
-        Swal.fire({
-            title: 'Oooppss!',
-            text: 'Lesson failed added',
-            icon: 'error'
-        })
-        console.log(error);
-    })
+    // Ambil file yang dipilih dalam input file
+    var fileInput = document.getElementById("subjectAttachmentLesson");
+    var file = fileInput.files[0]; // Ambil berkas pertama yang dipilih
+    lesson.append("SubjectAttachmentFile", file);
+
+    $.ajax({
+        url: "/Dashboard/CreateLesson",
+        type: "POST",
+        processData: false, // Diperlukan agar FormData tidak diproses secara otomatis
+        contentType: false, // Diperlukan agar FormData tidak diberikan tipe konten
+        data: lesson, // Menggunakan FormData yang berisi data formulir dan berkas
+        success: function (result) {
+            Swal.fire({
+                title: 'Success',
+                text: 'Lesson added successfully',
+                icon: 'success'
+            })
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                title: 'Oooppss!',
+                text: 'Lesson failed added',
+                icon: 'error'
+            })
+            console.log(error);
+        }
+    });
 }
+
+
+//function InsertLesson() {
+//    var lesson = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
+//    //ini ngambil value dari tiap inputan di form nya   
+//    lesson.Name = $("#nameLesson").val();
+//    lesson.Description = $("#descriptionLesson").val();
+//    lesson.SubjectAttachment = $("#subjectAttachmentLesson").val();
+
+//    if ($("#isTask").val() == "true") {
+//        lesson.IsTask = true;
+//        lesson.DeadlineDate = $("#deadlineDateLesson").val();
+//    } else {
+//        lesson.IsTask = false;
+//        lesson.DeadlineDate = null;
+//    }
+//    lesson.ClassroomGuid = $("#classroomGuidLesson").val();
+//    //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
+//    $.ajax({
+//        url: "https://localhost:7026/api/lessons/task",
+//        type: "POST",
+//        //jika terkena 415 unsupported media type (tambahkan headertype Json & JSON.Stringify();)
+//        data: JSON.stringify(lesson),
+//        contentType: "application/json",
+//        dataType: "json"
+//    }).done((result) => {
+//        //buat alert pemberitahuan jika success
+//        Swal.fire({
+//            title: 'Success',
+//            text: 'Lesson added successfully',
+//            icon: 'success'
+//        })
+//        location.reload();
+
+//    }).fail((error) => {
+//        //alert pemberitahuan jika gagal
+//        Swal.fire({
+//            title: 'Oooppss!',
+//            text: 'Lesson failed added',
+//            icon: 'error'
+//        })
+//        console.log(error);
+//    })
+//}
 
 function DeleteLesson(guid) {
     Swal.fire({
@@ -128,12 +171,13 @@ function ShowUpdateLesson(guid) {
 }
 
 
-function UpdateLesson() {
+function UpdateLesson(guid) {
     let data = {
         lessonGuid: $("#guidUpdateLesson").val(),
         name: $("#nameUpdateLesson").val(),
         description: $("#descriptionUpdateLesson").val(),
-        subjectAttachment: $("#subjectAttachmentUpdateLesson").val()
+        subjectAttachment: $("#subjectAttachmentUpdateLesson").val(),
+        classroomGuid: guid
     };
     if ($("#deadlineDateUpdateLesson").val() != null) {
         data.deadlineDate = $("#deadlineDateUpdateLesson").val()
