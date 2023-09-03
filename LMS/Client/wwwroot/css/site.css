@@ -15,11 +15,13 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color:blue;
 }
 
 
 div.dt-buttons{
     margin-left: 25px;
+    margin-top:10px;
 }
 
 div#myTable_filter.dataTables_filter{
@@ -33,8 +35,8 @@ div#myTableClassroom_filter.dataTables_filter {
 }
 
 div#myTableClassroom_length.dataTables_length {
-    margin-top: 5px;
-    margin-left:10px;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 div#myTableClassroom_info.dataTables_info {

@@ -51,21 +51,21 @@
                                                     <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-secondary my-auto disabled my-auto" aria-disabled="true">Link Attachment</a>
                                                 }
                                                 else if(item.SubmittedTask != null){
-                                                    <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Link Attachment</a>
+                                                    <a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Attachment</a>
                                                 }
                                             </td>
                                                     <td>
                                                         @if (item.SubmittedTaskDate < item.DeadlineDate)
                                                         {
-                                                                        <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
+                                                    <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></a>
                                                         }
                                                         else if (item.SubmittedTaskDate > item.DeadlineDate)
                                                         {
-                                                    <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate)</a>
+                                                    <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></a>
                                                 }
                                                 else if (item.SubmittedTask is null)
                                                 {
-                                                    <h6 style="color: #900C3F;">X</h6>
+                                                    <h6 style="color: #900C3F;" data-bs-toggle="tooltip" data-bs-placement="top" title="Not Submitted">X</h6>
                                                 }
                                             </td>
                                                     <td>
@@ -133,22 +133,39 @@
 
 }
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#myTableClassroom').DataTable({
-                dom: 'Blfrtip',
-                buttons: [
-                    //'copy', 'csv',
-                    'excel', 'pdf', 'print',
-                    {
-                        extend: 'colvis',
-                        title: 'Colvis',
-                        text: 'Column Visibility'
-                    }
-                ]
-            });
-        });
-    </script>
+    <script>   
+    $(document).ready(function () {
+                $('#myTableClassroom').DataTable({
+                    dom: 'Blfrtip',
+                    buttons: [
+                        {
+                            extend: 'csv',
+                            text: '<i class="fa fa-file-text-o"></i>',
+                            className: "btn btn-primary"
 
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i>',
+                            className: "btn btn-primary"
+
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="fa fa-file-pdf-o"></i>',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            className: "btn btn-primary"
+                        },
+                        {
+                            extend: 'copy',
+                            text: '<i class="fa fa-files-o"></i>',
+                            className: "btn btn-primary"
+                        }
+
+                    ]
+                });
+            });
+    </script>
     <script src="~/js/grade.js" asp-append-version="true"></script>
 }
