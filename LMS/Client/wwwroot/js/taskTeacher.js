@@ -58,6 +58,7 @@ $(document).ready(function () {
 function format(value) {
     return '<div>Hidden Value: ' + value + '</div>';
 }
+
 $(document).ready(function () {
     var table = $('#example').DataTable({});
 
