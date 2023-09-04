@@ -163,7 +163,7 @@
                             @if (item.isTask is true)
                             {
                                 <div class="col text-end">
-                                    @if (item.DeadlineDate < DateTime.Now)
+                                    @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
                                     {
                                         <div class="">
                                             <p class="m-0" style="color: #d92020;">
@@ -174,10 +174,28 @@
                                             <p class="m-0" style="color: #d92020; font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
-                                    else
+                                    else if (item.DeadlineDate > DateTime.Now && item.StudentSubmittedDate is null)
                                     {
                                         <div class="">
                                             <p class="m-0 align-items-center" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
+                                        </div>
+                                    }
+                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate > item.DeadlineDate)
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted On Time" style="color: #A2FF86;"></i>
+                                        </div>
+                                    }
+                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate < item.DeadlineDate)
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted Late" style="color: #d92020;"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-question fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
                                         </div>
                                     }
                                 </div>
