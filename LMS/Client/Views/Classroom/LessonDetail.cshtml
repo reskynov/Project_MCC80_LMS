@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col p-0">
             <div id="titleLesson" class="mx-5 my-3" style="border-bottom: 1px solid #5e72e4;">
-                <h3 class="mb-2">
+                <h3 class="mb-4">
                     @Model.LessonDetailVM.Name
                 </h3>
                 <div class="row" style="margin-top:-10px">
@@ -39,12 +39,16 @@
                 }
                 else
                 {
-                    <div class="my-2">
-                        <p class="my-2">Subject Attachment :</p>
-                        <div class="d-flex justify-content-start card btn" style="max-width:242px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px;">
-                            <a class="m-0 " href="@Url.Action("DownloadLesson", "Dashboard", new { fileName = Model.LessonDetailVM.SubjectAttachment })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                <i class="fa-solid fa-file"></i> @Model.LessonDetailVM.SubjectAttachment
-                            </a>
+                    <div class="container d-inline-flex p-0 my-2" style="height:56px; max-width:242px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
+                        <div class="row g-0">
+                            <div class="col-md-auto p-0">
+                                <div>
+                                    <img class="img-fluid rounded-start" src="https://img.freepik.com/free-vector/illustration-business-agreement-concept_53876-43716.jpg?w=740&t=st=1693832135~exp=1693832735~hmac=584948f94abaaa1c673ba6a2ee6670d07e425c2ce7c2a6f4e9b23138460f83c4" style="height:56px">
+                                </div>
+                            </div>
+                            <div class="col p-3 m-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                <a class="h6" href="@Url.Action("DownloadLesson", "Dashboard", new { fileName = Model.LessonDetailVM.SubjectAttachment })">@Model.LessonDetailVM.SubjectAttachment</a>
+                            </div>
                         </div>
                     </div>
                 }                
@@ -55,18 +59,9 @@
             if (Model.GetSubmittedTaskVM != null && Model.GetSubmittedTaskVM.Attachment != null && Model.GetSubmittedTaskVM.Grade is null)
             {
                 <div class="col-md-4 p-0">
-                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                        @*<div class="mb-3" id="user-guid-edit" style="display: none;">
-                            <label for="userGuidEditTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="userGuidEditTask" value="@User.FindFirst("Guid").Value" readonly>
-                        </div>
-                        <div class="mb-3" id="lesson-guid-edit" style="display: none;">
-                            <label for="lessonGuidEditTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="lessonGuidEditTask" value="@Model.LessonDetailVM.Guid" readonly>
-                        </div>*@
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
                         <div class="mx-3 mt-2">
                             <label class="h6 form-label">Your Work</label>
-@*                            <label class="h6 form-label">Your Work<span style="position:absolute; top:8px; right:16px; background-color:none;" id="editButtonAttachment"><i class="fa-solid fa-trash"></i></span></label>*@
                             @if(Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
                             {
                                 <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
@@ -109,7 +104,7 @@
                 <div class="col-md-4 p-0">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-12">
-                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
                                 <div class="mx-3 mt-2 mb-3">
                                     <label class="h6 form-label">Your Work</label>
                                     @if (Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
@@ -136,7 +131,7 @@
                             </div>
                         </div>
                         <div class="col-12 text-center">
-                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
                                 <div class="mx-3 mt-2 mb-3">
                                     <p class="h6 form-label" style="font-size:20pt; border-bottom: 1px solid #5e72e4;">Score</p>
                                     <p class="m-0" style="font-family:Poppins; font-size:42pt; color:#2563eb; max-height:80px;">@Model.GetSubmittedTaskVM.Grade</p>
@@ -148,35 +143,9 @@
             }
             else
             {
-                <!-- Kirim Task dengan tipe data string -->
-                @*<div class="col-md-4 p-0">
-                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-                        <div class="mb-3" id="user-guid" style="display: none;">
-                            <label for="userGuidSubmitTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="userGuidSubmitTask" value="@User.FindFirst("Guid").Value" readonly>
-                        </div>
-                        <div class="mb-3" id="lesson-guid" style="display: none;">
-                            <label for="lessonGuidSubmitTask" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="lessonGuidSubmitTask" value="@Model.LessonDetailVM.Guid" readonly>
-                        </div>
-                        <div class="mx-3 mt-2">
-                            <label class="h6 form-label">
-                                Your Work @if (Model.LessonDetailVM.DeadlineDate < DateTime.Now)
-                                {
-                                    <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
-                                }
-                            </label>
-                            <input type="text" class="form-control" placeholder="https://www.contoh-link-tugas.com" id="attacmentSubmitTask" required>
-                        </div>
-                        <div class="my-2 mx-3">
-                            <button type="submit" class="btn btn-primary" id="buttonSubmitTask">Submit</button>
-                        </div>
-                    </div>
-                </div>*@
-
                 <!-- Kirim Task dengan File -->
                 <div class="col-md-4 p-0">
-                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                    <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
                         <form action="/Classroom/UploadTask" method="post" enctype="multipart/form-data">
                             <div class="mb-3" id="user-guid" style="display: none;">
                                 <label asp-for="SubmitTaskVM.UserGuid" class="form-label"></label>

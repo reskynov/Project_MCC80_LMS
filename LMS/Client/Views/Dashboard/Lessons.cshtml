@@ -118,11 +118,11 @@
                                     <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                 </div>
                                 <div class="col px-1">
-                                    <form action="/Dashboard/DeleteLessonOrTask" method="post">
+                                    <form action="/Dashboard/DeleteLessonOrTask" method="post" id="deteleLessonForm">
                                         <input type="hidden" value="@item.LessonGuid" name="lessonGuid">
                                         <input type="hidden" value="@item.SubjectAttachment" name="fileName" />
                                         <input type="hidden" value="@Model.ClassroomModel.Guid" name="classroomGuid" />
-                                        <button type="submit" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                        <button type="button" class="btn btn-danger mb-0" id="buttonDeleteLesson" onclick="DeleteLessonConfirmation()"><i class="fas fa-trash "></i> </button>
                                     </form>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                 </div>
             }
             else if (User.IsInRole("Student"))
-        {
+            {
                 <a asp-controller="Classroom" asp-action="LessonDetail" asp-route-lessonGuid="@item.LessonGuid" class="btn card mt-2 mx-3" style="outline-style: solid; outline-color:darkgrey; outline-width: 0.2px;" id="listCardLessonStudent">
                     <div class="container p-0">
                         <div class="row">
@@ -163,7 +163,7 @@
                             @if (item.isTask is true)
                             {
                                 <div class="col text-end">
-                                    @if (item.DeadlineDate < DateTime.Now)
+                                    @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
                                     {
                                         <div class="">
                                             <p class="m-0" style="color: #d92020;">
@@ -174,10 +174,28 @@
                                             <p class="m-0" style="color: #d92020; font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
-                                    else
+                                    else if (item.DeadlineDate > DateTime.Now && item.StudentSubmittedDate is null)
                                     {
                                         <div class="">
                                             <p class="m-0 align-items-center" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
+                                        </div>
+                                    }
+                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate > item.DeadlineDate)
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted On Time" style="color: #A2FF86;"></i>
+                                        </div>
+                                    }
+                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate < item.DeadlineDate)
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted Late" style="color: #d92020;"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="">
+                                            <i class="fa-solid fa-circle-question fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
                                         </div>
                                     }
                                 </div>
@@ -192,10 +210,10 @@
             }
         }
     }
-            else
-            {
-                <p class="ms-3 fw-bold">Content not available</p>
-            }
+    else
+    {
+        <p class="ms-3 fw-bold">Content not available</p>
+    }
 </div>
 
 @*-----------------MODAL INSERT LESSON-----------------*@
