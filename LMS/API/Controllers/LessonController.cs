@@ -9,7 +9,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/lessons")]
-//[Authorize]
+[Authorize]
 public class LessonController : ControllerBase
 {
     private readonly LessonService _lessonService;
@@ -176,7 +176,7 @@ public class LessonController : ControllerBase
     }
 
     [HttpGet("task")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult GetLessonTaskByGuid(Guid guid)
     {
         var result = _lessonService.GetLessonTaskByGuid(guid);
@@ -200,7 +200,7 @@ public class LessonController : ControllerBase
     }
 
     [HttpPost("task")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult CreateLessonTask(NewLessonTaskDto newLessonTaskDto)
     {
         var result = _lessonService.CreateLessonTask(newLessonTaskDto);
@@ -224,7 +224,7 @@ public class LessonController : ControllerBase
     }
 
     [HttpPut("task")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult UpdateLessonTask(UpdateLessonTaskDto updateLessonTaskDto)
     {
         var result = _lessonService.UpdateLessonTask(updateLessonTaskDto);

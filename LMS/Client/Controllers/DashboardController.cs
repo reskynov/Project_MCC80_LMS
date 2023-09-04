@@ -305,6 +305,7 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> RemoveAttachment(UpdateLessonTaskVM updateLessonTaskVM,string fileName)
     {
+        string externalUrl = "/dashboard/lessons?lessonByClassroomGuid=" + updateLessonTaskVM.LessonGuid;
         var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
         if (System.IO.File.Exists(filePath))
         {
@@ -312,8 +313,15 @@ public class DashboardController : Controller
             updateLessonTaskVM.SubjectAttachment = null;
         }
         var result = await _lessonRepository.EditLessonWithTask(updateLessonTaskVM.LessonGuid, updateLessonTaskVM);
-        return Ok();
-
+        if (result.Code == 200)
+        {
+            return Redirect(externalUrl);
+        }
+        else
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            return Redirect(externalUrl);
+        }
     }
 
     [HttpPost]
