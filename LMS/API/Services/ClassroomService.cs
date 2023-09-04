@@ -98,9 +98,10 @@ namespace API.Services
                                      where c.Guid == guid
                                      select new ClassroomPeopleDto
                                      {
-                                         Guid = guid,
+                                         UserGuid = u.Guid,
                                          FullName = u.FirstName + " " + u.LastName,
-                                         Role = r.Name
+                                         Role = r.Name,
+                                         UserClassroomGuid = uc.Guid
                                      };
 
             if (getClassroomPeople is null)
