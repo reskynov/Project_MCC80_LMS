@@ -2,6 +2,7 @@
 using Client.Models;
 using Client.ViewModels.Users;
 using Client.ViewModels.UserTasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -9,7 +10,6 @@ namespace Client.Controllers
     public class GradeController : Controller
     {
         private readonly IUserTaskRepository _userTaskRepository;
-
         public GradeController(IUserTaskRepository userTaskRepository)
         {
             _userTaskRepository = userTaskRepository;
