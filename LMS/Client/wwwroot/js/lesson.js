@@ -213,3 +213,19 @@ function UpdateLesson(guid) {
     })
 
 }
+
+function DeleteLessonConfirmation() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This lesson will be deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("deteleLessonForm").submit(); // Submit the form
+        }
+    });
+}

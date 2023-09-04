@@ -118,11 +118,11 @@
                                     <button onclick="ShowUpdateLesson('@item.LessonGuid')" data-bs-toggle="modal" data-bs-target="#modalUpdateLesson" class="btn btn-warning mb-0"><i class="fas fa-edit"></i> </button>
                                 </div>
                                 <div class="col px-1">
-                                    <form action="/Dashboard/DeleteLessonOrTask" method="post">
+                                    <form action="/Dashboard/DeleteLessonOrTask" method="post" id="deteleLessonForm">
                                         <input type="hidden" value="@item.LessonGuid" name="lessonGuid">
                                         <input type="hidden" value="@item.SubjectAttachment" name="fileName" />
                                         <input type="hidden" value="@Model.ClassroomModel.Guid" name="classroomGuid" />
-                                        <button type="submit" class="btn btn-danger mb-0"><i class="fas fa-trash "></i> </button>
+                                        <button type="button" class="btn btn-danger mb-0" id="buttonDeleteLesson" onclick="DeleteLessonConfirmation()"><i class="fas fa-trash "></i> </button>
                                     </form>
                                 </div>
                             </div>
