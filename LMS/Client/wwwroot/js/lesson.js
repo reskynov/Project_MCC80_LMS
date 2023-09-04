@@ -134,6 +134,7 @@ function RefreshCodeLesson(guid) {
 }
 
 function ShowUpdateLesson(guid) {
+    console.log(guid)
     $.ajax({
         url: "https://localhost:7026/api/lessons/task?guid=" + guid,
         type: "GET",
@@ -214,7 +215,12 @@ function UpdateLesson(guid) {
 
 }
 
-function DeleteLessonConfirmation() {
+function DeleteLessonConfirmation(lessonGuid, subjectAttactment, classroomGuid) {
+    var obj = {
+        lessonGuid: lessonGuid,
+        fileName: subjectAttactment,
+        classroomGuid: classroomGuid
+    }
     Swal.fire({
         title: 'Are you sure?',
         text: "This lesson will be deleted!",
@@ -225,7 +231,22 @@ function DeleteLessonConfirmation() {
         confirmButtonText: 'Yes'
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById("deteleLessonForm").submit(); // Submit the form
+            $.ajax({
+                url: '/Dashboard/DeleteLessonOrTask',
+                type: 'POST',
+                data: obj
+            }).done(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Remove',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    location.reload();
+                });
+
+            })
+        //    document.getElementById("deteleLessonForm").submit(); // Submit the form
         }
     });
 }
