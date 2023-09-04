@@ -133,12 +133,12 @@ function Unenroll(className, data) {
     console.log(obj);
 
     Swal.fire({
-        title: 'Are you sure you want to unenroll from ' + className +"?",
+        title: 'Are you sure you want to remove ' + className +"?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Unenroll'
+        confirmButtonText: 'Remove'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -148,7 +148,7 @@ function Unenroll(className, data) {
             }).done(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Unenroll',
+                    title: 'Remove',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
