@@ -33,17 +33,37 @@
             @if (item.Role is "Student")
             {
                 <div class="container m-0 p-0 my-2">
-                    <div class="row row-cols-auto">
-                        <div class="col d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-md-auto">
                             <img class="rounded-circle" src="https://img.freepik.com/free-vector/happy-students-background_23-2147900865.jpg?w=740&t=st=1692859716~exp=1692860316~hmac=771064ef25778fd2170ec6eef9f4e072cd755f040743674a455a72e771ced950" alt="Student" width="45" height="45">
                         </div>
-                        <div class="col d-flex align-items-center p-0"><p class="m-0">@Html.DisplayFor(modelItem => item.FullName)</p></div>
+                        <div class="col-8">
+                            <p class="m-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </p>
+                        </div>
+                        <!-- remove student -->
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <div class="col d-flex justify-content-end">
+                                <form asp-action="Unenroll" id="UnenrollForm">
+                                    <input type="hidden" name="userClassroomGuid" value="@Html.DisplayFor(modelItem => item.UserClassroomGuid)" />
+                                    <button class="btn btn-outline-danger" type="button" onclick="Unenroll('@item.FullName','@item.UserClassroomGuid')">
+                                        <i class="fa-solid fa-xmark" style="color: #d93030;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        }
                     </div>
                 </div>
             }
         }
     </div>
 </div>
+@section Scripts{
+    <script src="~/js/enroll.js" asp-append-version="true"></script>
+}
+
 
 @*
 <h1>GetPeople</h1>

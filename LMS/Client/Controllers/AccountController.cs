@@ -17,6 +17,14 @@ namespace Client.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                // Pengguna sudah login, lakukan tindakan sesuai kebijakan Anda
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            // Jika belum login, tampilkan halaman login
             return View();
         }
 
@@ -40,6 +48,11 @@ namespace Client.Controllers
         [HttpGet]
         public ActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                // Pengguna sudah login, lakukan tindakan sesuai kebijakan Anda
+                return RedirectToAction("Index", "Dashboard");
+            }
             return View();
         }
 

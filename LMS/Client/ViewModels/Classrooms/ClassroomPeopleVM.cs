@@ -7,6 +7,7 @@ namespace Client.ViewModels.Classrooms
         public Guid Guid { get; set; }
         public string FullName { get; set; }
         public string Role { get; set; }
+        public Guid UserClassroomGuid { get; set; }
 
     }
 }
