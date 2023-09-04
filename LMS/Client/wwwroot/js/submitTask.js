@@ -18,7 +18,7 @@ function deleteTaskConfirmation() {
         confirmButtonText: 'Yes'
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById("edit-profile").submit(); // Submit the form
+            document.getElementById("deleteFormTask").submit(); // Submit the form
         }
     });
 }
