@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Client.ViewModels.Users.ClassroomByUserVM>
+@using System.Net.Http
 
 @{
     ViewData["Title"] = "Classroom";
     Layout = "_DashboardLayout";
 }
-
 
 <h1 style="color:white;">Classroom</h1>
 
@@ -235,4 +235,11 @@
             });
         });
     </script>
+    
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
+
+    <script src="~/js/enroll.js" asp-append-version="true"></script>
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
 }

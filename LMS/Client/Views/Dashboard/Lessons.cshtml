@@ -1,4 +1,5 @@
 ﻿@model Client.ViewModels.CombinedViews.ClassroomDetailsVM
+@using System.Net.Http
 
 @{
     ViewData["Title"] = "Lessons";
@@ -289,7 +290,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="file" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
                         </div>
                         <div id="deadlineDateContainer" class="mb-3" style="display:none">
                             @*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
@@ -357,6 +358,10 @@
         }
     </script>
 
+
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
  
     <script src="~/js/lesson.js" asp-append-version="true"></script>
 }

@@ -7,7 +7,10 @@ function ShowUserTask(guid) {
     $.ajax({
         url: "https://localhost:7026/api/user-tasks/student-to-grade?guidUserTask=" + guid,
         type: "GET",
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done((result) => {
         console.log(result)
         $("#guidLessonUserTask").val(result.data.userTaskGuid);
@@ -28,7 +31,10 @@ function ShowUserTask(guid) {
             url: "https://localhost:7026/api/user-tasks/grade-task",
             type: "PUT",
             contentType: "application/json",
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            headers: {
+                'Authorization': 'Bearer ' + Token
+            }
         }).done((result) => {
             Swal.fire(
                 'Data has been successfully updated!',

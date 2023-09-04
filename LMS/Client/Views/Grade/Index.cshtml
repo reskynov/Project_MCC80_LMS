@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Client.ViewModels.UserTasks.GetTaskToGradeVM>
+@using System.Net.Http
 
 @{
     ViewData["Title"] = "Grade Student";
@@ -182,5 +183,10 @@
                 });
             });
     </script>
+
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
+
     <script src="~/js/grade.js" asp-append-version="true"></script>
 }
