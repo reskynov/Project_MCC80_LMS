@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
-    //[Authorize]
+    [Authorize]
     public class TaskController : ControllerBase
     {
         private readonly TaskService _taskService;

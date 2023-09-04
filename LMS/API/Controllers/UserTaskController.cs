@@ -9,7 +9,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/user-tasks")]
-//[Authorize]
+[Authorize]
 public class UserTaskController : ControllerBase
 {
     private readonly UserTaskService _userTaskService;
@@ -20,7 +20,7 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpPut("grade-task")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult GradeTask(GradeTaskDto gradeTaskDto)
     {
         var result = _userTaskService.GradeTask(gradeTaskDto);
@@ -53,7 +53,7 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpGet("student-to-grade")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult GetGradeTaskStudent(Guid guidUserTask)
     {
         var result = _userTaskService.GetGradeTaskStudent(guidUserTask);
@@ -77,7 +77,7 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpGet("to-grade")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public IActionResult GetTaskToGrade(Guid guidLesson)
     {
         var result = _userTaskService.GetTaskToGrade(guidLesson);
@@ -124,7 +124,7 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpPost("submit-task")]
-    //[Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student")]
     public IActionResult SubmitTask(SubmitTaskDto submitTaskDto)
     {
         var result = _userTaskService.SubmitTask(submitTaskDto);
@@ -157,7 +157,7 @@ public class UserTaskController : ControllerBase
     }
 
     [HttpPut("submit-task")]
-    //[Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student")]
     public IActionResult EditSubmittedTask(SubmitTaskDto submitTaskDto)
     {
         var result = _userTaskService.EditSubmittedTask(submitTaskDto);
