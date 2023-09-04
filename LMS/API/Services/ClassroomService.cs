@@ -4,6 +4,7 @@ using API.DTOs.Classrooms;
 using API.DTOs.Lessons;
 using API.DTOs.UserClassrooms;
 using API.DTOs.Users;
+using API.DTOs.UserTasks;
 using API.Models;
 using API.Repositories;
 using API.Utilities.Handlers;
@@ -78,6 +79,7 @@ namespace API.Services
                                          CreatedDate = l.CreatedDate,
                                          SubjectAttachment = l.SubjectAttachment,
                                          DeadlineDate = t?.DeadlineDate,
+                                         StudentSubmittedDate = t?.Guid is not null ? GetSubmittedTask(guidUser, t?.Guid)?.ModifiedDate : null
                                      };
 
             if (getClassroomLesson is null)
@@ -242,6 +244,19 @@ namespace API.Services
 
             return result ? 1 // classroom is deleted;
                 : 0; // classroom failed to delete;
+        }
+
+        public UserTask? GetSubmittedTask(Guid guidUser, Guid? guidTask)
+        {
+            var result = _userTaskRepository.GetAll()
+                        .SingleOrDefault(user => user.TaskGuid == guidTask && user.UserGuid == guidUser);
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            return result;
         }
     }
 }

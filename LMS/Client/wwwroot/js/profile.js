@@ -18,3 +18,35 @@ $(document).ready(function () {
     });
 });
 
+function SaveProfileConfirmation() {
+    Swal.fire({
+        title: 'Update Profile?',
+        text: "You need to login again if you want to change profile",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("edit-profile").submit(); // Submit the form
+        }
+    });
+}
+
+function ChangePasswordConfirmation() {
+    Swal.fire({
+        title: 'Update Profile?',
+        text: "You need to login again if you want to change profile",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("profile-change-password").submit(); // Submit the form
+        }
+    });
+}
+

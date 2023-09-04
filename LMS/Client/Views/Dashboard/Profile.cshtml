@@ -74,57 +74,57 @@
                 <div class="card-body">
                     <p class="text-uppercase text-sm">User Information</p>
                     <form id="edit-profile" action="/update-profile" method="post">
-                    <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="FirstName" class="form-control-label">First name</label>
-                                    <input asp-for="FirstName" class="form-control" type="text" disabled>
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FirstName" class="form-control-label">First name</label>
+                                        <input asp-for="FirstName" class="form-control" type="text" disabled>
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="LastName" class="form-control-label">Last name</label>
-                                    <input asp-for="LastName" class="form-control" type="text" disabled>
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="LastName" class="form-control-label">Last name</label>
+                                        <input asp-for="LastName" class="form-control" type="text" disabled>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Gender" class="form-control-label">Gender</label>
-                                    <select asp-for="Gender" class="form-control" disabled>
-                                        <option disabled value="" selected>Select Gender</option>
-                                        <option value="0">Female</option>
-                                        <option value="1">Male</option>
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Gender" class="form-control-label">Gender</label>
+                                        <select asp-for="Gender" class="form-control" disabled>
+                                            <option disabled value="" selected>Select Gender</option>
+                                            <option value="0">Female</option>
+                                            <option value="1">Male</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="BirthDate" class="form-control-label">Birth Date</label>
-                                    <input asp-for="BirthDate" class="form-control" type="date" disabled>
-                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="BirthDate" class="form-control-label">Birth Date</label>
+                                        <input asp-for="BirthDate" class="form-control" type="date" disabled>
+                                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="PhoneNumber" class="form-control-label">Phone Number</label>
-                                    <input asp-for="PhoneNumber" class="form-control" type="text" disabled>
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber" class="form-control-label">Phone Number</label>
+                                        <input asp-for="PhoneNumber" class="form-control" type="text" disabled>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Email" class="form-control-label">Email address</label>
-                                    <input asp-for="Email" class="form-control" type="email" disabled>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="form-control-label">Email address</label>
+                                        <input asp-for="Email" class="form-control" type="email" disabled>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="cancel-save-container" class="d-flex align-items-center">
-                                <button type="button" class="cancel-toggle btn btn-secondary btn-sm ms-auto" style="display:none; margin-right:10px;">Cancel</button>
-                                <button type="submit" class="btn btn-primary btn-sm me-auto" style="display:none; margin-left:12px;">Save</button>
-                            </div>
-                    </div>
+                                <div id="cancel-save-container" class="d-flex align-items-center">
+                                    <button type="button" class="cancel-toggle btn btn-secondary btn-sm ms-auto" style="display:none; margin-right:10px;">Cancel</button>
+                                    <button type="button" class="btn btn-primary btn-sm me-auto" style="display:none; margin-left:12px;" onclick="SaveProfileConfirmation()">Save</button>
+                                </div>
+                        </div>
                     </form>
                     <hr class="horizontal dark">
                 </div>
@@ -141,7 +141,7 @@
                 <hr class="horizontal dark">
                 <div class="card-body">
                     <p class="text-uppercase text-sm">FILL THE FORM BELOW</p>
-                    <form action="/profile-change-password" method="post">
+                    <form id="profile-change-password" action="/profile-change-password" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <button type="submit" class="btn btn-primary btn-sm me-auto">Save</button>
+                                <button type="button" class="btn btn-primary btn-sm me-auto" onclick="ChangePasswordConfirmation()">Save</button>
                             </div>
                         </div>
                     </form>
