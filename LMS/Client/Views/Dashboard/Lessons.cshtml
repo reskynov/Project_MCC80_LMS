@@ -165,13 +165,13 @@
                                 <div class="col text-end">
                                     @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
                                     {
-                                        <div class="">
-                                            <p class="m-0" style="color: #d92020;">
+                                        <div class=""style="color: #d92020;">
+                                            <p class="m-0">
                                                 <small>
                                                     <i class="fa-solid fa-triangle-exclamation me-2" style=""></i>Overdue
                                                 </small>
                                             </p>
-                                            <p class="m-0" style="color: #d92020; font-size:0.95em;">Deadline : @item.DeadlineDate</p>
+                                            <p class="m-0" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
                                     else if (item.DeadlineDate > DateTime.Now && item.StudentSubmittedDate is null)
@@ -180,16 +180,26 @@
                                             <p class="m-0 align-items-center" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
-                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate > item.DeadlineDate)
-                                    {
-                                        <div class="">
-                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted On Time" style="color: #A2FF86;"></i>
-                                        </div>
-                                    }
                                     else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate < item.DeadlineDate)
                                     {
-                                        <div class="">
-                                            <i class="fa-solid fa-circle-check fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Submitted Late" style="color: #d92020;"></i>
+                                        <div class="" style="color: #59CE8F;">
+                                            <p class="m-0" >
+                                                <small>
+                                                    <i class="fa-solid fa-circle-check me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted On Time"></i>Submitted
+                                                </small>
+                                            </p>
+                                            <p class="m-0" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
+                                        </div>
+                                    }
+                                    else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate > item.DeadlineDate)
+                                    {
+                                        <div class="" style="color: #d92020;">
+                                            <p class="m-0">
+                                                <small>
+                                                    <i class="fa-solid fa-circle-check me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted Late"></i>Submitted
+                                                </small>
+                                            </p>
+                                            <p class="m-0" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
                                     else
