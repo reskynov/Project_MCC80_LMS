@@ -138,7 +138,10 @@ function ShowUpdateLesson(guid) {
     $.ajax({
         url: "https://localhost:7026/api/lessons/task?guid=" + guid,
         type: "GET",
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done((result) => {
         console.log(result)
         $("#guidUpdateLesson").val(result.data.lessonGuid);
@@ -195,7 +198,10 @@ function UpdateLesson(guid) {
         url: "https://localhost:7026/api/lessons/task",
         type: "PUT",
         contentType: "application/json",
-        data: JSON.stringify(data)
+        data: JSON.stringify(data),
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done((result) => {
         $("#deadlineDateContainer").css("display", "none");
         Swal.fire(
