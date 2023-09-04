@@ -1,6 +1,7 @@
 ﻿using API.DTOs.AccountRoles;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/account-roles")]
+    //[Authorize]
     public class AccountRoleController : ControllerBase
     {
         private readonly AccountRoleService _accountRoleService;

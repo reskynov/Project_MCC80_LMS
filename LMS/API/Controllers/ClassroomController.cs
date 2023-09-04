@@ -11,6 +11,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/classrooms")]
+    //[Authorize]
     public class ClassroomController : ControllerBase
     {
         private readonly ClassroomService _classroomService;
@@ -21,6 +22,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+
         public IActionResult GetAll()
         {
             var result = _classroomService.GetAll();
@@ -156,6 +158,7 @@ namespace API.Controllers
         }
 
         [HttpGet("enroll")]
+        //[Authorize(Roles = "Student")]
         public IActionResult EnrollClassroom(string classCode)
         {
             var result = _classroomService.GetEnrollClassroomByCode(classCode);
@@ -180,6 +183,7 @@ namespace API.Controllers
         }
 
         [HttpPost("enroll")]
+        //[Authorize(Roles = "Student")]
         public IActionResult EnrollClassroom(EnrollClassroomDto enrollClassroomDto)
         {
             var result = _classroomService.EnrollClassroom(enrollClassroomDto);
@@ -279,6 +283,7 @@ namespace API.Controllers
         }
 
         [HttpPut("new-code")]
+        //[Authorize(Roles = "Teacher")]
         public IActionResult CreateNewClassCode(Guid guid)
         {
             var result = _classroomService.CreateNewClassCode(guid);

@@ -22,7 +22,7 @@ function InsertLesson() {
     lesson.append("SubjectAttachmentFile", file);
 
     $.ajax({
-        url: "/Dashboard/CreateLesson",
+        url: "/dashboard/createlesson",
         type: "POST",
         processData: false, // Diperlukan agar FormData tidak diproses secara otomatis
         contentType: false, // Diperlukan agar FormData tidak diberikan tipe konten

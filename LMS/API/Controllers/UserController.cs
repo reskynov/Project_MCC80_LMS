@@ -10,6 +10,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
@@ -202,7 +203,6 @@ namespace API.Controllers
         }
 
         [HttpPut("profile-change-password")]
-        [AllowAnonymous]
         public IActionResult ChangePassword(ProfileChangePasswordDto changePasswordDto)
         {
             var update = _userService.ChangePassword(changePasswordDto);
@@ -292,6 +292,7 @@ namespace API.Controllers
         }
 
         [HttpGet("student-dashboard")]
+        //[Authorize(Roles = "Student")]
         public IActionResult DashboardStudent(Guid guid)
         {
             var result = _userService.GetDashboardStudent(guid);
@@ -316,6 +317,7 @@ namespace API.Controllers
         }
 
         [HttpGet("teacher-dashboard")]
+        //[Authorize(Roles = "Teacher")]
         public IActionResult DashboardTeacher(Guid guid)
         {
             var result = _userService.GetDashboardTeacher(guid);
