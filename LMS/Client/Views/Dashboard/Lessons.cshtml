@@ -122,7 +122,7 @@
                                         <input type="hidden" value="@item.LessonGuid" name="lessonGuid">
                                         <input type="hidden" value="@item.SubjectAttachment" name="fileName" />
                                         <input type="hidden" value="@Model.ClassroomModel.Guid" name="classroomGuid" />
-                                        <button type="button" class="btn btn-danger mb-0" id="buttonDeleteLesson" onclick="DeleteLessonConfirmation()"><i class="fas fa-trash "></i> </button>
+                                        <button type="button" class="btn btn-danger mb-0" id="buttonDeleteLesson" onclick="DeleteLessonConfirmation('@item.LessonGuid','@item.SubjectAttachment','@Model.ClassroomModel.Guid')"><i class="fas fa-trash "></i> </button>
                                     </form>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@
                                     }
                                     else if (item.StudentSubmittedDate != null && item.StudentSubmittedDate < item.DeadlineDate)
                                     {
-                                        <div class="" style="color: #59CE8F;">
+                                        <div class="" style="color: #2dce89;">
                                             <p class="m-0" >
                                                 <small>
                                                     <i class="fa-solid fa-circle-check me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted On Time"></i>Submitted
