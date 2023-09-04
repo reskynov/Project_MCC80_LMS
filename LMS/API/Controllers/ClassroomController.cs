@@ -3,6 +3,7 @@ using API.DTOs.Classrooms;
 using API.DTOs.Lessons;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

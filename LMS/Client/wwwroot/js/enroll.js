@@ -10,14 +10,13 @@
 //        $("#enrollModal").modal("hide");
 //    });
 //});
-
 $(document).ready(function () {
     $("#enrollCheck").click(function () {
-        GetEnroll(classroomCode);
+        GetEnroll(classroomCode, token);
     })
    
     $("#enrollNow").click(function () {
-        Enroll();
+        Enroll(token);
         $("#enrollModal").modal("hide");
     });
 
@@ -36,7 +35,7 @@ $(document).ready(function () {
 
 
 
-function Enroll() {
+function Enroll(token) {
     var obj = {
         userGuid: $("#userGuid").val(),
         classroomCode: $("#classroomCode").val()
@@ -47,6 +46,9 @@ function Enroll() {
     $.ajax({
         url: "https://localhost:7026/api/classrooms/enroll",
         type: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
         data: JSON.stringify(obj), // Konversi object menjadi JSON string
         contentType: "application/json; charset=utf-8", // Set content type
     }).done((result) => {
@@ -70,11 +72,14 @@ function Enroll() {
     })
 }
 
-function GetEnroll(enrollCode) {
+function GetEnroll(enrollCode, token) {
     var enrollCode = document.getElementById('classroomCode').value;
     $.ajax({
         url: `https://localhost:7026/api/classrooms/enroll?classCode=${enrollCode}`,
         type: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
         dataType: "json"
     }).done((result) => {
         $("#classroomGuidEnroll").val(result.data.classroomGuid);

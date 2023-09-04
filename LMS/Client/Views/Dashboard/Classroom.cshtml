@@ -60,7 +60,7 @@
                             <input type="text" class="form-control" id="classroomCode" placeholder="Your classroom code">
                         </div>
                         <div class="col-2">
-                            <button onclick="GetEnroll()" id="enrollCheck" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <button onclick="GetEnroll('#classroomCode', '@Context.Session.GetString("JWToken")')" id="enrollCheck" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </div>
                     <div id="getEnrollView" class="card slide-top-card mt-5" style="width: 18rem; display: none;">
@@ -76,7 +76,7 @@
                                 <label for="classroomCode" class="form-label"></label>
                                 <input type="text" class="form-control" id="classroomCode">
                             </div>
-                            <button type="submit" class="btn btn-primary" id="enrollNow">Enroll Now</button>
+                            <button type="button" onclick="Enroll('@Context.Session.GetString("JWToken")')" class="btn btn-primary" id="enrollNow">Enroll Now</button>
                         </div>
                     </div>
                 </div>
