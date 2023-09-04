@@ -39,6 +39,7 @@
                 }
                 else
                 {
+                    <p class="my-2 fw-bold">Subject Attachment : </p>
                     <div class="container d-inline-flex p-0 my-2" style="height:56px; max-width:242px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
                         <div class="row g-0">
                             <div class="col-md-auto p-0">
@@ -64,12 +65,12 @@
                             <label class="h6 form-label">Your Work</label>
                             @if(Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
                             {
-                                <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+                                <p style="color:#d92020">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted Late"></i></p>
 
                             }
                             else
                             {
-                                <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
+                                <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted On Time"></i></p>
                             }
                             <div class="container p-0 mb-2" style="height:56px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
                                 <div class="row g-0">
@@ -107,13 +108,13 @@
                             <div class="card my-3 me-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
                                 <div class="mx-3 mt-2 mb-3">
                                     <label class="h6 form-label">Your Work</label>
-                                    @if (Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
+                                    @if (Model.GetSubmittedTaskVM.SubmittedDate < Model.LessonDetailVM.DeadlineDate)
                                     {
                                         <p style="color:#59CE8F">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></p>
                                     }
-                                    else if (Model.GetSubmittedTaskVM.SubmittedDate < Model.LessonDetailVM.DeadlineDate)
+                                    else if (Model.GetSubmittedTaskVM.SubmittedDate > Model.LessonDetailVM.DeadlineDate)
                                     {
-                                        <p style="color:#FF1E00">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
+                                        <p style="color:#d92020">@Model.GetSubmittedTaskVM.SubmittedDate <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></p>
                                     }
                                     <div class="container p-0 mb-4" style="height:56px; outline-style: solid; outline-color:darkgrey; outline-width: 0.2px; border-radius: 10px;">
                                         <div class="row g-0 d-flex align-items-center">
@@ -159,7 +160,7 @@
                                 <label asp-for="SubmitTaskVM.AttachmentFile" class="h6 form-label">
                                     Your Work @if (Model.LessonDetailVM.DeadlineDate < DateTime.Now)
                                     {
-                                        <span style="color:#FF1E00"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
+                                        <span style="color:#d92020"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
                                     }
                                 </label>
                                 <input asp-for="SubmitTaskVM.AttachmentFile" type="file" class="form-control" required id="uploadAttachmentFile">
