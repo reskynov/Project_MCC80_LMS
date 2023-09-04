@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Tasks;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
+    //[Authorize]
     public class TaskController : ControllerBase
     {
         private readonly TaskService _taskService;

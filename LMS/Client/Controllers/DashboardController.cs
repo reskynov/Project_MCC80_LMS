@@ -70,8 +70,9 @@ public class DashboardController : Controller
 
             }
         return RedirectToAction("Index", "Home");
-    } 
+    }
 
+    [HttpGet("/classroom")]
     public async Task<IActionResult> Classroom()
     {
         // Mendapatkan claim yang mengandung GUID pengguna dari token JWT
@@ -183,7 +184,7 @@ public class DashboardController : Controller
         return View(null);
     }
 
-    [HttpGet("/dashboard/profile")]
+    [HttpGet("/profile")]
     public async Task<ActionResult> Profile()
     {
         var userGuidClaim = User.FindFirst("Guid");
@@ -199,7 +200,7 @@ public class DashboardController : Controller
         return View(null);
     }
 
-    [HttpPost("/dashboard/update-profile")]
+    [HttpPost("/update-profile")]
     public async Task<IActionResult> UpdateProfile(UserVM user)
     {
         var userGuidClaim = User.FindFirst("Guid");
@@ -223,7 +224,7 @@ public class DashboardController : Controller
         return RedirectToAction("Profile", "Dashboard");
     }
 
-    [HttpPost("/dashboard/profile-change-password")]
+    [HttpPost("/profile-change-password")]
     public async Task<IActionResult> ProfileChangePassword(ProfileChangePasswordVM profileChangePasswordVM)
     {
         var userGuidClaim = User.FindFirst("Guid");
@@ -318,7 +319,7 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> EditLesson(UpdateLessonTaskVM updateLessonTaskVM)
     {
-        string externalUrl = "/Classroom/LessonDetail?lessonGuid=" + updateLessonTaskVM.LessonGuid;
+        string externalUrl = "/classroom/lessonDetail?lessonGuid=" + updateLessonTaskVM.LessonGuid;
 
         var result = await _lessonRepository.EditLessonWithTask(updateLessonTaskVM.LessonGuid, updateLessonTaskVM);
         if (result.Code == 200)
@@ -337,7 +338,7 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteLessonOrTask(Guid lessonGuid, Guid classroomGuid, string fileName)
     {
-        string externalUrl = "/Dashboard/lessons?lessonByClassroomGuid=" + classroomGuid;
+        string externalUrl = "/dashboard/lessons?lessonByClassroomGuid=" + classroomGuid;
         if (fileName != null)
         {
             var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "lessonfiles", fileName);
