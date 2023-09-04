@@ -292,22 +292,17 @@
 
     <script>
         // Dapatkan path halaman saat ini
-        //const currentPath = window.location.pathname;
+        const currentPath = window.location.pathname;
 
-        //// Dapatkan semua tautan navbar
-        //const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+        // Dapatkan semua tautan navbar
+        const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
 
-        //// Loop melalui tautan navbar dan tambahkan kelas "active" ke tautan yang sesuai
-        //navLinks.forEach(link => {
-        //    const linkPath = link.getAttribute("href");
-        //    if (linkPath === currentPath) {
-        //        link.classList.add("active");
-        //    }
-        //});
-
-        $(".navbar-nav .nav-link").on("click", function () {
-            $(".navbar-nav .nav-link").removeClass("active");
-            $(this).addClass("active");
+        // Loop melalui tautan navbar dan tambahkan kelas "active" ke tautan yang sesuai
+        navLinks.forEach(link => {
+            const linkPath = link.getAttribute("href");
+            if (linkPath === currentPath) {
+                link.classList.add("active");
+            }
         });
 
     </script>
