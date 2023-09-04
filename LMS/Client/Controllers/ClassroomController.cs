@@ -181,7 +181,7 @@ namespace Client.Controllers
         {
             if(fileName is null)
             {
-                return Content("File name's is not valid");
+                return Content("File's name is not valid");
             }
             var filePath = Path.Combine(webHostEnvironment.WebRootPath, "files", fileName);
 
