@@ -135,11 +135,18 @@ namespace API.Services
             var getStudentTask = from u in _userRepository.GetAll()
                                  join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
                                  join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                                 join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                                 join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
                                  where u.Guid == guid
                                  select new TeacherTaskDto
                                  {
                                      ClassroomName = c.Name,
-                                     TaskInClassroom = GetClassroomTask(c.Guid)
+                                     LessonGuid = l.Guid,
+                                     LessonName = l.Name,
+                                     DeadlineDate = t?.DeadlineDate,
+                                     TotalGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is not null).Count(),
+                                     TotalNotGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is null).Count(),
+                                     TotalNotSubmitted = GetTotalPeopleClass(c.Guid) - GetTotalSubmitted(l.Guid).Count()
                                  };
 
             if (!getStudentTask.Any())
