@@ -20,7 +20,7 @@
                     <div class="card mb-4">
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table id="myTableClassroom" class="table align-items-center mb-0 table-hover">
+                                <table id="myTableGrade" class="table align-items-center mb-0 table-hover">
                                     <thead>
                                         <tr>
                                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
@@ -151,7 +151,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#myTableClassroom').DataTable({
+            $('#myTableGrade').DataTable({
                 dom: 'Blfrtip',
                 buttons: [
                     //{
@@ -161,28 +161,42 @@
 
                     //},
                     {
-                        extend: 'print',
-                        text: '<i class="fa fa-print"></i>  Print',
-                        className: "btn btn-primary"
+                        extend: 'colvis',
+                        text: 'Colvis',
+                        className: "btn btn-outline-primary",
                     },
                     {
                         extend: 'excel',
-                        text: '<i class="fa fa-file-excel-o"></i>  Excel',
-                        className: "btn btn-primary"
-
+                        text: '<i class="fa fa-file-excel-o"></i>  EXCEL',
+                        className: "btn btn-outline-primary",
+                        exportOptions: {
+                            columns: ':visible',
+                        }
                     },
                     {
                         extend: 'pdf',
                         text: '<i class="fa fa-file-pdf-o"></i>  PDF',
                         orientation: 'landscape',
                         pageSize: 'A4',
-                        className: "btn btn-primary"
+                        className: "btn btn-outline-primary",
+                        exportOptions: {
+                            columns: ':visible',
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i>  Print',
+                        className: "btn btn-outline-primary",
+                        exportOptions: {
+                            columns: ':visible',
+                        }
                     },
                     {
                         extend: 'copy',
-                        text: '<i class="fa fa-files-o"></i>  COPY',
-                        className: "btn btn-primary"
+                        text: '<i class="fa fa-copy"></i>  COPY',
+                        className: "btn btn-outline-primary",
                     }
+
                 ]
             });
             var dataTableButtons = $('.dt-button');
