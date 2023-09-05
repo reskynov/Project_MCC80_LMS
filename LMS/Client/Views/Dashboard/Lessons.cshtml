@@ -161,7 +161,7 @@
                                     </small>
                                 </div>
                             </div>
-                            @if (item.isTask is true && item.DeadlineDate != null)
+                            @if (item.isTask is true)
                             {
                                 <div class="col text-end">
                                     @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
@@ -203,12 +203,35 @@
                                             <p class="m-0" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
+                                    else if (item.DeadlineDate is null)
+                                    {
+                                        <div class="">
+                                            <p class="m-0">
+                                                <small>
+                                                    <i class="fa-regular fa-calendar-xmark me-2" data-bs-toggle="tooltip" data-bs-placement="right" title="No Deadline"></i>No Deadline
+                                                </small>
+                                            </p>
+                                        </div>
+                                    }
                                     else
                                     {
                                         <div class="">
-                                            <i class="fa-solid fa-circle-question fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
+                                            <i class="fa-solid fa-circle-question" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
                                         </div>
                                     }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col text-end">
+                                    <div class="">
+                                        <p class="m-0">
+                                            <small>
+                                                <i class="fa-solid fa-file me-2"></i>Material
+                                            </small>
+                                        </p>
+                                      
+                                    </div>
                                 </div>
                             }
                         </div>

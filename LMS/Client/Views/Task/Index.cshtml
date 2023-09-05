@@ -32,12 +32,20 @@
                                 <td>@(i++)</td>
                                 <td>@studentTask.ClassroomName</td>
                                 <td style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@studentTask.LessonName</td>
-                                <td>@studentTask.Deadline</td>
+                                <td>@if(studentTask.Deadline != null)
+                                    {
+                                        @studentTask.Deadline
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-minus"></i>
+                                    }
+                                </td>
                                 <td>
                                     @if (studentTask.IsSubmitted is true)
                                     {
                                         <p style="display:none;">Yes</p>
-                                        <a class="fa-solid fa-check" style="color: #A2FF86;"></a>
+                                        <a class="fa-solid fa-check" style="color: #2dce89;"></a>
                                     }
                                     else
                                     {
