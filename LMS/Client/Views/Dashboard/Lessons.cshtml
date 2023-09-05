@@ -100,11 +100,19 @@
                                         @item.CreatedDate.ToString("d MMMM")
                                     </small>
                                 </p>
-                                @if (item.isTask is true)
+                                @if (item.isTask is true && item.DeadlineDate != null)
                                 {
                                     <p class="card-text" style="margin-top: -29px;">
                                         <small class="text-muted" style="font-size: 0.75em">
                                             Due @item.DeadlineDate
+                                        </small>
+                                    </p>
+                                }
+                                else if (item.isTask is true && item.DeadlineDate == null)
+                                {
+                                    <p class="card-text" style="margin-top: -29px;">
+                                        <small class="text-muted" style="font-size: 0.75em">
+                                            There are no deadline
                                         </small>
                                     </p>
                                 }
@@ -396,4 +404,5 @@
     </script>
  
     <script src="~/js/lesson.js" asp-append-version="true"></script>
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
 }
