@@ -109,8 +109,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label asp-for="PhoneNumber" class="form-control-label">Phone Number</label>
-                                        <input asp-for="PhoneNumber" class="form-control" type="text" disabled>
-                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="phone-addon">+62</span>
+                                            <input asp-for="PhoneNumber" type="number" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber" aria-describedby="phone-addon" disabled>
+                                        </div>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

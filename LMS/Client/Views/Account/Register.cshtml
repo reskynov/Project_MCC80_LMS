@@ -50,10 +50,12 @@
                                 <input asp-for="BirthDate" class="form-control" required />
                                 <span asp-validation-for="BirthDate" class="text-danger"></span>
                             </div>
-                            <div class="form-group mb-3 col-md-6">
+                            <div class="mb-3 col-md-6">
                                 <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
-                                <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber">
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="phone-addon">+62</span>
+                                    <input asp-for="PhoneNumber" type="text" pattern="\d*" minlength="8" maxlength="13" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber" aria-describedby="phone-addon">
+                                </div>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label asp-for="Email" class="control-label">Email</label>
