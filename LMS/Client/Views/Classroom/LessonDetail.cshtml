@@ -7,7 +7,7 @@
 <div class="card">
     <div class="row">
         <div class="col p-0">
-            <div id="titleLesson" class="mx-5 my-3" style="border-bottom: 1px solid #5e72e4;">
+            <div id="titleLesson" class="mx-5 mt-3" style="border-bottom: 1px solid #5e72e4;">
                 <h3 class="mb-4">
                     @Model.LessonDetailVM.Name
                 </h3>
@@ -23,7 +23,7 @@
                     }
                 </div>
             </div>
-            <div id="contentLesson" class="mx-5 pt-1 mb-3" style="text-align:justify;">
+            <div id="contentLesson" class="mx-5 p-0 mb-3" style="text-align:justify;">
                 <p>
 @*                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))*@
                     @if (Model.LessonDetailVM != null)
