@@ -8,7 +8,8 @@ function InsertLesson() {
     var lesson = new FormData(); // Gunakan FormData untuk mengirim berkas
 
     lesson.append("Name", $("#nameLesson").val());
-    lesson.append("Description", $("#descriptionLesson").val());
+    /*lesson.append("Description", $("#descriptionLesson").val());*/
+    lesson.append("Description", tinymce.activeEditor.getContent());
     lesson.append("IsTask", $("#isTask").val());
     lesson.append("ClassroomGuid", $("#classroomGuidLesson").val());
 
@@ -149,7 +150,9 @@ function ShowUpdateLesson(guid) {
         console.log(result)
         $("#guidUpdateLesson").val(result.data.lessonGuid);
         $("#nameUpdateLesson").val(result.data.name);
-        $("#descriptionUpdateLesson").val(result.data.description);
+        //$("#descriptionUpdateLesson").val(result.data.description);
+        var description = result.data.description;
+        tinymce.get("descriptionUpdateLesson").setContent(description);
         $("#subjectAttachmentUpdateLesson").val(result.data.subjectAttachment);
         //if (result.data.deadlineDate != null) {
         //    $("#deadlineDateContainer").css("display", "block");
