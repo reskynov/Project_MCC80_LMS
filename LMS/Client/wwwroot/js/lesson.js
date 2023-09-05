@@ -3,12 +3,21 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+tinymce.init({
+            selector: 'textarea',
+            menubar: false,
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+
+
 function InsertLesson() {
     event.preventDefault();
     var lesson = new FormData(); // Gunakan FormData untuk mengirim berkas
 
     lesson.append("Name", $("#nameLesson").val());
-    lesson.append("Description", $("#descriptionLesson").val());
+    /*lesson.append("Description", $("#descriptionLesson").val());*/
+    lesson.append("Description", tinymce.activeEditor.getContent());
     lesson.append("IsTask", $("#isTask").val());
     lesson.append("ClassroomGuid", $("#classroomGuidLesson").val());
 
@@ -21,32 +30,91 @@ function InsertLesson() {
     var file = fileInput.files[0]; // Ambil berkas pertama yang dipilih
     lesson.append("SubjectAttachmentFile", file);
 
-    $.ajax({
-        url: "/dashboard/createlesson",
-        type: "POST",
-        processData: false, // Diperlukan agar FormData tidak diproses secara otomatis
-        contentType: false, // Diperlukan agar FormData tidak diberikan tipe konten
-        data: lesson, // Menggunakan FormData yang berisi data formulir dan berkas
-        success: function (result) {
-            Swal.fire({
-                title: 'Success',
-                text: 'Lesson added successfully',
-                icon: 'success'
-            }).then(() => {
-                location.reload();
+    Swal.fire({
+        title: 'Are you sure you want to create this lesson?',
+        text: "You will not be able to add or modify the Subject Attachment afterward.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/dashboard/createlesson",
+                type: "POST",
+                processData: false, // Diperlukan agar FormData tidak diproses secara otomatis
+                contentType: false, // Diperlukan agar FormData tidak diberikan tipe konten
+                data: lesson, // Menggunakan FormData yang berisi data formulir dan berkas
+                success: function (result) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Lesson added successfully',
+                        icon: 'success'
+                    }).then(() => {
+                        location.reload();
 
-            })
-        },
-        error: function (xhr, status, error) {
-            Swal.fire({
-                title: 'Oooppss!',
-                text: 'Lesson failed added',
-                icon: 'error'
-            })
-            console.log(error);
+                    })
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        title: 'Oooppss!',
+                        text: 'Lesson failed added',
+                        icon: 'error'
+                    })
+                    console.log(error);
+                }
+            });
         }
-    });
+    })
 }
+
+
+//function InsertLesson() {
+//    event.preventDefault();
+//    var lesson = new FormData(); // Gunakan FormData untuk mengirim berkas
+
+//    lesson.append("Name", $("#nameLesson").val());
+//    /*lesson.append("Description", $("#descriptionLesson").val());*/
+//    lesson.append("Description", tinymce.activeEditor.getContent());
+//    lesson.append("IsTask", $("#isTask").val());
+//    lesson.append("ClassroomGuid", $("#classroomGuidLesson").val());
+
+//    if ($("#isTask").val() == "true") {
+//        lesson.append("DeadlineDate", $("#deadlineDateLesson").val());
+//    }
+
+//    // Ambil file yang dipilih dalam input file
+//    var fileInput = document.getElementById("subjectAttachmentLesson");
+//    var file = fileInput.files[0]; // Ambil berkas pertama yang dipilih
+//    lesson.append("SubjectAttachmentFile", file);
+
+//    $.ajax({
+//        url: "/dashboard/createlesson",
+//        type: "POST",
+//        processData: false, // Diperlukan agar FormData tidak diproses secara otomatis
+//        contentType: false, // Diperlukan agar FormData tidak diberikan tipe konten
+//        data: lesson, // Menggunakan FormData yang berisi data formulir dan berkas
+//        success: function (result) {
+//            Swal.fire({
+//                title: 'Success',
+//                text: 'Lesson added successfully',
+//                icon: 'success'
+//            }).then(() => {
+//                location.reload();
+
+//            })
+//        },
+//        error: function (xhr, status, error) {
+//            Swal.fire({
+//                title: 'Oooppss!',
+//                text: 'Lesson failed added',
+//                icon: 'error'
+//            })
+//            console.log(error);
+//        }
+//    });
+//}
 
 
 //function InsertLesson() {
@@ -149,7 +217,9 @@ function ShowUpdateLesson(guid) {
         console.log(result)
         $("#guidUpdateLesson").val(result.data.lessonGuid);
         $("#nameUpdateLesson").val(result.data.name);
-        $("#descriptionUpdateLesson").val(result.data.description);
+        //$("#descriptionUpdateLesson").val(result.data.description);
+        var description = result.data.description;
+        tinymce.get("descriptionUpdateLesson").setContent(description);
         $("#subjectAttachmentUpdateLesson").val(result.data.subjectAttachment);
         //if (result.data.deadlineDate != null) {
         //    $("#deadlineDateContainer").css("display", "block");
@@ -190,7 +260,7 @@ function UpdateLesson(guid) {
     let data = {
         lessonGuid: $("#guidUpdateLesson").val(),
         name: $("#nameUpdateLesson").val(),
-        description: $("#descriptionUpdateLesson").val(),
+        description: tinymce.activeEditor.getContent(),
         subjectAttachment: $("#subjectAttachmentUpdateLesson").val(),
         classroomGuid: guid
     };
@@ -247,7 +317,8 @@ function DeleteLessonConfirmation(lessonGuid, subjectAttactment, classroomGuid) 
             }).done(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Remove',
+                    title: 'Deleted',
+                    text: "This lesson has been deleted!",
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {

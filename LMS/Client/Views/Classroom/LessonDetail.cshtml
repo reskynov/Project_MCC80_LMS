@@ -7,7 +7,7 @@
 <div class="card">
     <div class="row">
         <div class="col p-0">
-            <div id="titleLesson" class="mx-5 my-3" style="border-bottom: 1px solid #5e72e4;">
+            <div id="titleLesson" class="mx-5 mt-3" style="border-bottom: 1px solid #5e72e4;">
                 <h3 class="mb-4">
                     @Model.LessonDetailVM.Name
                 </h3>
@@ -23,7 +23,7 @@
                     }
                 </div>
             </div>
-            <div id="contentLesson" class="mx-5 pt-2 mb-3" style="text-align:justify;">
+            <div id="contentLesson" class="mx-5 p-0 mb-3" style="text-align:justify;">
                 <p>
 @*                    @Html.Raw(Model.LessonDetailVM.Description.Replace("\n", "<br>"))*@
                     @if (Model.LessonDetailVM != null)
@@ -165,7 +165,7 @@
                                         <span style="color:#d92020"><i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></span>
                                     }
                                 </label>
-                                <input asp-for="SubmitTaskVM.AttachmentFile" type="file" class="form-control" required id="uploadAttachmentFile">
+                                <input asp-for="SubmitTaskVM.AttachmentFile" type="file" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" class="form-control" required id="uploadAttachmentFile">
                                 <span asp-validation-for="SubmitTaskVM.AttachmentFile" class="text-danger"></span>
                             </div>
                             <div class="my-2 mx-3">

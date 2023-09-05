@@ -169,7 +169,7 @@
                                     </small>
                                 </div>
                             </div>
-                            @if (item.isTask is true && item.DeadlineDate != null)
+                            @if (item.isTask is true)
                             {
                                 <div class="col text-end">
                                     @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
@@ -211,12 +211,46 @@
                                             <p class="m-0" style="font-size:0.95em;">Deadline : @item.DeadlineDate</p>
                                         </div>
                                     }
+                                    else if (item.DeadlineDate is null)
+                                    {
+                                        @if(item.StudentSubmittedDate != null)
+                                        {
+                                            <div class="" style="color: #2dce89;">
+                                                <p class="m-0">
+                                                    <small>
+                                                        <i class="fa-solid fa-circle-check me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted On Time"></i>Submitted
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        }
+                                     
+                                        <div class="">
+                                            <p class="m-0">
+                                                <small>
+                                                    <i class="fa-regular fa-calendar-xmark me-2" data-bs-toggle="tooltip" data-bs-placement="right" title="No Deadline"></i>No Deadline
+                                                </small>
+                                            </p>
+                                        </div>
+                                    }
                                     else
                                     {
                                         <div class="">
-                                            <i class="fa-solid fa-circle-question fa-xl" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
+                                            <i class="fa-solid fa-circle-question" data-bs-toggle="tooltip" data-bs-placement="right" title="Something wrong?" style="color: #d92020;"></i>
                                         </div>
                                     }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col text-end">
+                                    <div class="">
+                                        <p class="m-0">
+                                            <small>
+                                                <i class="fa-solid fa-file me-2"></i>Material
+                                            </small>
+                                        </p>
+                                      
+                                    </div>
                                 </div>
                             }
                         </div>
@@ -237,7 +271,7 @@
 
 @*-----------------MODAL INSERT LESSON-----------------*@
 <div class="modal" tabindex="-1" id="modalLesson">
-    <div class="modal-dialog  modal-dialog-centered ms-auto">
+    <div class="modal-dialog modal-lg modal-dialog-centered ms-auto">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Create Lesson</h5>
@@ -259,7 +293,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
-                            <input type="file" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
+                            <input type="file" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
                         </div>
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>
@@ -288,7 +322,7 @@
 
 @*-----------------MODAL UPDATE LESSON-----------------*@
 <div class="modal" tabindex="-1" id="modalUpdateLesson">
-    <div class="modal-dialog  modal-dialog-centered ms-auto">
+    <div class="modal-dialog modal-lg modal-dialog-centered ms-auto">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Lesson</h5>
@@ -310,7 +344,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required readonly>
                         </div>
                         <div id="deadlineDateContainer" class="mb-3" style="display:none">
                             @*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>

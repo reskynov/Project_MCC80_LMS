@@ -148,20 +148,11 @@ div.dataTables_paginate paging_simple_numbers#studentTaskTable_paginate{
     display: none;
 }
 
-#studentTaskTable_wrapper .dt-buttons .dt-button{
-    margin-top:10px;
+#studentTaskTable_wrapper .dt-buttons button.buttons-pdf.buttons-html5.btn.btn-primary {
+    margin-top: 10px;
 }
 
 
-/*@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
-
-td.details-control {
-    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
-    cursor: pointer;
+div#studentTaskTable_filter.dataTables_filter {
+    margin-top: 25px;
 }
-
-tr.shown td.details-control {
-    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
-}
-
-

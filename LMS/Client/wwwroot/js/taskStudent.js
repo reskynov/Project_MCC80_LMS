@@ -23,6 +23,9 @@ $(document).ready(function () {
             }
         ]
     });
+
+    var dataTableButtons = $('.dt-button');
+    dataTableButtons.removeClass('dt-button');
 });
 
 
