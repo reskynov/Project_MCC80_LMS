@@ -49,17 +49,17 @@
                                                     <td class="justify-content-center" style="max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                                                 @if (item.SubmittedTask == null)
                                                 {
-                                                    <div class="d-flex justify-content-start card btn disabled" style="max-width:242px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px;">
-                                                        <a class="m-0 " href="@Url.Action("DownloadLesson", "Grade", new { fileName = @Html.DisplayFor(modelItem => item.SubmittedTask) })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                                            <i class="fa-solid fa-file"></i> @Html.DisplayFor(modelItem => item.SubmittedTask)
-                                                        </a>
-                                                    </div>
+                                                    <button class="d-flex justify-content-start card btn my-0 me-2" disabled rel="tooltip" data-title="There are no attachment" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:152px;">
+                                                        <div class="m-0 " href="@Url.Action("DownloadLesson", "Grade", new { fileName = @Html.DisplayFor(modelItem => item.SubmittedTask) })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                                            <img class="img-fluid rounded-start" src="https://img.freepik.com/free-vector/open-folder-with-documents_1262-4574.jpg?w=740&t=st=1693896419~exp=1693897019~hmac=7a4b02605fb4e68f4eb1b30612ff0ec7945bc473882f50649792093d92b3afc9" style="height:25px"> @Html.DisplayFor(modelItem => item.SubmittedTask) No Attachment
+                                                        </div>
+                                                    </button>
                                                     @*<a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-secondary my-auto disabled my-auto" aria-disabled="true">Attachment</a>*@
                                                 }
                                                 else if(item.SubmittedTask != null){
-                                                    <div class="d-flex justify-content-start card btn" style="max-width:242px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px;">
+                                                    <div class="d-flex justify-content-start card btn my-0 me-2" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:152px;">
                                                         <a class="m-0 " href="@Url.Action("DownloadTask", "Classroom", new { fileName = item.SubmittedTask })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                                            <i class="fa-solid fa-file"></i> @Html.DisplayFor(modelItem => item.SubmittedTask)
+                                                            <img class="img-fluid rounded-start" src="https://img.freepik.com/free-vector/open-folder-with-documents_1262-4574.jpg?w=740&t=st=1693896419~exp=1693897019~hmac=7a4b02605fb4e68f4eb1b30612ff0ec7945bc473882f50649792093d92b3afc9" style="height:25px"> @Html.DisplayFor(modelItem => item.SubmittedTask)
                                                         </a>
                                                     </div>
                                                     @*<a href="@Html.DisplayFor(modelItem => item.SubmittedTask)" class="btn btn-outline-success my-auto">Attachment</a>*@
@@ -118,9 +118,9 @@
                                                                     <label for="gradeUserTask" class="form-label">Attachment</label>
                                                                     <textarea class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly></textarea>
                                                                 </div>
-                                                                <div class="d-flex justify-content-start card btn" style="max-width:242px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px;">
+                                                                <div class="d-grid gap-2 col-6 card btn mx-auto" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:200px;">
                                                                     <a class="m-0 " href="@Url.Action("DownloadTask", "Classroom", new { fileName = item.SubmittedTask })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                                                        <i class="fa-solid fa-file"></i> @Html.DisplayFor(modelItem => item.SubmittedTask)
+                                                                        <img class="img-fluid rounded-start" src="https://img.freepik.com/free-vector/open-folder-with-documents_1262-4574.jpg?w=740&t=st=1693896419~exp=1693897019~hmac=7a4b02605fb4e68f4eb1b30612ff0ec7945bc473882f50649792093d92b3afc9" style="height:25px"> @Html.DisplayFor(modelItem => item.SubmittedTask)
                                                                     </a>
                                                                 </div>
                                                                 <div class="mb-3">
@@ -149,39 +149,45 @@
 
 }
 @section Scripts {
-    <script>   
-    $(document).ready(function () {
-                $('#myTableClassroom').DataTable({
-                    dom: 'Blfrtip',
-                    buttons: [
-                        {
-                            extend: 'csv',
-                            text: '<i class="fa fa-file-text-o"></i>',
-                            className: "btn btn-primary"
+    <script>
+        $(document).ready(function () {
+            $('#myTableClassroom').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    //{
+                    //    extend: 'csv',
+                    //    text: '<i class="fa fa-file-text-o"></i> CSV',
+                    //    className: "btn btn-primary"
 
-                        },
-                        {
-                            extend: 'excel',
-                            text: '<i class="fa fa-file-excel-o"></i>',
-                            className: "btn btn-primary"
+                    //},
+                    {
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i>  Print',
+                        className: "btn btn-primary"
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel-o"></i>  Excel',
+                        className: "btn btn-primary"
 
-                        },
-                        {
-                            extend: 'pdf',
-                            text: '<i class="fa fa-file-pdf-o"></i>',
-                            orientation: 'landscape',
-                            pageSize: 'A4',
-                            className: "btn btn-primary"
-                        },
-                        {
-                            extend: 'copy',
-                            text: '<i class="fa fa-files-o"></i>',
-                            className: "btn btn-primary"
-                        }
-
-                    ]
-                });
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        className: "btn btn-primary"
+                    },
+                    {
+                        extend: 'copy',
+                        text: '<i class="fa fa-files-o"></i>  COPY',
+                        className: "btn btn-primary"
+                    }
+                ]
             });
+            var dataTableButtons = $('.dt-button');
+            dataTableButtons.removeClass('dt-button');
+        });
     </script>
 
     <script>

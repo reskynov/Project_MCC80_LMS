@@ -100,11 +100,19 @@
                                         @item.CreatedDate.ToString("d MMMM")
                                     </small>
                                 </p>
-                                @if (item.isTask is true)
+                                @if (item.isTask is true && item.DeadlineDate != null)
                                 {
                                     <p class="card-text" style="margin-top: -29px;">
                                         <small class="text-muted" style="font-size: 0.75em">
                                             Due @item.DeadlineDate
+                                        </small>
+                                    </p>
+                                }
+                                else if (item.isTask is true && item.DeadlineDate == null)
+                                {
+                                    <p class="card-text" style="margin-top: -29px;">
+                                        <small class="text-muted" style="font-size: 0.75em">
+                                            There are no deadline
                                         </small>
                                     </p>
                                 }
@@ -300,7 +308,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="file" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
                         </div>
                         <div id="deadlineDateContainer" class="mb-3" style="display:none">
                             @*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
@@ -374,4 +382,5 @@
     </script>
  
     <script src="~/js/lesson.js" asp-append-version="true"></script>
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
 }
