@@ -21,6 +21,12 @@
                             <p class="float-end mb-1">Due : @Model.LessonDetailVM.DeadlineDate</p>
                         </div>
                     }
+                    else if (Model.LessonDetailVM.DeadlineDate == null)
+                    {
+                        <div class="col-6 d-felx flex-row-reverse">
+                            <p class="float-end mb-1">There are no deadline</p>
+                        </div>
+                    }
                 </div>
             </div>
             <div id="contentLesson" class="mx-5 p-0 mb-3" style="text-align:justify;">

@@ -14,7 +14,8 @@ function ShowUserTask(guid) {
     }).done((result) => {
         console.log(result)
         $("#guidLessonUserTask").val(result.data.userTaskGuid);
-        $("#submittedTaskUserTask").val(result.data.attachment);
+        /*        $("#submittedTaskUserTask").val(result.data.attachment);*/
+                $("#submittedTaskUserTask").val(result.data.studentName);
         $("#gradeusertask").val(result.data.grade);
     }).fail((error) => {
         alert("Failed to fetch data. Please try again.");
