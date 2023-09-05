@@ -68,16 +68,20 @@
                                                     <td>
                                                         @if (item.SubmittedTaskDate < item.DeadlineDate)
                                                         {
-                                                    <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></a>
+                                                           <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></a>
                                                         }
                                                         else if (item.SubmittedTaskDate > item.DeadlineDate)
                                                         {
-                                                    <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></a>
-                                                }
-                                                else if (item.SubmittedTask is null)
-                                                {
-                                                    <h6 style="color: #900C3F;" data-bs-toggle="tooltip" data-bs-placement="top" title="Not Submitted">X</h6>
-                                                }
+                                                           <a style="color: #900C3F;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-exclamation" data-bs-toggle="tooltip" data-bs-placement="top" title="Overdue"></i></a>
+                                                        }
+                                                        else if (item.SubmittedTask is null)
+                                                        {
+                                                           <h6 style="color: #900C3F;" data-bs-toggle="tooltip" data-bs-placement="top" title="Not Submitted">X</h6>
+                                                        }
+                                                        else if(item.DeadlineDate == null)
+                                                        {
+                                                            <a style="color: #32CD32;">@Html.DisplayFor(modelItem => item.SubmittedTaskDate) <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="top" title="On Time"></i></a>
+                                                        }
                                             </td>
                                                     <td>
                                                 @if (item.Grade == null)
