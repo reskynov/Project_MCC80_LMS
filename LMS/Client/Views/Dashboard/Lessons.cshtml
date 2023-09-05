@@ -1,4 +1,5 @@
 ﻿@model Client.ViewModels.CombinedViews.ClassroomDetailsVM
+@using System.Net.Http
 
 @{
     ViewData["Title"] = "Lessons";
@@ -18,7 +19,7 @@
                         {
                             <div class="col mx-auto px-0 mb-0 mt-1 my-auto fw-bolder">
                                 Class Code
-                            <input type="text" id="myInput" class="disabled bg-danger" aria-disabled="true" style="width:115px; text-align:center;" data-bs-toggle="tooltip" data-bs-placement="top" title="Class code Already Expired" value="@Model.ClassroomModel.Code" disabled>
+                            <input type="text" id="myInput" class="disabled bg-danger" aria-disabled="true" style="width:115px; text-align:center;" value="@Model.ClassroomModel.Code" disabled>
                             </div>
                             <div class="col my-0 mt-2">
                                 <p class="text-danger mx-auto">Class code already expired</p>
@@ -29,10 +30,10 @@
                         {
                             <div class="col mx-auto px-0 mb-0 mt-1 my-auto fw-bolder">
                                 Class Code
-                            <input type="text" id="myInput" class="disabled bg-success" aria-disabled="true" style="width:115px; text-align:center;" data-bs-toggle="tooltip" data-bs-placement="top" title="Class Code" value="@Model.ClassroomModel.Code" disabled>
+                            <input type="text" id="myInput" class="disabled bg-success" aria-disabled="true" style="width:115px; text-align:center;" value="@Model.ClassroomModel.Code" disabled>
                             </div>
                             <div class="col my-0">
-                                <button onclick="myFunction()" class="copy-button btn"><i class="fas fa-copy fa-lg" style="color:green;"></i></button>
+                            <button onclick="myFunction()" class="copy-button btn" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;"><i class="fas fa-copy fa-lg" style="color:green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy code"></i></button>
                             </div>
                         }
                 </div>
@@ -103,7 +104,7 @@
                                 {
                                     <p class="card-text" style="margin-top: -29px;">
                                         <small class="text-muted" style="font-size: 0.75em">
-                                            Deadline : @item.DeadlineDate
+                                            Due @item.DeadlineDate
                                         </small>
                                     </p>
                                 }
@@ -252,9 +253,8 @@
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>
                             <select class="form-select" id="isTask" aria-label="Floating label select example">
-                                <option>Choose an option for task</option>
-                                <option value="true">Yes</option>
                                 <option value="false">No</option>
+                                <option value="true">Yes</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -299,7 +299,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="file" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
                         </div>
                         <div id="deadlineDateContainer" class="mb-3" style="display:none">
                             @*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
@@ -367,6 +367,10 @@
         }
     </script>
 
+
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
  
     <script src="~/js/lesson.js" asp-append-version="true"></script>
 }

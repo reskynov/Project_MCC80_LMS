@@ -15,6 +15,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\files\" />
     <Folder Include="wwwroot\lessonfiles\" />
+    <Folder Include="wwwroot\lessonfiles\" />
   </ItemGroup>
 
 </Project>

@@ -3,13 +3,13 @@
 
 // Write your JavaScript code.
 
-$(document).ready(function () {
-    // Tambahkan event click pada setiap baris parent
-    $('.parent-row').click(function () {
-        // Toggle (sembunyikan/tampilkan) baris child yang sesuai
-        $(this).next('.child-row').slideToggle();
-    });
-});
+//$(document).ready(function () {
+//    // Tambahkan event click pada setiap baris parent
+//    $('.parent-row').click(function () {
+//        // Toggle (sembunyikan/tampilkan) baris child yang sesuai
+//        $(this).next('.child-row').slideToggle();
+//    });
+//});
 
 
 
@@ -54,13 +54,13 @@ $(document).ready(function () {
 //    return childTable;
 //}
 
-/*let table = new DataTable('#teacherTaskTable');*/
 
 function format(value) {
     return '<div>Hidden Value: ' + value + '</div>';
 }
 
 $(document).ready(function () {
+    let table = new DataTable('#teacherTaskTable');
     //let dataSet = $('#teacherTaskTable td').map(function () {
     //    return $(this).text();
     //}).get();

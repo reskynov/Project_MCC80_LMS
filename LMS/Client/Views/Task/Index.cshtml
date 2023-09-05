@@ -76,21 +76,38 @@ else if (User.IsInRole("Teacher"))
                 <table class="table table-hover align-items-center mb-0 display nowrap" id="teacherTaskTable" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Classroom</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Lesson</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Deadline Date</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Not Submitted</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Graded</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Not Graded</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- parent row -->
                         @foreach (var teacherTask in Model.TeacherTaskVMs)
                         {
-                            @if (teacherTask.TaskInClassroom != null && teacherTask.TaskInClassroom.Any())
-                            {
-                            <tr style="cursor:pointer;" class="parent-row">
+@*                            @if (teacherTask.TaskInClassroom != null && teacherTask.Any())
+                            {*@
+                            <tr style="cursor:pointer;" onclick="window.location.href='@Url.Action("LessonDetail", "Classroom", new { lessonGuid = @teacherTask.LessonGuid })'" class="parent-row">
                                 <!-- Tambahkan class "parent-row" di sini -->
-                                    <td class="text-sm fw-bold">@teacherTask.ClassroomName</td>
+                                <td class="text-sm fw-bold" style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@teacherTask.ClassroomName</td>
+                                <td class="text-sm" style="max-width:100px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@teacherTask.LessonName</td>
+                                    @if (teacherTask.DeadlineDate != null)
+                                    {
+                                    <td class="text-sm">@teacherTask.DeadlineDate</td>
+                                    } 
+                                    else 
+                                    {
+                                    <td class="text-sm fw-bold">-</td>
+                                    }
+                                <td class="text-sm">@teacherTask.TotalNotSubmitted</td>
+                                <td class="text-sm">@teacherTask.TotalGraded</td>
+                                <td class="text-sm">@teacherTask.TotalNotGraded</td>
                             </tr>
                             <!-- child row -->
-                            <tr class="child-row">
+                            @*<tr class="child-row">
                                 <td class="p-0">
                                         <table class="table table-hover">
                                             <thead class="table-primary">
@@ -119,8 +136,8 @@ else if (User.IsInRole("Teacher"))
                                         </tbody>
                                     </table>
                                 </td>
-                            </tr>
-                            }
+                            </tr>*@
+@*                            }*@
 
                         }
                     </tbody>
