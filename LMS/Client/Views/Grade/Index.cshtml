@@ -9,7 +9,14 @@
 @foreach (var item in Model)
 {
         <h1 style="color:white;">@Html.DisplayFor(modelItem => item.LessonName)</h1>
-        <h6 style="color:white;">Deadline : @Html.DisplayFor(modelItem => item.DeadlineDate)</h6>
+    @if (item.DeadlineDate != null)
+    {
+        <h6 style="color:white;">Due : @Html.DisplayFor(modelItem => item.DeadlineDate)</h6>
+    }
+    else if (item.DeadlineDate == null)
+    {
+        <h6 style="color:white;">There are no deadline</h6>
+    }
     break;
 }
 @if (User.IsInRole("Teacher"))
