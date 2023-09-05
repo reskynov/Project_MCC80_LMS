@@ -213,6 +213,17 @@
                                     }
                                     else if (item.DeadlineDate is null)
                                     {
+                                        @if(item.StudentSubmittedDate != null)
+                                        {
+                                            <div class="" style="color: #2dce89;">
+                                                <p class="m-0">
+                                                    <small>
+                                                        <i class="fa-solid fa-circle-check me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Submitted On Time"></i>Submitted
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        }
+                                     
                                         <div class="">
                                             <p class="m-0">
                                                 <small>
@@ -279,7 +290,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
-                            <input type="file" accept="txt" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
+                            <input type="file" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
                         </div>
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>

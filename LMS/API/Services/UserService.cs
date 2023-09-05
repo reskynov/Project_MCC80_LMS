@@ -78,8 +78,8 @@ namespace API.Services
                 TotalAssignment = detailAssignment.Where(assign => assign.t is not null).Count(),
                 TotalGraded = detailAssignment.Where(assign => assign.ut.Grade is not null).Count(),
                 TotalNotGraded = detailAssignment.Where(assign => assign.ut.Grade is null).Count(),
-                AverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.AverageGrade).ToList(),
-                ClassNameAverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.ClassroomName).ToList(),
+                AverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.AverageGrade).Take(5).ToList(),
+                ClassNameAverageGrade = classroomAvg.OrderBy(c => c.ClassroomName).Select(c => c.ClassroomName).Take(5).ToList(),
                 AverageGradePassed = classroomAvg.Where(c => c.AverageGrade >= 70).Count(),
                 AverageGradeNotPassed = classroomAvg.Where(c => c.AverageGrade < 70).Count()
             };

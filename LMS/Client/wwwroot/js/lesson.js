@@ -260,7 +260,7 @@ function UpdateLesson(guid) {
     let data = {
         lessonGuid: $("#guidUpdateLesson").val(),
         name: $("#nameUpdateLesson").val(),
-        description: $("#descriptionUpdateLesson").val(),
+        description: tinymce.activeEditor.getContent(),
         subjectAttachment: $("#subjectAttachmentUpdateLesson").val(),
         classroomGuid: guid
     };
@@ -317,7 +317,8 @@ function DeleteLessonConfirmation(lessonGuid, subjectAttactment, classroomGuid) 
             }).done(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Remove',
+                    title: 'Deleted',
+                    text: "This lesson has been deleted!",
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
