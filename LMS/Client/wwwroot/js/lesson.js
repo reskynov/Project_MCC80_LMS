@@ -3,6 +3,13 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+tinymce.init({
+            selector: 'textarea',
+            menubar: false,
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+
 
 function InsertLesson() {
     event.preventDefault();
