@@ -125,6 +125,9 @@ function RefreshCodeLesson(guid) {
     $.ajax({
         url: "https://localhost:7026/api/classrooms/new-code?guid=" + guid,
         type: "PUT",
+        headers: {
+            'Authorization': 'Bearer ' + Token
+        }
     }).done(function () {
         console.log();
         location.reload();
