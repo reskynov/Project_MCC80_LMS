@@ -33,7 +33,6 @@ namespace Client.ViewModels.Accounts
         [EmailAddress]
         public string Email { get; set; }
         
-        [RegularExpression(@"^\+[0-9]", ErrorMessage = "Phone number need to start with '+' and input only number")]
         public string? PhoneNumber { get; set; }
 
         //Role
