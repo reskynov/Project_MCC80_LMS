@@ -120,7 +120,7 @@
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="gradeUserTask" class="form-label">Attachment</label>
-                                                                    <textarea class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly></textarea>
+                                                                    <input class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly> </input>
                                                                 </div>
                                                                 <div class="d-grid gap-2 col-6 card btn mx-auto" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:200px;">
                                                                     <a class="m-0" href="@Url.Action("DownloadTask", "Classroom", new { fileName = item.SubmittedTask })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
@@ -211,6 +211,5 @@
     <script>
         const Token = '@Context.Session.GetString("JWToken")';
     </script>
-    <script src="~/js/classroom.js" asp-append-version="true"></script>
     <script src="~/js/grade.js" asp-append-version="true"></script>
 }
