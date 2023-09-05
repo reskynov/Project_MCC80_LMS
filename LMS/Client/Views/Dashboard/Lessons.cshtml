@@ -252,7 +252,7 @@
 
 @*-----------------MODAL INSERT LESSON-----------------*@
 <div class="modal" tabindex="-1" id="modalLesson">
-    <div class="modal-dialog  modal-dialog-centered ms-auto">
+    <div class="modal-dialog modal-lg modal-dialog-centered ms-auto">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Create Lesson</h5>
@@ -271,7 +271,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentLesson" class="form-label">Subject Attachment</label>
-                            <input type="file" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
+                            <input type="file" accept="txt" class="form-control" id="subjectAttachmentLesson" name="subjectAttachmentLesson" required>
                         </div>
                         <div class="mb-3">
                             <label for="istask" class="form-label">Is there any task?</label>
@@ -300,7 +300,7 @@
 
 @*-----------------MODAL UPDATE LESSON-----------------*@
 <div class="modal" tabindex="-1" id="modalUpdateLesson">
-    <div class="modal-dialog  modal-dialog-centered ms-auto">
+    <div class="modal-dialog modal-lg modal-dialog-centered ms-auto">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Lesson</h5>
@@ -322,7 +322,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subjectAttachmentUpdateLesson" class="form-label">Subject Attachment</label>
-                            <input type="file" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required>
+                            <input type="text" class="form-control" id="subjectAttachmentUpdateLesson" name="subjectAttachmentUpdateLesson" required readonly>
                         </div>
                         <div id="deadlineDateContainer" class="mb-3" style="display:none">
                             @*                                        <label for="deadlineDateUpdateLesson" class="form-label">Deadline</label>
