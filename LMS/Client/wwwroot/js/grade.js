@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 
-function ShowUserTask(guid) {
+function ShowUserTask(attachment, guid) {
     $.ajax({
         url: "https://localhost:7026/api/user-tasks/student-to-grade?guidUserTask=" + guid,
         type: "GET",
