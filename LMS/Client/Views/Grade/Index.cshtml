@@ -119,14 +119,14 @@
                                                                     <input type="hidden" class="form-control" id="guidLessonUserTask" name="guidLessonUserTask">
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label for="gradeUserTask" class="form-label">Attachment</label>
-                                                                    <input class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly> </input>
+                                                                    <label for="gradeUserTask" class="form-label">Student Name</label>
+                                                                    <input class="form-control" id="submittedTaskUserTask" name="submittedTaskUserTask" readonly>
                                                                 </div>
-                                                                <div class="d-grid gap-2 col-6 card btn mx-auto" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:200px;">
+                                                                @*<div class="d-grid gap-2 col-6 card btn mx-auto" style="max-width:250px;outline-style: solid; outline-color:#948dd0; outline-width: 0.2px; border-radius: 6px; width:200px;">
                                                                     <a class="m-0" href="@Url.Action("DownloadTask", "Classroom", new { fileName = item.SubmittedTask })" style="text-align:start; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                                                                         <img class="img-fluid rounded-start" src="https://img.freepik.com/free-vector/open-folder-with-documents_1262-4574.jpg?w=740&t=st=1693896419~exp=1693897019~hmac=7a4b02605fb4e68f4eb1b30612ff0ec7945bc473882f50649792093d92b3afc9" style="height:25px"> @Html.DisplayFor(modelItem => item.SubmittedTask)
                                                                     </a>
-                                                                </div>
+                                                                </div>*@
                                                                 <div class="mb-3">
                                                                     <label for="gradeusertask" class="form-label">Grade</label>
                                                                     <input type="number" min="0" max="100" class="form-control" id="gradeusertask" name="gradeusertask" required>
