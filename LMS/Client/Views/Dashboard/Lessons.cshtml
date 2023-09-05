@@ -160,7 +160,7 @@
                                     </small>
                                 </div>
                             </div>
-                            @if (item.isTask is true)
+                            @if (item.isTask is true && item.DeadlineDate != null)
                             {
                                 <div class="col text-end">
                                     @if (item.DeadlineDate < DateTime.Now && item.StudentSubmittedDate is null)
