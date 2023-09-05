@@ -193,6 +193,10 @@
 *@  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
+    <script src="~/js/classroom.js" asp-append-version="true"></script>
     <script src="~/js/submitTask.js" asp-append-version="true"></script>
   <!--   Core JS Files   -->
   <script src="~/assets/js/core/popper.min.js"></script>
@@ -204,6 +208,11 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="~/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+
+    <script>
+        const Token = '@Context.Session.GetString("JWToken")';
+    </script>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (TempData["Success"] != null)
     {
@@ -300,9 +309,6 @@
 
     </script>
 
-    <script>
-        const Token = '@Context.Session.GetString("JWToken")';
-    </script>
     <script src="~/js/classroom.js" asp-append-version="true"></script>
 
     @*DateTime Picker*@
