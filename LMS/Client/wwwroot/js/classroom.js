@@ -53,7 +53,7 @@ function ShowUpdateClassroom(guid) {
         $("#guidUpdateClassroom").val(result.data.guid);
         $("#codeUpdateClassroom").val(result.data.code);
         $("#nameUpdateClassroom").val(result.data.name);
-        tinymce.get("descriptionUpdateClassroom").setContent(result.data.description);
+        $("#descriptionUpdateClassroom").val(result.data.description);
         $("#teacherGuidUpdateClassroom").val(result.data.teacherGuid);
         //const teacherGuid = result.data.teacherGuid;
         //const code = result.data.code;
