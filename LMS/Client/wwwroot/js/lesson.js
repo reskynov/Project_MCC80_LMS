@@ -4,7 +4,7 @@
 
 // Write your JavaScript code.
 tinymce.init({
-            selector: 'textarea',
+    selector: 'textarea#descriptionLesson, textarea#descriptionUpdateLesson ',
             menubar: false,
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace visualblocks wordcount',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
