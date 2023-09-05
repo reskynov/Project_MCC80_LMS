@@ -204,38 +204,85 @@
     <script>
         $(document).ready(function () {
             $('#myTableClassroom').DataTable({
-                dom: 'Blfrtip',
+            dom: 'Blfrtip',
                 buttons: [
-                    {
-                        extend: 'csv',
-                        text: '<i class="fa fa-file-text-o"></i>',
-                        className: "btn btn-primary"
+                    //{
+                    //    extend: 'csv',
+                    //    text: '<i class="fa fa-file-text-o"></i> CSV',
+                    //    className: "btn btn-primary"
 
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fa fa-file-excel-o"></i>',
-                        className: "btn btn-primary"
+                    //},
+                    //{
+                    //    extend: 'excel',
+                    //    text: '<i class="fa fa-file-excel-o"></i>  EXCEL',
+                    //    className: "btn btn-primary"
 
-                    },
+                    //},
                     {
                         extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf-o"></i>',
+                        text: '<i class="fa fa-file-pdf-o"></i>  PDF',
                         orientation: 'landscape',
                         pageSize: 'A4',
                         className: "btn btn-primary"
                     },
                     {
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i>  Print',
+                        className: "btn btn-primary"
+                    },
+                    {
                         extend: 'copy',
-                        text: '<i class="fa fa-files-o"></i>',
+                        text: '<i class="fa fa-files-o"></i>  COPY',
                         className: "btn btn-primary"
                     }
 
                 ]
             });
+            var dataTableButtons = $('.dt-button');
+            dataTableButtons.removeClass('dt-button');
         });
     </script>
     
+
+  @*  <script>
+        $(document).ready(function () {
+            $('#myTableClassroom').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    //{
+                    //    extend: 'csv',
+                    //    className: 'btn btn-outline-primary btn-sm',
+                    //    text: 'Save to CSV'
+                    //},
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Save to Excel'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Print Table'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Save to PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                    },
+                    {
+                        extend: 'copy',
+                        className: 'btn btn-outline-primary btn-sm',
+                        text: 'Copy to clipboard'
+                    }
+
+                ]
+            });
+            var dataTableButtons = $('.dt-button');
+            dataTableButtons.removeClass('dt-button');
+        });
+    </script>*@
     <script>
         const Token = '@Context.Session.GetString("JWToken")';
     </script>
