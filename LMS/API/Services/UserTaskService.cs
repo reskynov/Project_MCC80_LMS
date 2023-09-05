@@ -50,10 +50,12 @@ public class UserTaskService
     public GetTaskStudentDto? GetGradeTaskStudent(Guid guid)
     {
         var getTaskStudent = (from ut in _userTaskRepository.GetAll()
+                              join u in _userRepository.GetAll() on ut.UserGuid equals u.Guid
                              where ut.Guid == guid
                              select new GetTaskStudentDto
                              {
                                  UserTaskGuid = ut.Guid,
+                                 StudentName = u.FirstName + " " + u.LastName,
                                  Attachment = ut?.Attachment,
                                  Grade = ut?.Grade
                              }).FirstOrDefault();
