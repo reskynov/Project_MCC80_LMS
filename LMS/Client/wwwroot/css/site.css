@@ -156,3 +156,14 @@ div.dataTables_paginate paging_simple_numbers#studentTaskTable_paginate{
 div#studentTaskTable_filter.dataTables_filter {
     margin-top: 25px;
 }
+
+
+div#myTableGrade_info.dataTables_info {
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+div#myTableGrade_paginate.dataTables_paginate.paging_simple_numbers {
+    margin-right: 25px;
+    margin-top:  10px;
+}
