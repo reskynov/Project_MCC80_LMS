@@ -374,6 +374,27 @@ namespace API.Services
             return getClassroomLesson; // classroom lesson is found;
         }
 
+        public IEnumerable<UserTaskDto> GetSubmittedPeople(Guid lessonGuid)
+        {
+            var getTotalTask = from u in _userRepository.GetAll()
+                               join uc in _userClassroomRepository.GetAll() on u.Guid equals uc.UserGuid
+                               join c in _classroomRepository.GetAll() on uc.ClassroomGuid equals c.Guid
+                               join l in _lessonRepository.GetAll() on c.Guid equals l.ClassroomGuid
+                               join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                               join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
+                               where l.Guid == lessonGuid
+                               select new UserTaskDto
+                               {
+                                   Guid = ut.Guid,
+                                   Attachment = ut.Attachment,
+                                   Grade = ut.Grade,
+                                   TaskGuid = ut.TaskGuid,
+                                   UserGuid = ut.UserGuid
+                               };
+
+            return getTotalTask;
+        }
+
         public IEnumerable<UserTaskDto> GetTotalSubmitted(Guid lessonGuid)
         {
             var getTotalTask = from l in _lessonRepository.GetAll()

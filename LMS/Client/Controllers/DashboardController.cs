@@ -211,8 +211,7 @@ public class DashboardController : Controller
             if (result.Code == 200)
             {
                 TempData["Success"] = $"{result.Message}! Please login again";
-                HttpContext.Session.Clear();
-                return RedirectToAction("login", "account");
+                return RedirectToAction("Profile", "Dashboard");
             }
             else
             {

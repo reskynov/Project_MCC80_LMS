@@ -21,7 +21,7 @@ $(document).ready(function () {
 function SaveProfileConfirmation() {
     Swal.fire({
         title: 'Update Profile?',
-        text: "You need to login again if you want to change profile",
+        text: "Are you sure you want to change profile information?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
