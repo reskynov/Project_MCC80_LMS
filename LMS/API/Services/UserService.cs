@@ -146,7 +146,7 @@ namespace API.Services
                                      DeadlineDate = t?.DeadlineDate,
                                      TotalGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is not null).Count(),
                                      TotalNotGraded = GetTotalSubmitted(l.Guid).Where(t => t.Grade is null).Count(),
-                                     TotalNotSubmitted = GetTotalPeopleClass(c.Guid) - GetTotalSubmitted(l.Guid).Count()
+                                     TotalNotSubmitted = GetTotalPeopleClass(c.Guid) - GetSubmittedPeople(c.Guid, l.Guid).Count()
                                  };
 
             if (!getStudentTask.Any())
@@ -372,6 +372,33 @@ namespace API.Services
             }
 
             return getClassroomLesson; // classroom lesson is found;
+        }
+
+        public IEnumerable<UserTaskDto> GetSubmittedPeople(Guid classroomGuid, Guid lessonGuid)
+        {
+            var getTotalPeople = from c in _classroomRepository.GetAll()
+                                 join uc in _userClassroomRepository.GetAll() on c.Guid equals uc.ClassroomGuid
+                                 where c.Guid == classroomGuid
+                                 select new 
+                                 {
+                                     uc.UserGuid
+                                 };
+
+            var getTotalTask = from l in _lessonRepository.GetAll()
+                               join t in _taskRepository.GetAll() on l.Guid equals t.LessonGuid
+                               join ut in _userTaskRepository.GetAll() on t.Guid equals ut.TaskGuid
+                               join uc in getTotalPeople on ut.UserGuid equals uc.UserGuid
+                               where l.Guid == lessonGuid
+                               select new UserTaskDto
+                               {
+                                   Guid = ut.Guid,
+                                   Attachment = ut.Attachment,
+                                   Grade = ut.Grade,
+                                   TaskGuid = ut.TaskGuid,
+                                   UserGuid = ut.UserGuid
+                               };
+
+            return getTotalTask;
         }
 
         public IEnumerable<UserTaskDto> GetTotalSubmitted(Guid lessonGuid)

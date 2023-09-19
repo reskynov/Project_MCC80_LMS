@@ -51,13 +51,7 @@
             <a class="navbar-brand mb-1 d-flex flex-column justify-content-around">
                 <img src="~/assets/img/logo-lms-main.png" class="navbar-brand-img" style="align-self: center;" alt="main_logo">
                 <span class="ms-1 font-weight-bold" style="align-self: center;">Welcome!</span>
-                @if (User.IsInRole("Teacher")){
-                    <span class="ms-1 font-weight-bold" style="align-self: center;">@User.FindFirst("FullName").Value</span>
-                }
-                @if (User.IsInRole("Student"))
-                {
-                    <span class="ms-1 font-weight-bold" style="align-self: center;">@User.FindFirst("FullName").Value</span>
-                }
+                <span id="navbar-user-name" class="ms-1 font-weight-bold" style="align-self: center;"></span>
             </a>
         </div>
         <hr class="horizontal dark mt-0">
@@ -239,7 +233,20 @@
         </script>
     }
 
-    
+    @*    Nama user di sidebar*@
+    <script>
+        $.ajax({
+            url: `https://localhost:7026/api/users/@User.FindFirst("Guid").Value`,
+            type: "GET",
+            dataType: "json",
+            headers: {
+                'Authorization': 'Bearer ' + Token
+            }
+        }).done((result) => {
+            var name = result.data.firstName + " " + result.data.lastName;
+            $("#navbar-user-name").html(name);
+        })
+    </script>
     <!--   Core JS Files   -->    
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/core/popper.min.js"></script>
